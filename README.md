@@ -54,7 +54,7 @@ Returns the information about the current user that is logged in.
 - Require Authentication: true
 - Request
 
-  - Method: ?
+  - Method: GET
   - URL: ?
   - Body: none
 
@@ -229,8 +229,8 @@ Returns all the groups.
 - Require Authentication: false
 - Request
 
-  - Method: ?
-  - URL: ?
+  - Method: GET
+  - URL: /groups
   - Body: none
 
 - Successful Response
