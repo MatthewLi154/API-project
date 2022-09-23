@@ -20,6 +20,10 @@ app.use(express.json());
 // backend/routes/index.js
 const router = express.Router();
 
+// backend/app.js
+const routes = require("./routes");
+app.use(routes); // Connect all the routes
+
 // Security Middleware
 if (!isProduction) {
   // enable cors only in development
@@ -43,14 +47,6 @@ app.use(
     },
   })
 );
-
-// backend/app.js
-const routes = require("./routes");
-app.use(routes); // Connect all the routes
-
-// ...
-
-app.use(routes); // Connect all the routes
 
 // Catch unhandled requests and forward to error handler.
 app.use((_req, _res, next) => {
