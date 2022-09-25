@@ -4,6 +4,7 @@ const { setTokenCookie, requireAuth } = require("../../utils/auth");
 const { User } = require("../../db/models");
 const { check } = require("express-validator");
 const { handleValidationErrors } = require("../../utils/validation");
+const { Op } = require("sequelize");
 
 const router = express.Router();
 
@@ -27,6 +28,7 @@ const validateSignup = [
 // Sign up
 router.post("/", validateSignup, async (req, res) => {
   const { email, password, username, firstName, lastName } = req.body;
+  // Create a new user instance with given request body details
   const user = await User.signup({
     email,
     username,
@@ -35,10 +37,19 @@ router.post("/", validateSignup, async (req, res) => {
     lastName,
   });
 
-  await setTokenCookie(res, user);
+  const userToken = await setTokenCookie(res, user);
+
+  user.token = userToken;
+
+  const returnUser = await User.findOne({
+    where: {
+      [Op.or]: [{ username: username }, { email: email }],
+    },
+    attributes: ["id", "firstName", "lastName", "email", "token"],
+  });
 
   return res.json({
-    user,
+    returnUser,
   });
 });
 
