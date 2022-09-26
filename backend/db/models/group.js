@@ -9,11 +9,16 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Group.belongsTo(models.User, {
+        foreignKey: "organizerId",
+      });
     }
   }
   Group.init(
     {
-      organizerId: DataTypes.INTEGER,
+      organizerId: {
+        type: DataTypes.INTEGER,
+      },
       name: DataTypes.STRING,
       about: DataTypes.STRING,
       type: DataTypes.ENUM(["In person", "Online"]),
@@ -24,6 +29,11 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "Group",
+      defaultScope: {
+        attributes: {
+          exclude: ["updatedAt", "createdAt"],
+        },
+      },
     }
   );
   return Group;
