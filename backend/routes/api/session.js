@@ -1,10 +1,15 @@
 const express = require("express");
-const { setTokenCookie, restoreUser } = require("../../utils/auth");
+const {
+  setTokenCookie,
+  restoreUser,
+  requireAuth,
+} = require("../../utils/auth");
 const { User } = require("../../db/models");
 const { check } = require("express-validator");
 const { handleValidationErrors } = require("../../utils/validation");
 const router = express.Router();
 
+// An array that uses express-validator checks to validate
 const validateLogin = [
   check("credential")
     .exists({ checkFalsy: true })
@@ -16,11 +21,15 @@ const validateLogin = [
   handleValidationErrors,
 ];
 
+// Log in a user
 router.post("/", validateLogin, async (req, res, next) => {
   const { credential, password } = req.body;
 
+  // Returns user info without hashed password
+
   const user = await User.login({ credential, password });
 
+  // If no user, return error
   if (!user) {
     const err = new Error("Login failed");
     err.status = 401;
@@ -29,32 +38,43 @@ router.post("/", validateLogin, async (req, res, next) => {
     return next(err);
   }
 
-  await setTokenCookie(res, user);
+  user.token = await setTokenCookie(res, user);
+
+  console.log(user);
 
   return res.json({
-    user,
+    id: user.dataValues.id,
+    firstName: user.dataValues.firstName,
+    lastName: user.dataValues.lastName,
+    email: user.dataValues.email,
+    token: user.token,
   });
 });
 
-router.post("/", async (req, res, next) => {
-  const { credential, password } = req.body;
+// router.get("/", async (req, res, next) => {
+//   console.log(req.user.dataValues.username);
+//   res.json(req.user.dataValues);
+// });
 
-  const user = await User.login({ credential, password });
+// router.post("/", async (req, res, next) => {
+//   const { credential, password } = req.body;
 
-  if (!user) {
-    const err = new Error("Login failed");
-    err.status = 401;
-    err.title = "Login failed";
-    err.errors = ["The provided credentials were invalid."];
-    return next(err);
-  }
+//   const user = await User.login({ credential, password });
 
-  await setTokenCookie(res, user);
+//   if (!user) {
+//     const err = new Error("Login failed");
+//     err.status = 401;
+//     err.title = "Login failed";
+//     err.errors = ["The provided credentials were invalid."];
+//     return next(err);
+//   }
 
-  return res.json({
-    user,
-  });
-});
+//   await setTokenCookie(res, user);
+
+//   return res.json({
+//     user,
+//   });
+// });
 
 router.delete("/", (_req, res) => {
   res.clearCookie("token");
@@ -62,10 +82,15 @@ router.delete("/", (_req, res) => {
 });
 
 router.get("/", restoreUser, (req, res) => {
+  // User info comes from auth/restoreUser
   const { user } = req;
+  console.log(user.toSafeObject());
   if (user) {
     return res.json({
-      user: user.toSafeObject(),
+      id: user.toSafeObject().id,
+      firstName: user.toSafeObject().firstName,
+      lastName: user.toSafeObject().lastName,
+      email: user.toSafeObject().email,
     });
   } else return res.json({});
 });

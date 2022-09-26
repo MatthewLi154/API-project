@@ -17,12 +17,6 @@ app.use(morgan("dev"));
 app.use(cookieParser());
 app.use(express.json());
 
-// // backend/routes/index.js
-// const router = express.Router();
-
-// backend/app.js
-const routes = require("./routes");
-
 // Security Middleware
 if (!isProduction) {
   // enable cors only in development
@@ -47,7 +41,12 @@ app.use(
   })
 );
 
+// backend/app.js
+const routes = require("./routes");
 app.use(routes); // Connect all the routes
+
+const groups = require("./routes/api/groups");
+app.use("/api/groups", groups);
 
 // Catch unhandled requests and forward to error handler.
 app.use((_req, _res, next) => {
@@ -76,7 +75,7 @@ app.use((err, _req, res, _next) => {
     title: err.title || "Server Error",
     message: err.message,
     errors: err.errors,
-    stack: isProduction ? null : err.stack,
+    // stack: isProduction ? null : err.stack,
   });
 });
 
