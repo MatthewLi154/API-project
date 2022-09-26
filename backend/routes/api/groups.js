@@ -32,7 +32,7 @@ router.post("/", async (req, res, next) => {
 router.put("/:groupId", async (req, res, next) => {
   const { name, about, type, city, state } = req.body;
 
-  console.log(req.params);
+  //   console.log(req.params);
 
   const editGroup = await Group.findOne({
     where: { id: req.params.groupId },
@@ -47,8 +47,7 @@ router.put("/:groupId", async (req, res, next) => {
     state: state,
   });
 
-  console.log(editGroup);
-  //   return res.json(editGroup);
+  //   console.log(editGroup);
   return res.json(editGroup);
 });
 
