@@ -28,7 +28,7 @@ const validateSignup = [
 // Sign up
 router.post("/", validateSignup, async (req, res) => {
   const { email, password, username, firstName, lastName } = req.body;
-  // Create a new user instance with given request body details
+  // returns newly Created user instance with given request body details
   const user = await User.signup({
     email,
     username,
@@ -37,19 +37,23 @@ router.post("/", validateSignup, async (req, res) => {
     lastName,
   });
 
-  const userToken = await setTokenCookie(res, user);
+  user.token = await setTokenCookie(res, user);
 
-  user.token = userToken;
+  console.log(user);
 
-  const returnUser = await User.findOne({
-    where: {
-      [Op.or]: [{ username: username }, { email: email }],
-    },
-    attributes: ["id", "firstName", "lastName", "email", "token"],
-  });
+  // const returnUser = await User.findOne({
+  //   where: {
+  //     [Op.or]: [{ username: username }, { email: email }],
+  //     attributes: { exclude: ["createdAt", "updatedAt"] },
+  //   },
+  // });
 
   return res.json({
-    returnUser,
+    id: user.dataValues.id,
+    firstName: user.dataValues.firstName,
+    lastName: user.dataValues.lastName,
+    email: user.dataValues.email,
+    token: user.token,
   });
 });
 
