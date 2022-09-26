@@ -25,17 +25,21 @@ const setTokenCookie = (res, user) => {
   return token;
 };
 
+//
 const restoreUser = (req, res, next) => {
   // token parsed from cookies
   const { token } = req.cookies;
   req.user = null;
 
+  // Get token from cookies, secret from config/index/ => .env
+  // decode payload if signature is valid
   return jwt.verify(token, secret, null, async (err, jwtPayload) => {
     if (err) {
       return next();
     }
 
     try {
+      // get user from payload data
       const { id } = jwtPayload.data;
       req.user = await User.scope("currentUser").findByPk(id);
     } catch (e) {
@@ -45,6 +49,7 @@ const restoreUser = (req, res, next) => {
 
     if (!req.user) res.clearCookie("token");
 
+    // console.log("restoreUser: req.user:", req.user);
     return next();
   });
 };
