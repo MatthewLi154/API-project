@@ -126,6 +126,97 @@ router.put("/:groupId", async (req, res, next) => {
   return res.json(editGroup);
 });
 
+// Create a new Venue for a Group specified by its id
+router.post("/:groupId/venues", async (req, res, next) => {
+  // Only the owner of the group or a member of the group with a membership status of "co-host" is authorized to create a venue
+  // check if user is authorized by matching groupId's membership
+  // console.log("Current User:", req.user.toJSON());
+
+  // Check if group exists
+  const findGroup = await Group.findOne({
+    where: {
+      id: req.params.groupId,
+    },
+  });
+
+  if (!findGroup) {
+    res.status(404);
+    return res.json({
+      message: "Group couldn't be found",
+      statusCode: 404,
+    });
+  } else {
+    // Check if current user is a member of group
+    const checkMembership = await Membership.findOne({
+      where: {
+        groupId: req.params.groupId,
+      },
+      include: [
+        {
+          model: User,
+          where: {
+            id: req.user.id,
+          },
+          attributes: ["id"],
+        },
+      ],
+    });
+    if (checkMembership)
+      console.log("checkMembership", checkMembership.toJSON());
+
+    const checkGroupOwner = await Group.findAll({
+      where: {
+        id: req.params.groupId,
+      },
+    });
+
+    // if (checkMembership) console.log(checkMembership.toJSON());
+
+    let groupOwner;
+    if (checkGroupOwner) {
+      checkGroupOwner.forEach((group) => {
+        if (group.toJSON().organizerId === req.user.id) {
+          groupOwner = true;
+        }
+      });
+    }
+
+    // console.log("Group Owner:", groupOwner);
+
+    if (
+      (checkMembership && checkMembership.status === "co-host") ||
+      groupOwner === true
+    ) {
+      // Create the venue!
+      const { address, city, state, lat, lng } = req.body;
+      const newVenue = await Venue.create({
+        groupId: req.params.groupId,
+        address,
+        city,
+        state,
+        lat,
+        lng,
+      });
+
+      console.log(newVenue.toJSON());
+
+      return res.json({
+        id: newVenue.id,
+        groupId: req.params.id,
+        address: newVenue.address,
+        city: newVenue.city,
+        state: newVenue.state,
+        lat: newVenue.lat,
+        lng: newVenue.lng,
+      });
+    } else {
+      return res.json({
+        message: "You are not organizer or co-host for this group",
+      });
+    }
+  }
+});
+
 // Get All Venues for a Group specified by its id
 router.get("/:groupId/venues", async (req, res, next) => {
   const findVenueByGroup = await Group.findOne({
@@ -141,7 +232,7 @@ router.get("/:groupId/venues", async (req, res, next) => {
     ],
   });
 
-  if (!findVenueByGroup.toJSON().Venues.length) {
+  if (!findVenueByGroup) {
     res.status(404);
     return res.json({
       message: "Group couldn't be found",
