@@ -188,64 +188,74 @@ router.get("/:groupId/members", async (req, res, next) => {
 
 // Get details of a Group from an id
 router.get("/:id", async (req, res, next) => {
-  const { organizerId } = await Group.findByPk(req.params.id);
-
-  let groupId = {};
-
-  const numMembers = await Membership.findAll({
-    where: {
-      groupId: req.params.id,
-    },
-    attributes: [
-      [sequelize.fn("count", sequelize.col("userId")), "numMembers"],
-    ],
-    raw: true,
-  });
-
-  console.log(numMembers[0]);
-
-  const mainBody = await Group.findOne({
+  const groupById = await Group.findOne({
     where: {
       id: req.params.id,
     },
+    attributes: [
+      "id",
+      "organizerId",
+      "name",
+      "about",
+      "type",
+      "private",
+      "city",
+      "state",
+      "createdAt",
+      "updatedAt",
+    ],
     include: [
-      { model: GroupImage, attributes: ["id", "url", "preview"] },
+      {
+        model: Membership,
+        attributes: [
+          [sequelize.fn("count", sequelize.col("userId")), "numAttending"],
+        ],
+      },
+      {
+        model: GroupImage,
+        attributes: ["id", "url", "preview"],
+      },
       {
         model: User,
-        where: {
-          id: organizerId,
-        },
         attributes: ["id", "firstName", "lastName"],
       },
       {
         model: Venue,
-        where: {
-          groupId: req.params.id,
-        },
         attributes: ["id", "groupId", "address", "city", "state", "lat", "lng"],
       },
     ],
   });
 
-  groupId.body = mainBody.dataValues;
-  groupId.body.numMembers = numMembers[0].numMembers;
+  console.log(groupById.toJSON());
 
-  return res.json({
-    id: groupId.body.id,
-    organizerId: groupId.body.organizerId,
-    name: groupId.body.name,
-    about: groupId.body.about,
-    type: groupId.body.type,
-    private: groupId.body.private,
-    city: groupId.body.city,
-    state: groupId.body.state,
-    createdAt: groupId.body.createdAt,
-    updatedAt: groupId.body.updatedAt,
-    numMembers: groupId.body.numMembers,
-    GroupImages: groupId.body.GroupImages,
-    Organizer: groupId.body.User,
-    Venues: groupId.body.Venues,
-  });
+  let obj = groupById.toJSON();
+
+  if (!obj.id) {
+    res.status(404);
+    return res.json({
+      message: "Group couldn't be found",
+      statusCode: 404,
+    });
+  }
+
+  let group = {
+    id: obj.id,
+    organizerId: obj.organizerId,
+    name: obj.name,
+    about: obj.about,
+    type: obj.type,
+    private: obj.private,
+    city: obj.city,
+    state: obj.state,
+    createdAt: obj.createdAt,
+    updatedAt: obj.updatedAt,
+    numMembers: obj.Memberships[0].numAttending,
+    GroupImages: obj.GroupImages,
+    Organizer: obj.User,
+    Venues: obj.Venues,
+  };
+
+  return res.json(group);
 });
 
 // Get all groups
