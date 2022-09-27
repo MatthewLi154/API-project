@@ -126,6 +126,92 @@ router.put("/:groupId", async (req, res, next) => {
   return res.json(editGroup);
 });
 
+// Get All Venues for a Group specified by its id
+router.get("/:groupId/venues", async (req, res, next) => {
+  const findVenueByGroup = await Group.findOne({
+    where: {
+      id: req.params.groupId,
+    },
+    attributes: [],
+    include: [
+      {
+        model: Venue,
+        attributes: ["id", "groupId", "address", "city", "state", "lat", "lng"],
+      },
+    ],
+  });
+
+  if (!findVenueByGroup.toJSON().Venues.length) {
+    res.status(404);
+    return res.json({
+      message: "Group couldn't be found",
+      statusCode: 404,
+    });
+  }
+
+  return res.json(findVenueByGroup);
+});
+
+// Get all groups joined or organized by the current user
+router.get("/current", async (req, res, next) => {
+  let currentId = req.user.id;
+
+  const groupByCurrent = await Group.findAll({
+    where: {
+      [Op.or]: [
+        {
+          organizerId: currentId,
+        },
+      ],
+    },
+    attributes: [
+      "id",
+      "organizerId",
+      "name",
+      "about",
+      "type",
+      "private",
+      "city",
+      "state",
+      "createdAt",
+      "updatedAt",
+    ],
+    include: [
+      {
+        model: Membership,
+        attributes: [
+          [sequelize.fn("count", sequelize.col("userId")), "numMembers"],
+        ],
+      },
+      {
+        model: GroupImage,
+        attributes: ["url"],
+      },
+    ],
+  });
+
+  let Groups = [];
+  groupByCurrent.forEach((group) => {
+    let obj = group.toJSON();
+    let a = {};
+    a.id = obj.id;
+    a.organizerId = obj.organizerId;
+    a.about = obj.about;
+    a.type = obj.type;
+    a.private = obj.private;
+    a.city = obj.city;
+    a.state = obj.state;
+    a.createdAt = obj.createdAt;
+    a.updatedAt = obj.updatedAt;
+    a.numMembers = obj.Memberships[0].numMembers;
+    a.previewImage = obj.GroupImages[0].url;
+
+    Groups.push(a);
+  });
+
+  return res.json({ Groups });
+});
+
 // Get all Members of a Group specified by its id
 router.get("/:groupId/members", async (req, res, next) => {
   let Members = [];
