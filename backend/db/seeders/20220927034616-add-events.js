@@ -11,8 +11,8 @@ module.exports = {
         type: "In person",
         capacity: 30,
         price: 10,
-        startDate: "2022-10-10",
-        endDate: "2022-11-10",
+        startDate: new Date("October 09, 2022"),
+        endDate: new Date("October 10, 2022"),
       },
       {
         venueId: 2,
@@ -22,8 +22,8 @@ module.exports = {
         type: "In person",
         capacity: 50,
         price: 7,
-        startDate: "2022-10-09",
-        endDate: "2022-11-09",
+        startDate: new Date("November 09, 2022"),
+        endDate: new Date("November 10, 2022"),
       },
     ]);
   },
