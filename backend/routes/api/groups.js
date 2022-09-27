@@ -16,6 +16,7 @@ const {
 // const { check } = require("express-validator");
 // const { handleValidationErrors } = require("../../utils/validation");
 const { Op } = require("sequelize");
+const e = require("express");
 
 const router = express.Router();
 
@@ -69,12 +70,11 @@ router.get("/", async (req, res, next) => {
   // });
 
   const allGroups = await Group.findAll({
-    // include: [{ model: Membership }, { model: GroupImage }],
+    // include: [{ model: GroupImage }],
   });
 
-  // console.log(allGroups);
-
   for (let i = 0; i < allGroups.length; i++) {
+    // For num Members
     resGroup = allGroups[i].dataValues;
 
     const numMembers = await Membership.findAll({
@@ -87,11 +87,28 @@ router.get("/", async (req, res, next) => {
       raw: true,
     });
 
+    // Set numMembers
     resGroup.numMembers = numMembers[0].numMembers;
+
+    // For preview Image
+    const previewImage = await GroupImage.findAll({
+      where: {
+        groupId: allGroups[i].id,
+      },
+      raw: true,
+    });
+
+    // Set previewImage
+    if (previewImage[0]) {
+      resGroup.previewImage = previewImage[0].url;
+    } else {
+      resGroup.previewImage = "No image available";
+    }
+
     resArr.push(resGroup);
   }
 
-  return res.json(resArr);
+  return res.json({ Groups: resArr });
 });
 
 module.exports = router;
