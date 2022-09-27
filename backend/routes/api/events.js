@@ -54,8 +54,6 @@ router.get("/", async (req, res, next) => {
     Events.push(eventObj);
   });
 
-  console.log(Events);
-
   res.json({ Events });
 });
 

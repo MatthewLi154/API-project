@@ -11,6 +11,9 @@ const {
   User,
   GroupImage,
   Venue,
+  Event,
+  Attendance,
+  EventImage,
   sequelize,
   Sequelize,
 } = require("../../db/models");
@@ -36,6 +39,68 @@ router.post("/", async (req, res, next) => {
   });
 
   return res.json(newGroup);
+});
+
+// Get all Events of a Group specified by its id
+router.get("/:groupId/events", async (req, res, next) => {
+  const eventsForGroup = await Group.findAll({
+    where: {
+      id: req.params.groupId,
+    },
+    attributes: [],
+    include: [
+      {
+        model: Event,
+        attributes: [
+          "id",
+          "groupId",
+          "venueId",
+          "name",
+          "type",
+          "startDate",
+          "endDate",
+        ],
+        include: [
+          { model: Attendance },
+          { model: EventImage },
+          { model: Group, attributes: ["id", "name", "city", "state"] },
+          { model: Venue, attributes: ["id", "city", "state"] },
+        ],
+      },
+    ],
+  });
+
+  if (!eventsForGroup.length) {
+    res.status(404);
+    return res.json({
+      message: "Group couldn't be found",
+      statusCode: 404,
+    });
+  }
+
+  let Events = [];
+  eventsForGroup.forEach((event) => {
+    event = event.toJSON();
+    event = event.Events;
+    console.log(event);
+    event.forEach((singleEvent) => {
+      let eventsObj = {};
+      eventsObj.id = singleEvent.id;
+      eventsObj.groupId = singleEvent.groupId;
+      eventsObj.venueId = singleEvent.venueId;
+      eventsObj.name = singleEvent.name;
+      eventsObj.type = singleEvent.type;
+      eventsObj.startDate = singleEvent.startDate;
+      eventsObj.endDate = singleEvent.endDate;
+      eventsObj.numAttending = singleEvent.Attendances.length;
+      eventsObj.previewImage = singleEvent.EventImages[0].url;
+      eventsObj.Group = singleEvent.Group;
+      eventsObj.Venue = singleEvent.Venue;
+      Events.push(eventsObj);
+    });
+  });
+
+  return res.json({ Events });
 });
 
 // Edit a Group
