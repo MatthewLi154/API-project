@@ -24,6 +24,37 @@ const e = require("express");
 
 const router = express.Router();
 
+// Add an image to a Event based on the Event's id
+router.post("/:eventId/images", requireAuth, async (req, res, next) => {
+  // User must be an attendee, host, or co-host of the event
+  const findEvent = await Event.findOne({
+    where: {
+      id: req.params.eventId,
+    },
+    include: [
+      {
+        model: Attendance,
+        attributes: ["eventId", "userId", "status"],
+      },
+    ],
+  });
+
+  let event = findEvent.toJSON();
+
+  event.Attendances.forEach((attendance) => {
+    console.log(attendance);
+    if (
+      req.user.id === attendance.userId &&
+      (attendance.status === "member" ||
+        attendance.status === "host" ||
+        attendance.status === "co-host")
+    ) {
+    }
+  });
+
+  res.json(findEvent);
+});
+
 // Edit an event specified by its id
 router.put("/:eventId", requireAuth, async (req, res, next) => {
   // check if event and venue exist
@@ -193,26 +224,38 @@ router.get("/", async (req, res, next) => {
     include: [
       {
         model: Attendance,
+        attributes: ["eventId", "userId", "status"],
       },
       { model: EventImage, attributes: ["url"] },
       { model: Group, attributes: ["id", "name", "city", "state"] },
-      { model: Venue },
+      { model: Venue, attributes: ["id", "city", "state"] },
     ],
   });
 
   allEvents.forEach((event) => {
-    let eventObj = {};
-    eventObj.id = event.id;
-    eventObj.groupId = event.groupId;
-    eventObj.venueId = event.venueId;
-    eventObj.name = event.name;
-    eventObj.type = event.type;
-    eventObj.startDate = event.startDate;
-    eventObj.endDate = event.endDate;
-    eventObj.numAttending = event.Attendances.length;
-    eventObj.previewImage = event.EventImages[0].url;
-    eventObj.Group = event.Group.dataValues;
-    Events.push(eventObj);
+    let obj = event.toJSON();
+    let a = {};
+    a.id = obj.id;
+    a.groupId = obj.groupId;
+    a.venueId = obj.venueId;
+    a.name = obj.name;
+    a.type = obj.type;
+    a.startDate = obj.startDate;
+    a.endDate = obj.endDate;
+    a.numAttending = obj.Attendances.length;
+    if (obj.EventImages.length) {
+      a.previewImage = obj.EventImages[0].url;
+    } else {
+      a.previewImage = "no image";
+    }
+    a.Group = obj.Group;
+    if (obj.Venue) {
+      a.Venue = obj.Venue;
+    } else {
+      a.Venue = null;
+    }
+
+    Events.push(a);
   });
 
   res.json({ Events });

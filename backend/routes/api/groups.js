@@ -38,17 +38,17 @@ router.post("/:groupId/events", requireAuth, async (req, res, next) => {
     ],
   });
 
-  let group = findGroup.toJSON();
-  console.log(group);
-
   // Group does not exist, return error
-  if (!findGroup.id) {
+  if (!findGroup) {
     res.status(404);
     return res.json({
       message: "Group couldn't be found",
       statusCode: 404,
     });
   }
+
+  // console.log(findGroup);
+  let group = findGroup.toJSON();
 
   // Current user must be the organizer of the group or a co-host of the group
   // check if owner
