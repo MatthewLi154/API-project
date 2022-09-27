@@ -163,7 +163,11 @@ router.get("/:groupId/events", async (req, res, next) => {
       eventsObj.startDate = singleEvent.startDate;
       eventsObj.endDate = singleEvent.endDate;
       eventsObj.numAttending = singleEvent.Attendances.length;
-      eventsObj.previewImage = singleEvent.EventImages[0].url;
+      if (singleEvent.EventImages.length) {
+        eventsObj.previewImage = singleEvent.EventImages[0].url;
+      } else {
+        eventsObj.previewImage = null;
+      }
       eventsObj.Group = singleEvent.Group;
       eventsObj.Venue = singleEvent.Venue;
       Events.push(eventsObj);

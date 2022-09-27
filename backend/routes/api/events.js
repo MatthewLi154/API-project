@@ -21,8 +21,87 @@ const {
 // const { handleValidationErrors } = require("../../utils/validation");
 const { Op, json } = require("sequelize");
 const e = require("express");
+const user = require("../../db/models/user");
 
 const router = express.Router();
+
+// Get all attendees of an Event specified by its id
+router.get("/:eventId/attendees", async (req, res, next) => {
+  // check if current user is organizer or co-host, show all attendees
+  // if not, show all excpet pending attendees
+
+  const findAttendees = await Event.findOne({
+    where: {
+      id: req.params.eventId,
+    },
+    include: [
+      {
+        model: Attendance,
+        include: [
+          {
+            model: User,
+            attributes: ["id", "firstName", "lastName"],
+          },
+        ],
+      },
+      {
+        model: Group,
+      },
+    ],
+  });
+
+  if (!findAttendees) {
+    res.status(404);
+    return res.json({
+      message: "Event couldn't be found",
+      statusCode: 404,
+    });
+  }
+
+  let event = findAttendees.toJSON();
+
+  let isOrganizer = false;
+  if (event && req.user.id === event.Group.organizerId) {
+    isOrganizer = true;
+  } else if (event && event.Attendances.length) {
+    let isCoHost = false;
+    event.Attendances.forEach((attendee) => {
+      if (req.user.id === attendee.userId && attendee.status === "co-host") {
+        isCoHost = true;
+      }
+    });
+  }
+
+  if (isOrganizer || isCoHost) {
+    // can see all attendees
+    let Attendees = [];
+    event.Attendances.forEach((attendee) => {
+      let obj = {};
+      obj.id = attendee.User.id;
+      obj.firstName = attendee.User.firstName;
+      obj.lastName = attendee.User.lastName;
+      obj.Attendance = { status: `${attendee.status}` };
+      Attendees.push(obj);
+    });
+
+    return res.json({ Attendees });
+  } else {
+    // can see attendees minus pending
+    let Attendees = [];
+    event.Attendances.forEach((attendee) => {
+      if (attendee.status !== "pending") {
+        let obj = {};
+        obj.id = attendee.User.id;
+        obj.firstName = attendee.User.firstName;
+        obj.lastName = attendee.User.lastName;
+        obj.Attendance = { status: `${attendee.status}` };
+        Attendees.push(obj);
+      }
+    });
+
+    return res.json({ Attendees });
+  }
+});
 
 // Add an image to a Event based on the Event's id
 router.post("/:eventId/images", requireAuth, async (req, res, next) => {
