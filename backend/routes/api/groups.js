@@ -5,10 +5,17 @@ const express = require("express");
 //   restoreUser,
 //   requireAuth,
 // } = require("../../utils/auth");
-const { Group, Membership, User } = require("../../db/models");
+const {
+  Group,
+  Membership,
+  User,
+  GroupImage,
+  sequelize,
+  Sequelize,
+} = require("../../db/models");
 // const { check } = require("express-validator");
 // const { handleValidationErrors } = require("../../utils/validation");
-const { Op, Sequelize, sequelize } = require("sequelize");
+const { Op } = require("sequelize");
 
 const router = express.Router();
 
@@ -54,19 +61,37 @@ router.put("/:groupId", async (req, res, next) => {
 
 // Get all groups
 router.get("/", async (req, res, next) => {
+  let resArr = [];
+  let resGroup = {};
+
+  // const allGroups = await Group.findAll({
+  //   include: [{ model: Membership }, { model: GroupImage }],
+  // });
+
   const allGroups = await Group.findAll({
-    include: {
-      model: Membership,
+    // include: [{ model: Membership }, { model: GroupImage }],
+  });
+
+  // console.log(allGroups);
+
+  for (let i = 0; i < allGroups.length; i++) {
+    resGroup = allGroups[i].dataValues;
+
+    const numMembers = await Membership.findAll({
+      where: {
+        groupId: allGroups[i].id,
+      },
       attributes: [
         [sequelize.fn("count", sequelize.col("userId")), "numMembers"],
       ],
-    },
-  });
+      raw: true,
+    });
 
-  // need to add aggregate for numMembers
-  // need to add previewImage
+    resGroup.numMembers = numMembers[0].numMembers;
+    resArr.push(resGroup);
+  }
 
-  return res.json(allGroups);
+  return res.json(resArr);
 });
 
 module.exports = router;
