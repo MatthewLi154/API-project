@@ -1,10 +1,10 @@
 "use strict";
 const express = require("express");
-// const {
-//   setTokenCookie,
-//   restoreUser,
-//   requireAuth,
-// } = require("../../utils/auth");
+const {
+  setTokenCookie,
+  restoreUser,
+  requireAuth,
+} = require("../../utils/auth");
 const {
   Group,
   Membership,
@@ -23,6 +23,108 @@ const { Op, json } = require("sequelize");
 const e = require("express");
 
 const router = express.Router();
+
+// Edit an event specified by its id
+router.put("/:eventId", requireAuth, async (req, res, next) => {
+  // check if event and venue exist
+  const findEvent = await Event.findOne({
+    where: {
+      id: req.params.eventId,
+    },
+    include: [
+      {
+        model: Venue,
+      },
+      {
+        model: Group,
+        include: [
+          {
+            model: Membership,
+          },
+        ],
+      },
+    ],
+  });
+
+  let obj = findEvent.toJSON();
+  console.log(findEvent.toJSON());
+
+  if (!findEvent.id) {
+    res.status(404);
+    return res.json({
+      message: "Event couldn't be found",
+      statusCode: 404,
+    });
+  } else if (!findEvent.venueId) {
+    res.status(404);
+    return res.json({
+      message: "Venue couldn't be found",
+      statusCode: 404,
+    });
+  } else {
+    // Current user must be the organizer of the group or "cohost" of the group
+    // Check if current user if organizer
+    let groupOwner = false;
+    if (req.user.id === obj.Group.organizerId) {
+      groupOwner = true;
+    }
+
+    // Check if current user is co-host
+    let isCoHost = false;
+    obj.Group.Memberships.forEach((membership) => {
+      if (
+        req.user.id === membership.userId &&
+        membership.status === "co-host"
+      ) {
+        isCoHost = true;
+      }
+    });
+
+    if (groupOwner || isCoHost) {
+      // Verified, update the event with req.body
+      const {
+        venueId,
+        name,
+        type,
+        capacity,
+        price,
+        description,
+        startDate,
+        endDate,
+      } = req.body;
+
+      findEvent.update({
+        venueId,
+        name,
+        type,
+        capacity,
+        price,
+        description,
+        startDate,
+        endDate,
+      });
+
+      console.log("Updated findEvent", findEvent);
+
+      return res.json({
+        id: findEvent.id,
+        groupId: findEvent.groupId,
+        venueId: findEvent.venueId,
+        name: findEvent.name,
+        type: findEvent.type,
+        capacity: findEvent.capacity,
+        price: findEvent.price,
+        description: findEvent.description,
+        startDate: findEvent.startDate,
+        endDdte: findEvent.endDate,
+      });
+    } else {
+      res.json({
+        message: "Not owner or co-host",
+      });
+    }
+  }
+});
 
 // Get details of an Event specified by its id
 router.get("/:eventId", async (req, res, next) => {

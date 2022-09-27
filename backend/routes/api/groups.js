@@ -1,10 +1,10 @@
 "use strict";
 const express = require("express");
-// const {
-//   setTokenCookie,
-//   restoreUser,
-//   requireAuth,
-// } = require("../../utils/auth");
+const {
+  setTokenCookie,
+  restoreUser,
+  requireAuth,
+} = require("../../utils/auth");
 const {
   Group,
   Membership,
@@ -23,6 +23,76 @@ const { Op, json } = require("sequelize");
 const e = require("express");
 
 const router = express.Router();
+
+// Create an Event for a Group specified by its id
+router.post("/:groupId/events", requireAuth, async (req, res, next) => {
+  const findGroup = await Group.findOne({
+    where: {
+      id: req.params.groupId,
+    },
+    include: [
+      {
+        model: Membership,
+        attributes: ["groupId", "userId", "status"],
+      },
+    ],
+  });
+
+  let group = findGroup.toJSON();
+  console.log(group);
+
+  // Group does not exist, return error
+  if (!findGroup.id) {
+    res.status(404);
+    return res.json({
+      message: "Group couldn't be found",
+      statusCode: 404,
+    });
+  }
+
+  // Current user must be the organizer of the group or a co-host of the group
+  // check if owner
+  let groupOwner = false;
+  if (req.user.id === group.organizerId) groupOwner = true;
+
+  // check if cohost
+  let isCoHost = false;
+  group.Memberships.forEach((membership) => {
+    if (req.user.id === membership.userId && membership.status === "co-host") {
+      isCoHost = true;
+    }
+  });
+
+  if (groupOwner || isCoHost) {
+    const {
+      venueId,
+      name,
+      type,
+      capacity,
+      price,
+      description,
+      startDate,
+      endDate,
+    } = req.body;
+
+    const newEvent = await Event.create({
+      groupId: req.params.groupId,
+      venueId,
+      name,
+      type,
+      capacity,
+      price,
+      description,
+      startDate,
+      endDate,
+    });
+    return res.json(newEvent);
+  } else {
+    return res.json({
+      message: "User is not owner or co-host",
+    });
+  }
+});
 
 // Create a group
 router.post("/", async (req, res, next) => {
