@@ -5,9 +5,10 @@ const express = require("express");
 //   restoreUser,
 //   requireAuth,
 // } = require("../../utils/auth");
-const { Group } = require("../../db/models");
+const { Group, Membership, User } = require("../../db/models");
 // const { check } = require("express-validator");
 // const { handleValidationErrors } = require("../../utils/validation");
+const { Op, Sequelize, sequelize } = require("sequelize");
 
 const router = express.Router();
 
@@ -53,7 +54,14 @@ router.put("/:groupId", async (req, res, next) => {
 
 // Get all groups
 router.get("/", async (req, res, next) => {
-  const allGroups = await Group.findAll({});
+  const allGroups = await Group.findAll({
+    include: {
+      model: Membership,
+      attributes: [
+        [sequelize.fn("count", sequelize.col("userId")), "numMembers"],
+      ],
+    },
+  });
 
   // need to add aggregate for numMembers
   // need to add previewImage

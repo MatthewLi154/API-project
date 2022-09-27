@@ -12,6 +12,11 @@ module.exports = (sequelize, DataTypes) => {
       Group.belongsTo(models.User, {
         foreignKey: "organizerId",
       });
+      Group.belongsToMany(models.User, {
+        through: models.Membership,
+        foreignKey: "groupId",
+        otherKey: "userId",
+      });
       Group.hasMany(models.Membership, {
         foreignKey: "groupId",
       });
@@ -34,7 +39,10 @@ module.exports = (sequelize, DataTypes) => {
       name: DataTypes.STRING,
       about: DataTypes.STRING,
       type: DataTypes.ENUM(["In person", "Online"]),
-      private: DataTypes.BOOLEAN,
+      private: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true,
+      },
       city: DataTypes.STRING,
       state: DataTypes.STRING,
     },
