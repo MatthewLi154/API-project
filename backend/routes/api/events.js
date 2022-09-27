@@ -24,6 +24,65 @@ const e = require("express");
 
 const router = express.Router();
 
+// Get details of an Event specified by its id
+router.get("/:eventId", async (req, res, next) => {
+  const eventById = await Event.findOne({
+    where: {
+      id: req.params.eventId,
+    },
+    include: [
+      {
+        model: Attendance,
+        attributes: [
+          [sequelize.fn("count", sequelize.col("userId")), "numAttending"],
+        ],
+      },
+      {
+        model: Group,
+        attributes: ["id", "name", "private", "city", "state"],
+      },
+      {
+        model: Venue,
+        attributes: ["id", "address", "city", "state", "lat", "lng"],
+      },
+      {
+        model: EventImage,
+        attributes: ["id", "url", "preview"],
+      },
+    ],
+  });
+
+  if (!eventById.toJSON().id) {
+    res.status(404);
+    return res.json({
+      message: "Event couldn't be found",
+      statusCode: 404,
+    });
+  }
+
+  let event = eventById.toJSON();
+  event.numAttending = eventById.toJSON().Attendances[0].numAttending;
+
+  console.log(event);
+
+  return res.json({
+    id: event.id,
+    groupId: event.groupId,
+    venueId: event.venueId,
+    name: event.name,
+    description: event.description,
+    type: event.type,
+    capacity: event.capacity,
+    price: event.price,
+    startDate: event.startDate,
+    endDate: event.endDate,
+    numAttending: event.numAttending,
+    Group: event.Group,
+    Venue: event.Venue,
+    EventImages: event.EventImages,
+  });
+});
+
 // Get all events
 router.get("/", async (req, res, next) => {
   let Events = [];
