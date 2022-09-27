@@ -16,7 +16,7 @@ const {
 } = require("../../db/models");
 // const { check } = require("express-validator");
 // const { handleValidationErrors } = require("../../utils/validation");
-const { Op } = require("sequelize");
+const { Op, json } = require("sequelize");
 const e = require("express");
 
 const router = express.Router();
@@ -59,6 +59,66 @@ router.put("/:groupId", async (req, res, next) => {
 
   //   console.log(editGroup);
   return res.json(editGroup);
+});
+
+// Get all Members of a Group specified by its id
+router.get("/:groupId/members", async (req, res, next) => {
+  let Members = [];
+  let members = [];
+
+  const membersGroup = await Group.findAll({
+    where: {
+      id: req.params.groupId,
+    },
+    include: [
+      {
+        model: Membership,
+        include: [{ model: User }],
+      },
+    ],
+  });
+
+  if (!membersGroup.length) {
+    res.status(404);
+    return res.json({
+      message: "Group couldn't be found",
+      statusCode: 404,
+    });
+  }
+
+  // To get current user object
+  let currentUser = req.user.toJSON();
+
+  let groupOrganizer = membersGroup[0].toJSON().organizerId;
+
+  membersGroup.forEach((member) => {
+    members.push(member.toJSON());
+  });
+
+  // console.log(members[0].Memberships);
+  let membershipsForGroup = members[0].Memberships;
+
+  membershipsForGroup.forEach((membership) => {
+    if (currentUser.id === groupOrganizer) {
+      let memberObj = {};
+      memberObj.id = membership.userId;
+      memberObj.firstName = membership.User.firstName;
+      memberObj.lastName = membership.User.lastName;
+      memberObj.Membership = { status: membership.status };
+      Members.push(memberObj);
+    } else {
+      if (membership.status !== "pending") {
+        let memberObj = {};
+        memberObj.id = membership.userId;
+        memberObj.firstName = membership.User.firstName;
+        memberObj.lastName = membership.User.lastName;
+        memberObj.Membership = { status: membership.status };
+        Members.push(memberObj);
+      }
+    }
+  });
+
+  return res.json({ Members });
 });
 
 // Get details of a Group from an id
