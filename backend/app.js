@@ -48,6 +48,9 @@ app.use(routes); // Connect all the routes
 const groups = require("./routes/api/groups");
 app.use("/api/groups", groups);
 
+const events = require("./routes/api/events");
+app.use("/api/events", events);
+
 // Catch unhandled requests and forward to error handler.
 app.use((_req, _res, next) => {
   const err = new Error("The requested resource couldn't be found.");
