@@ -668,7 +668,7 @@ router.get("/current", async (req, res, next) => {
       ],
     });
 
-    console.log(currentUserGroups);
+    // console.log(currentUserGroups);
 
     let Groups1 = [];
     for (let i = 0; i < currentUserGroups.length; i++) {
