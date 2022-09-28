@@ -72,16 +72,20 @@ router.post("/:groupId/membership", requireAuth, async (req, res, next) => {
   });
 
   const newMembership = await Membership.create({
+    // id: lastMembership.toJSON().id + 1,
     userId: req.user.id,
     groupId: req.params.groupId,
     status: "pending",
   });
 
-  console.log(newMembership);
+  const findNewMembership = await Membership.findOne({
+    order: [["createdAt", "DESC"]],
+    attributes: ["id"],
+  });
 
   return res.json({
-    memberId: parseInt(lastMembership.toJSON().id) + 1,
-    status: newMembership.toJSON().status,
+    memberId: findNewMembership.id,
+    status: newMembership.status,
   });
 });
 
@@ -359,6 +363,14 @@ router.put("/:groupId", async (req, res, next) => {
     where: { id: req.params.groupId },
   });
 
+  if (!editGroup) {
+    res.status(404);
+    return res.json({
+      message: "Group couldn't be found",
+      statusCode: 404,
+    });
+  }
+
   editGroup.update({
     name: name,
     about: about,
@@ -368,7 +380,6 @@ router.put("/:groupId", async (req, res, next) => {
     state: state,
   });
 
-  //   console.log(editGroup);
   return res.json(editGroup);
 });
 

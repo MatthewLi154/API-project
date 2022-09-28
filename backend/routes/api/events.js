@@ -186,10 +186,10 @@ router.put("/:eventId", requireAuth, async (req, res, next) => {
     ],
   });
 
-  let obj = findEvent.toJSON();
-  console.log(findEvent.toJSON());
+  // let obj = findEvent.toJSON();
+  // console.log(findEvent.toJSON());
 
-  if (!findEvent.id) {
+  if (!findEvent) {
     res.status(404);
     return res.json({
       message: "Event couldn't be found",
@@ -202,6 +202,7 @@ router.put("/:eventId", requireAuth, async (req, res, next) => {
       statusCode: 404,
     });
   } else {
+    let obj = findEvent.toJSON();
     // Current user must be the organizer of the group or "cohost" of the group
     // Check if current user if organizer
     let groupOwner = false;
