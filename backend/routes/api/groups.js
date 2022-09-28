@@ -86,6 +86,16 @@ router.post("/:groupId/events", requireAuth, async (req, res, next) => {
       startDate,
       endDate,
     });
+
+    let event = newEvent.toJSON();
+    const newAttendance = await Attendance.create({
+      eventId: event.id,
+      userId: req.user.id,
+      status: "co-host",
+    });
+
+    console.log(newAttendance.toJSON());
+
     return res.json(newEvent);
   } else {
     return res.json({
@@ -603,9 +613,13 @@ router.get("/:id", async (req, res, next) => {
     ],
   });
 
-  console.log(groupById.toJSON());
+  console.log("groupById", groupById.toJSON());
 
   let obj = groupById.toJSON();
+
+  if (!obj.Memberships.length) {
+    obj.numMembers = obj.Memberships.length;
+  }
 
   if (!obj.id) {
     res.status(404);
@@ -626,7 +640,7 @@ router.get("/:id", async (req, res, next) => {
     state: obj.state,
     createdAt: obj.createdAt,
     updatedAt: obj.updatedAt,
-    numMembers: obj.Memberships[0].numAttending,
+    numMembers: obj.Memberships.length,
     GroupImages: obj.GroupImages,
     Organizer: obj.User,
     Venues: obj.Venues,

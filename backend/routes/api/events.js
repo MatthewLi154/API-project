@@ -118,7 +118,9 @@ router.post("/:eventId/images", requireAuth, async (req, res, next) => {
     ],
   });
 
-  if (!findEvent) {
+  console.log(findEvent.toJSON());
+
+  if (!findEvent.id) {
     res.status(404);
     return res.json({
       message: "Event couldn't be found",
@@ -153,6 +155,10 @@ router.post("/:eventId/images", requireAuth, async (req, res, next) => {
         id: newEventImage.id,
         url: newEventImage.url,
         preview: newEventImage.preview,
+      });
+    } else {
+      return res.json({
+        message: "User is not an attendee, host, or co-host",
       });
     }
   }
