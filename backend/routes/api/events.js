@@ -112,6 +112,99 @@ router.post("/:eventId/attendance", requireAuth, async (req, res, next) => {
   }
 });
 
+// Change the status of an attendance for an event specified by id
+router.put("/:eventId/attendance", requireAuth, async (req, res, next) => {
+  // Current User must already be the organizer or have a membership to the group with the status of "co-host"
+  const { userId, status } = req.body;
+
+  if (status === "pending") {
+    res.status(400);
+    return res.json({
+      message: "Cannot change an attendance status to pending",
+      statusCode: 400,
+    });
+  }
+
+  const findEvent = await Event.findOne({
+    where: {
+      id: req.params.eventId,
+    },
+    attributes: [],
+    include: [
+      {
+        model: Group,
+        include: [
+          {
+            model: Membership,
+          },
+        ],
+      },
+    ],
+  });
+
+  let isOrganizer = false;
+  let isCoHost = false;
+  if (findEvent) {
+    // console.log(findEvent.toJSON());
+    let event = findEvent.toJSON().Group;
+
+    // Check if current user is organizer
+    if (event.organizerId === req.user.id) {
+      isOrganizer = true;
+    }
+
+    // Check if current user is cohost
+    for (let i = 0; i < event.Memberships.length; i++) {
+      if (
+        event.Memberships[i].userId === req.user.id &&
+        event.Memberships[i].status === "co-host"
+      ) {
+        isCoHost = true;
+      }
+    }
+
+    if (isOrganizer || isCoHost) {
+      const findAttendance = await Attendance.findOne({
+        where: {
+          userId: userId,
+          eventId: req.params.eventId,
+        },
+      });
+
+      if (!findAttendance) {
+        res.status(404);
+        return res.json({
+          message: "Attendance between the user and the event does not exist",
+          statusCode: 404,
+        });
+      } else {
+        console.log(findAttendance.toJSON());
+
+        await findAttendance.update({
+          status: status,
+        });
+
+        return res.json({
+          id: findAttendance.id,
+          eventId: findAttendance.eventId,
+          userId: findAttendance.userId,
+          status: findAttendance.status,
+        });
+      }
+    } else {
+      return res.json({
+        message: "User is not organizer or co-host",
+      });
+    }
+  } else {
+    res.status(404);
+    return res.json({
+      message: "Event couldn't be found",
+      statusCode: 404,
+    });
+  }
+});
+
 // Get all attendees of an Event specified by its id
 router.get("/:eventId/attendees", async (req, res, next) => {
   // check if current user is organizer or co-host, show all attendees
