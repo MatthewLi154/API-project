@@ -38,16 +38,16 @@ router.post("/", validateLogin, async (req, res, next) => {
     return next(err);
   }
 
-  user.token = await setTokenCookie(res, user);
+  user.dataValues.token = await setTokenCookie(res, user);
 
-  console.log(user);
+  // console.log(user);
 
   return res.json({
     id: user.dataValues.id,
     firstName: user.dataValues.firstName,
     lastName: user.dataValues.lastName,
     email: user.dataValues.email,
-    token: user.token,
+    token: user.dataValues.token,
   });
 });
 

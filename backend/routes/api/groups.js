@@ -175,35 +175,35 @@ router.post("/:groupId/images", requireAuth, async (req, res, next) => {
     ],
   });
 
-  let group = findGroup.toJSON();
+  if (findGroup) {
+    let group = findGroup.toJSON();
 
-  if (!findGroup) {
+    if (req.user.id !== group.organizerId) {
+      return res.json({
+        message: "Not group organizer",
+      });
+    }
+
+    const { url, preview } = req.body;
+
+    const newGroupImage = await GroupImage.create({
+      groupId: req.params.groupId,
+      url,
+      preview,
+    });
+
+    return res.json({
+      id: newGroupImage.id,
+      url: url,
+      preview: preview,
+    });
+  } else {
     res.status(404);
     return res.json({
       message: "Group couldn't be found",
       statusCode: 404,
     });
   }
-
-  if (req.user.id !== group.organizerId) {
-    return res.json({
-      message: "Not group organizer",
-    });
-  }
-
-  const { url, preview } = req.body;
-
-  const newGroupImage = await GroupImage.create({
-    groupId: req.params.groupId,
-    url,
-    preview,
-  });
-
-  return res.json({
-    id: newGroupImage.id,
-    url: url,
-    preview: preview,
-  });
 });
 
 // Delete an existing group
