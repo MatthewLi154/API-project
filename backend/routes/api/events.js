@@ -25,6 +25,74 @@ const user = require("../../db/models/user");
 
 const router = express.Router();
 
+// Delete attendance to an event specified by id
+router.delete("/:eventId/attendance", requireAuth, async (req, res, next) => {
+  // Current user must be the host of the group, or the user whos attendance is being deleted
+  const { memberId } = req.body;
+
+  const findGroup = await Event.findOne({
+    where: {
+      id: req.params.eventId,
+    },
+    include: [
+      {
+        model: Group,
+      },
+    ],
+  });
+
+  let isOrganizer = false;
+  let validUser = false;
+
+  if (findGroup) {
+    console.log(findGroup.toJSON());
+    let group = findGroup.toJSON();
+
+    // Check if current user is organizer
+    if (group.Group.organizerId === req.user.id) {
+      isOrganizer = true;
+    }
+
+    // Check if current user is attending event
+    if (req.user.id === memberId) {
+      validUser = true;
+    }
+
+    if (validUser || isOrganizer) {
+      const findAttendance = await Attendance.findOne({
+        where: {
+          userId: memberId,
+          eventId: req.params.eventId,
+        },
+      });
+
+      if (findAttendance) {
+        await findAttendance.destroy(),
+          res.json({
+            message: "Successfully deleted attendance from event",
+          });
+      } else {
+        res.status(404);
+        return res.json({
+          message: "Attendance does not exist for this user",
+          statusCode: 404,
+        });
+      }
+    } else {
+      res.status(403);
+      return res.json({
+        message: "Only the User or organizer may delete an Attendance",
+      });
+    }
+  } else {
+    res.status(404);
+    return res.json({
+      message: "Event couldn't be found",
+      statusCode: 404,
+    });
+  }
+});
+
 // Request to Attend an Event based on the Event's id
 router.post("/:eventId/attendance", requireAuth, async (req, res, next) => {
   // Current User already has a pending attendance for the event
