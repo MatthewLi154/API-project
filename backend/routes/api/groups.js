@@ -387,16 +387,7 @@ router.get("/:groupId/venues", async (req, res, next) => {
 
 // Get all groups joined or organized by the current user
 router.get("/current", async (req, res, next) => {
-  let currentId = req.user.id;
-
   const groupByCurrent = await Group.findAll({
-    where: {
-      [Op.or]: [
-        {
-          organizerId: currentId,
-        },
-      ],
-    },
     attributes: [
       "id",
       "organizerId",
@@ -412,8 +403,10 @@ router.get("/current", async (req, res, next) => {
     include: [
       {
         model: Membership,
-        attributes: [
-          [sequelize.fn("count", sequelize.col("userId")), "numMembers"],
+        include: [
+          {
+            model: User,
+          },
         ],
       },
       {
@@ -423,26 +416,91 @@ router.get("/current", async (req, res, next) => {
     ],
   });
 
-  let Groups = [];
-  groupByCurrent.forEach((group) => {
-    let obj = group.toJSON();
-    let a = {};
-    a.id = obj.id;
-    a.organizerId = obj.organizerId;
-    a.about = obj.about;
-    a.type = obj.type;
-    a.private = obj.private;
-    a.city = obj.city;
-    a.state = obj.state;
-    a.createdAt = obj.createdAt;
-    a.updatedAt = obj.updatedAt;
-    a.numMembers = obj.Memberships[0].numMembers;
-    a.previewImage = obj.GroupImages[0].url;
+  let groups = [];
+  if (groupByCurrent.length) {
+    // Add groups where user is an organizer
+    groupByCurrent.forEach((group) => {
+      if (group.organizerId === req.user.id) {
+        // group.dataValues.numMembers = group.Memberships.length;
+        // if (group.GroupImages.length) {
+        //   group.dataValues.previewImage = group.GroupImages[0].url;
+        // } else {
+        //   group.dataValues.previewImage = "No image available";
+        // }
+        groups.push(group.id);
+        // console.log("LINE 463", group.toJSON());
+      }
+    });
 
-    Groups.push(a);
-  });
+    // Add groups that user is member or co-host
+    for (let i = 0; i < groupByCurrent.length; i++) {
+      for (let j = 0; j < groupByCurrent[i].Memberships.length; j++) {
+        let checkMember = groupByCurrent[i].Memberships[j].toJSON();
+        if (
+          checkMember.userId === req.user.id &&
+          (checkMember.status === "member" || checkMember.status === "co-host")
+        ) {
+          groups.push(checkMember.groupId);
+        }
+      }
+    }
 
-  return res.json({ Groups });
+    // console.log(groups);
+    const currentUserGroups = await Group.findAll({
+      where: {
+        id: {
+          [Op.or]: groups,
+        },
+      },
+      include: [
+        {
+          model: Membership,
+        },
+        {
+          model: GroupImage,
+        },
+      ],
+    });
+
+    console.log(currentUserGroups);
+
+    let Groups1 = [];
+    for (let i = 0; i < currentUserGroups.length; i++) {
+      let obj = currentUserGroups[i].toJSON();
+      obj.numMembers = obj.Memberships.length;
+      if (obj.GroupImages.length) {
+        obj.previewImage = obj.GroupImages[0].url;
+      }
+      Groups1.push(obj);
+    }
+
+    let Groups = [];
+    for (let i = 0; i < Groups1.length; i++) {
+      let newObj = {};
+      newObj = {
+        id: Groups1[i].id,
+        organizerId: Groups1[i].organizerId,
+        name: Groups1[i].name,
+        about: Groups1[i].about,
+        type: Groups1[i].type,
+        private: Groups1[i].private,
+        city: Groups1[i].city,
+        state: Groups1[i].state,
+        createdAt: Groups1[i].createdAt,
+        updatedAt: Groups1[i].updatedAt,
+        numMembers: Groups1[i].numMembers,
+        previewImage: Groups1[i].previewImage,
+      };
+
+      Groups.push(newObj);
+    }
+
+    return res.json({ Groups });
+  } else if (!groups.length) {
+    return res.json({
+      message: "Current user is not in any groups.",
+    });
+  }
 });
 
 // Get all Members of a Group specified by its id
