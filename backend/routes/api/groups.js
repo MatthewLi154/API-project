@@ -24,6 +24,61 @@ const e = require("express");
 
 const router = express.Router();
 
+// Request a membership for a group based on the Group's id
+router.post("/:groupId/membership", requireAuth, async (req, res, next) => {
+  const findGroup = await Group.findOne({
+    where: {
+      id: req.params.groupId,
+    },
+  });
+
+  const findMembership = await Membership.findOne({
+    where: {
+      userId: req.user.id,
+      groupId: req.params.groupId,
+    },
+  });
+
+  if (!findGroup) {
+    res.status(404);
+    return res.json({
+      message: "Group couldn't be found",
+      statusCode: 404,
+    });
+  }
+
+  if (findMembership.toJSON().status === "pending") {
+    res.status(400);
+    return res.json({
+      message: "Membership has already been requested",
+      statusCode: 400,
+    });
+  } else if (
+    findMembership.toJSON().status === "member" ||
+    findMembership.toJSON().status === "co-host"
+  ) {
+    res.status(400);
+    return res.json({
+      message: "User is already a member of the group",
+      statusCode: 400,
+    });
+  }
+
+  const newMembership = await Membership.create({
+    userId: req.user.id,
+    groupId: req.params.groupId,
+    status: "pending",
+  });
+
+  // console.log(newMembership);
+
+  return res.json({
+    newMembership,
+    // memberId: newMembership.id,
+    // status: newMembership.status,
+  });
+});
+
 // Create an Event for a Group specified by its id
 router.post("/:groupId/events", requireAuth, async (req, res, next) => {
   const findGroup = await Group.findOne({
