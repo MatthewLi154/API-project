@@ -85,6 +85,39 @@ router.post("/:groupId/membership", requireAuth, async (req, res, next) => {
   });
 });
 
+// Delete a membership to a group specified by id
+router.delete("/:groupId/membership", requireAuth, async (req, res, next) => {
+  // Current user must be host of the group, or the user whose membership is being deleted
+  // Check if user is organizer or co-host
+  const findGroup = await Group.findOne({
+    where: {
+      id: req.params.groupId,
+    },
+    include: {
+      model: Membership,
+    },
+  });
+
+  console.log(findGroup.toJSON());
+
+  let isOrganizer = false;
+  let validUser = false;
+  if (findGroup) {
+    if (findGroup.toJSON().organizerId === req.user.id) {
+      isOrganizer = true;
+    }
+    for (let i = 0; i < findGroup.toJSON().Memberships.length; i++) {
+      if (findGroup.toJSON().Memberships.userId === req.user.id) {
+        validUser = true;
+      }
+    }
+
+    // find membership to be deleted
+    const { memberId } = req.body;
+    return res.json(findGroup);
+  }
+});
+
 // Create an Event for a Group specified by its id
 router.post("/:groupId/events", requireAuth, async (req, res, next) => {
   const findGroup = await Group.findOne({
