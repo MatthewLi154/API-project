@@ -140,7 +140,11 @@ router.put("/:groupId/membership", requireAuth, async (req, res, next) => {
 
     // console.log("findMembership", findMembership);
 
-    if (status === "member") {
+    if (!isCoHost && !isOrganizer) {
+      res.json({
+        message: "User is not organizer or co-host for group",
+      });
+    } else if (status === "member") {
       // Check if current user is organizer or cohost
       if (isCoHost || isOrganizer) {
         await findMembership.update({
@@ -153,10 +157,6 @@ router.put("/:groupId/membership", requireAuth, async (req, res, next) => {
           status: "co-host",
         });
       }
-    } else {
-      res.json({
-        message: "User is not organizer or co-host for group",
-      });
     }
 
     const updatedMembership = await Membership.findOne({
