@@ -21,6 +21,7 @@ const {
 // const { handleValidationErrors } = require("../../utils/validation");
 const { Op, json } = require("sequelize");
 const e = require("express");
+const { reset } = require("nodemon");
 
 const router = express.Router();
 
@@ -72,21 +73,111 @@ router.post("/:groupId/membership", requireAuth, async (req, res, next) => {
   });
 
   const newMembership = await Membership.create({
-    // id: lastMembership.toJSON().id + 1,
     userId: req.user.id,
     groupId: req.params.groupId,
     status: "pending",
   });
 
-  const findNewMembership = await Membership.findOne({
-    order: [["createdAt", "DESC"]],
-    attributes: ["id"],
-  });
+  // const findNewMembership = await Membership.findOne({
+  //   order: [["createdAt", "DESC"]],
+  //   attributes: ["id"],
+  // });
 
   return res.json({
-    memberId: findNewMembership.id,
+    memberId: newMembership.userId,
     status: newMembership.status,
   });
+});
+
+// Change the status of a membership for a group specified by id
+router.put("/:groupId/membership", requireAuth, async (req, res, next) => {
+  // To change the status from pending to member, Current User must be organizer or have a membership to the group with the status co-host
+  // To change the status from member to co-host, current user must already be organizer
+  const { memberId, status } = req.body;
+  console.log("REQBODY", req.body);
+
+  let isOrganizer = false;
+  let isCoHost = false;
+  const findGroup = await Group.findOne({
+    where: {
+      id: req.params.groupId,
+    },
+    include: [
+      {
+        model: Membership,
+        attributes: ["userId", "groupId", "status"],
+      },
+    ],
+  });
+
+  // console.log(findGroup.toJSON());
+
+  if (findGroup) {
+    console.log("memberId", memberId);
+    let group = findGroup.toJSON();
+    // first check if organizer
+    if (group.organizerId === req.user.id) {
+      isOrganizer = true;
+    }
+    for (let i = 0; i < group.Memberships.length; i++) {
+      if (
+        group.Memberships[i].userId === req.user.id &&
+        group.Memberships[i].status === "co-host"
+      ) {
+        isCoHost = true;
+      }
+    }
+
+    console.log("isCoHost", isCoHost);
+    console.log("isOrganizer", isOrganizer);
+
+    const findMembership = await Membership.findOne({
+      where: {
+        userId: memberId,
+        groupId: req.params.groupId,
+      },
+    });
+
+    // console.log("findMembership", findMembership);
+
+    if (status === "member") {
+      // Check if current user is organizer or cohost
+      if (isCoHost || isOrganizer) {
+        await findMembership.update({
+          status: "member",
+        });
+      }
+    } else if (status === "co-host") {
+      if (isCoHost) {
+        await findMembership.update({
+          status: "co-host",
+        });
+      }
+    } else {
+      res.json({
+        message: "User is not organizer or co-host for group",
+      });
+    }
+
+    const updatedMembership = await Membership.findOne({
+      where: {
+        userId: memberId,
+        groupId: req.params.groupId,
+      },
+    });
+
+    // console.log(updatedMembership.toJSON());
+    return res.json({
+      memberId: updatedMembership.userId,
+      status: updatedMembership.status,
+    });
+  } else {
+    res.status(404);
+    res.json({
+      message: "Group couldn't be found",
+      statusCode: 404,
+    });
+  }
 });
 
 // Delete a membership to a group specified by id
@@ -102,7 +193,7 @@ router.delete("/:groupId/membership", requireAuth, async (req, res, next) => {
     },
   });
 
-  console.log(findGroup.toJSON());
+  // console.log(findGroup.toJSON());
 
   let isOrganizer = false;
   let validUser = false;
@@ -755,7 +846,7 @@ router.get("/:id", async (req, res, next) => {
 });
 
 // Create a group
-router.post("/", async (req, res, next) => {
+router.post("/", requireAuth, async (req, res, next) => {
   const { name, about, type, city, state } = req.body;
 
   const newGroup = await Group.create({
@@ -766,6 +857,13 @@ router.post("/", async (req, res, next) => {
     private: req.body.private,
     city: city,
     state: state,
+  });
+
+  // add current user as co-host
+  await Membership.create({
+    userId: req.user.id,
+    groupId: newGroup.toJSON().id,
+    status: "co-host",
   });
 
   return res.json(newGroup);
