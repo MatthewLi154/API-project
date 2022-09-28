@@ -24,4 +24,6 @@ const e = require("express");
 
 const router = express.Router();
 
+// Delete an Image for an Event
+
 module.exports = router;
