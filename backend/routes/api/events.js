@@ -93,6 +93,75 @@ router.delete("/:eventId/attendance", requireAuth, async (req, res, next) => {
   }
 });
 
+// Delete an event specified by its id
+router.delete("/:eventId", requireAuth, async (req, res, next) => {
+  // Current user must be the organizer of the group or a member of the group with a status of "co-host"
+  const findEvent = await Event.findOne({
+    where: {
+      id: req.params.eventId,
+    },
+    include: [
+      {
+        model: Group,
+        include: [
+          {
+            model: Membership,
+          },
+        ],
+      },
+    ],
+  });
+
+  if (findEvent) {
+    console.log(findEvent.toJSON());
+    let group = findEvent.toJSON();
+
+    let isOrganizer = false;
+    let isCoHost = false;
+    // Check if current user is organizer
+    if (group.Group.organizerId === req.user.id) {
+      isOrganizer = true;
+    }
+
+    // Check if current user is cohost
+    if (group.Group.Memberships.length) {
+      for (let i = 0; i < group.Group.Memberships.length; i++) {
+        if (
+          group.Group.Memberships[i].userId === req.user.id &&
+          group.Group.Memberships[i].status === "co-host"
+        ) {
+          isCoHost = true;
+        }
+      }
+    }
+
+    if (isCoHost || isOrganizer) {
+      const eventDelete = await Event.findOne({
+        where: {
+          id: req.params.eventId,
+        },
+      });
+
+      await eventDelete.destroy();
+
+      return res.json({
+        message: "Successfully deleted",
+      });
+    } else {
+      res.status(404);
+      return res.json({
+        message: "Current user is not organizer or co-host",
+      });
+    }
+  } else {
+    res.status(404);
+    return res.json({
+      message: "Event couldn't be found",
+      statusCode: 404,
+    });
+  }
+});
+
 // Request to Attend an Event based on the Event's id
 router.post("/:eventId/attendance", requireAuth, async (req, res, next) => {
   // Current User already has a pending attendance for the event
