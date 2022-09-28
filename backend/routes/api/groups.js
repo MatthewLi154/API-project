@@ -94,23 +94,6 @@ router.post("/:groupId/events", requireAuth, async (req, res, next) => {
   }
 });
 
-// Create a group
-router.post("/", async (req, res, next) => {
-  const { name, about, type, city, state } = req.body;
-
-  const newGroup = await Group.create({
-    organizerId: req.user.dataValues.id,
-    name: name,
-    about: about,
-    type: type,
-    private: req.body.private,
-    city: city,
-    state: state,
-  });
-
-  return res.json(newGroup);
-});
-
 // Get all Events of a Group specified by its id
 router.get("/:groupId/events", async (req, res, next) => {
   const eventsForGroup = await Group.findAll({
@@ -175,6 +158,52 @@ router.get("/:groupId/events", async (req, res, next) => {
   });
 
   return res.json({ Events });
+});
+
+// Add an image to a gorup based on the group's id
+router.post("/:groupId/images", requireAuth, async (req, res, next) => {
+  // Current user must be the organizer of the group
+  // Check if user is organizer of group
+  const findGroup = await Group.findOne({
+    where: {
+      id: req.params.groupId,
+    },
+    include: [
+      {
+        model: User,
+      },
+    ],
+  });
+
+  let group = findGroup.toJSON();
+
+  if (!findGroup) {
+    res.status(404);
+    return res.json({
+      message: "Group couldn't be found",
+      statusCode: 404,
+    });
+  }
+
+  if (req.user.id !== group.organizerId) {
+    return res.json({
+      message: "Not group organizer",
+    });
+  }
+
+  const { url, preview } = req.body;
+
+  const newGroupImage = await GroupImage.create({
+    groupId: req.params.groupId,
+    url,
+    preview,
+  });
+
+  return res.json({
+    id: newGroupImage.id,
+    url: url,
+    preview: preview,
+  });
 });
 
 // Edit a Group
@@ -507,6 +536,23 @@ router.get("/:id", async (req, res, next) => {
   };
 
   return res.json(group);
+});
+
+// Create a group
+router.post("/", async (req, res, next) => {
+  const { name, about, type, city, state } = req.body;
+
+  const newGroup = await Group.create({
+    organizerId: req.user.dataValues.id,
+    name: name,
+    about: about,
+    type: type,
+    private: req.body.private,
+    city: city,
+    state: state,
+  });
+
+  return res.json(newGroup);
 });
 
 // Get all groups
