@@ -118,20 +118,44 @@ router.post("/:eventId/images", requireAuth, async (req, res, next) => {
     ],
   });
 
-  let event = findEvent.toJSON();
+  if (!findEvent) {
+    res.status(404);
+    return res.json({
+      message: "Event couldn't be found",
+      statusCode: 404,
+    });
+  } else {
+    let event = findEvent.toJSON();
 
-  event.Attendances.forEach((attendance) => {
-    console.log(attendance);
-    if (
-      req.user.id === attendance.userId &&
-      (attendance.status === "member" ||
-        attendance.status === "host" ||
-        attendance.status === "co-host")
-    ) {
+    let isValidUser = false;
+    event.Attendances.forEach((attendance) => {
+      console.log(attendance);
+      if (
+        req.user.id === attendance.userId &&
+        (attendance.status === "member" ||
+          attendance.status === "host" ||
+          attendance.status === "co-host")
+      ) {
+        isValidUser = true;
+      }
+    });
+
+    if (isValidUser) {
+      const { url, preview } = req.body;
+
+      const newEventImage = await EventImage.create({
+        eventId: req.params.eventId,
+        url,
+        preview,
+      });
+
+      return res.json({
+        id: newEventImage.id,
+        url: newEventImage.url,
+        preview: newEventImage.preview,
+      });
     }
-  });
-
-  res.json(findEvent);
+  }
 });
 
 // Edit an event specified by its id

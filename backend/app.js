@@ -54,6 +54,9 @@ app.use("/api/events", events);
 const venues = require("./routes/api/venues");
 app.use("/api/venues", venues);
 
+const groupImages = require("./routes/api/group-images");
+app.use("/api/group-images", groupImages);
+
 // Catch unhandled requests and forward to error handler.
 app.use((_req, _res, next) => {
   const err = new Error("The requested resource couldn't be found.");
