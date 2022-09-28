@@ -47,15 +47,16 @@ router.post("/:groupId/membership", requireAuth, async (req, res, next) => {
     });
   }
 
-  if (findMembership.toJSON().status === "pending") {
+  if (findMembership && findMembership.toJSON().status === "pending") {
     res.status(400);
     return res.json({
       message: "Membership has already been requested",
       statusCode: 400,
     });
   } else if (
-    findMembership.toJSON().status === "member" ||
-    findMembership.toJSON().status === "co-host"
+    findMembership &&
+    (findMembership.toJSON().status === "member" ||
+      findMembership.toJSON().status === "co-host")
   ) {
     res.status(400);
     return res.json({
@@ -64,18 +65,23 @@ router.post("/:groupId/membership", requireAuth, async (req, res, next) => {
     });
   }
 
+  // get last membership to get membership.id
+  const lastMembership = await Membership.findOne({
+    attributes: ["id"],
+    order: [["createdAt", "DESC"]],
+  });
+
   const newMembership = await Membership.create({
     userId: req.user.id,
     groupId: req.params.groupId,
     status: "pending",
   });
 
-  // console.log(newMembership);
+  console.log(newMembership);
 
   return res.json({
-    newMembership,
-    // memberId: newMembership.id,
-    // status: newMembership.status,
+    memberId: parseInt(lastMembership.toJSON().id) + 1,
+    status: newMembership.toJSON().status,
   });
 });
 
