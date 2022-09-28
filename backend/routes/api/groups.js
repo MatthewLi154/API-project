@@ -21,7 +21,7 @@ const { check } = require("express-validator");
 const { handleValidationErrors } = require("../../utils/validation");
 const { Op, json } = require("sequelize");
 const e = require("express");
-const { reset } = require("nodemon");
+// const { reset } = require("nodemon");
 
 const router = express.Router();
 
