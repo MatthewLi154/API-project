@@ -25,6 +25,93 @@ const user = require("../../db/models/user");
 
 const router = express.Router();
 
+// Request to Attend an Event based on the Event's id
+router.post("/:eventId/attendance", requireAuth, async (req, res, next) => {
+  // Current User already has a pending attendance for the event
+  const findAttendance = await Attendance.findOne({
+    where: {
+      eventId: req.params.eventId,
+      userId: req.user.id,
+    },
+  });
+
+  if (findAttendance) {
+    console.log("FINDATTENDANCE", findAttendance.toJSON());
+    if (findAttendance.toJSON().status === "pending") {
+      res.status(400);
+      return res.json({
+        message: "Attendance has already been requested",
+        statusCode: 400,
+      });
+    } else if (
+      findAttendance.toJSON().status === "member" ||
+      findAttendance.toJSON().status === "attending" ||
+      findAttendance.toJSON().status === "co-host" ||
+      findAttendance.toJSON().status === "host"
+    ) {
+      res.status(400);
+      return res.json({
+        message: "User is already an attendee of the event",
+        statusCode: 400,
+      });
+    }
+  }
+
+  // Current User must be a member of the group
+  const findEvent = await Event.findOne({
+    attributes: [],
+    where: {
+      id: req.params.eventId,
+    },
+    include: [
+      {
+        model: Group,
+        include: [
+          {
+            model: Membership,
+          },
+        ],
+      },
+    ],
+  });
+
+  if (findEvent) {
+    console.log(findEvent.toJSON());
+    let verifyMembership = false;
+    findEvent.toJSON().Group.Memberships.forEach((membership) => {
+      if (
+        (membership.userId === req.user.id && membership.status === "member") ||
+        membership.status === "co-host"
+      ) {
+        verifyMembership = true;
+      }
+    });
+
+    if (verifyMembership) {
+      await Attendance.create({
+        eventId: req.params.eventId,
+        userId: req.user.id,
+        status: "pending",
+      });
+
+      return res.json({
+        userId: req.user.id,
+        status: "pending",
+      });
+    } else {
+      return res.json({
+        message: "User is not a member of the group",
+      });
+    }
+  } else {
+    res.status(404);
+    return res.json({
+      message: "Event couldn't be found",
+      statusCode: 404,
+    });
+  }
+});
+
 // Get all attendees of an Event specified by its id
 router.get("/:eventId/attendees", async (req, res, next) => {
   // check if current user is organizer or co-host, show all attendees
