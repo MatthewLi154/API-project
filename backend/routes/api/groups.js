@@ -17,8 +17,8 @@ const {
   sequelize,
   Sequelize,
 } = require("../../db/models");
-// const { check } = require("express-validator");
-// const { handleValidationErrors } = require("../../utils/validation");
+const { check } = require("express-validator");
+const { handleValidationErrors } = require("../../utils/validation");
 const { Op, json } = require("sequelize");
 const e = require("express");
 const { reset } = require("nodemon");
