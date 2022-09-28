@@ -28,7 +28,7 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       price: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.DECIMAL,
       },
       startDate: {
         type: Sequelize.DATE,
@@ -39,10 +39,12 @@ module.exports = {
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
     });
   },

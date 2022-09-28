@@ -15,17 +15,26 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       status: {
-        type: Sequelize.ENUM("member", "waitlist", "pending"),
+        type: Sequelize.ENUM(
+          "member",
+          "waitlist",
+          "pending",
+          "attending",
+          "co-host",
+          "host"
+        ),
         // values: ["member", "waitlist", "pending"],
         defaultValue: "pending",
       },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
     });
   },
