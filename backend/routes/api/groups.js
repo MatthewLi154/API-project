@@ -206,6 +206,45 @@ router.post("/:groupId/images", requireAuth, async (req, res, next) => {
   });
 });
 
+// Delete an existing group
+router.delete("/:groupId", requireAuth, async (req, res, next) => {
+  // find group
+  // check if group belongs to current user
+  const findGroup = await Group.findOne({
+    where: {
+      id: req.params.groupId,
+    },
+  });
+
+  if (!findGroup) {
+    res.status(404);
+    res.json({
+      message: "Group couldn't be found",
+      statusCode: 404,
+    });
+  }
+
+  let group;
+  if (findGroup) {
+    group = findGroup.toJSON();
+    console.log(group);
+
+    if (group.organizerId !== req.user.id) {
+      return res.json({
+        message: "Group does not belong to current user",
+      });
+    }
+
+    // delete group
+    await findGroup.destroy();
+
+    return res.json({
+      message: "Successfully deleted",
+      statusCode: 200,
+    });
+  }
+});
+
 // Edit a Group
 router.put("/:groupId", async (req, res, next) => {
   const { name, about, type, city, state } = req.body;
