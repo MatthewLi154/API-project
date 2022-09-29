@@ -435,9 +435,9 @@ router.post("/:eventId/images", requireAuth, async (req, res, next) => {
     ],
   });
 
-  console.log(findEvent.toJSON());
+  // console.log(findEvent.toJSON());
 
-  if (!findEvent.id) {
+  if (!findEvent) {
     res.status(404);
     return res.json({
       message: "Event couldn't be found",
@@ -596,6 +596,7 @@ router.get("/:eventId", async (req, res, next) => {
         attributes: [
           [sequelize.fn("count", sequelize.col("userId")), "numAttending"],
         ],
+        raw: true,
       },
       {
         model: Group,

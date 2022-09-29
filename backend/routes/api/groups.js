@@ -207,9 +207,43 @@ router.delete("/:groupId/membership", requireAuth, async (req, res, next) => {
       }
     }
 
+    if (isOrganizer || validUser) {
+      const destroyMember = await Membership.findOne({
+        where: {
+          userId: req.user.id,
+          groupId: req.params.groupId,
+        },
+      });
+
+      if (!destroyMember) {
+        res.status(404);
+        return res.json({
+          message: "Membership does not exist for this User",
+          statusCode: 404,
+        });
+      }
+
+      await destroyMember.destroy();
+
+      return res.json({
+        message: "Successfully deleted membership from group",
+      });
+    } else {
+      res.status(404);
+      return res.json({
+        message: "User is not host or member of this group",
+      });
+    }
+
     // find membership to be deleted
     const { memberId } = req.body;
     return res.json(findGroup);
+  } else {
+    res.status(404);
+    return res.json({
+      message: "Group couldn't be found",
+      statusCode: 404,
+    });
   }
 });
 
@@ -265,7 +299,7 @@ router.post("/:groupId/events", requireAuth, async (req, res, next) => {
     } = req.body;
 
     const newEvent = await Event.create({
-      groupId: req.params.groupId,
+      groupId: parseInt(req.params.groupId),
       venueId,
       name,
       type,
