@@ -593,9 +593,10 @@ router.get("/:eventId", async (req, res, next) => {
     include: [
       {
         model: Attendance,
-        attributes: [
-          [sequelize.fn("count", sequelize.col("userId")), "numAttending"],
-        ],
+        // attributes: [
+        //   [sequelize.fn("count", sequelize.col("userId")), "numAttending"],
+        // ],
+        // Postgres probably doesn't like nested aggregate functions
       },
       {
         model: Group,
@@ -612,37 +613,52 @@ router.get("/:eventId", async (req, res, next) => {
     ],
   });
 
-  console.log(eventById.toJSON());
+  const findNumAttending = await Attendance.findOne({
+    where: {
+      eventId: req.params.eventId,
+    },
+    attributes: [
+      "eventId",
+      [sequelize.fn("count", sequelize.col("userId")), "numAttending"],
+    ],
+  });
 
-  if (!eventById.toJSON().id) {
+  // console.log("eventById", eventById.toJSON());
+  // console.log("numAttending", findNumAttending.toJSON());
+
+  if (!eventById) {
     res.status(404);
     return res.json({
       message: "Event couldn't be found",
       statusCode: 404,
     });
+  } else {
+    let event = eventById.toJSON();
+    if (findNumAttending) {
+      event.numAttending = parseInt(findNumAttending.toJSON().numAttending);
+    } else {
+      event.numAttending = 0;
+    }
+
+    // console.log(event);
+
+    return res.json({
+      id: event.id,
+      groupId: event.groupId,
+      venueId: event.venueId,
+      name: event.name,
+      description: event.description,
+      type: event.type,
+      capacity: event.capacity,
+      price: event.price,
+      startDate: event.startDate,
+      endDate: event.endDate,
+      numAttending: event.numAttending,
+      Group: event.Group,
+      Venue: event.Venue,
+      EventImages: event.EventImages,
+    });
   }
-
-  let event = eventById.toJSON();
-  event.numAttending = eventById.toJSON().Attendances[0].numAttending;
-
-  console.log(event);
-
-  return res.json({
-    id: event.id,
-    groupId: event.groupId,
-    venueId: event.venueId,
-    name: event.name,
-    description: event.description,
-    type: event.type,
-    capacity: event.capacity,
-    price: event.price,
-    startDate: event.startDate,
-    endDate: event.endDate,
-    numAttending: event.numAttending,
-    Group: event.Group,
-    Venue: event.Venue,
-    EventImages: event.EventImages,
-  });
 });
 
 // Get all events
