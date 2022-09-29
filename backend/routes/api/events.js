@@ -619,8 +619,12 @@ router.get("/:eventId", async (req, res, next) => {
     },
     attributes: [
       "eventId",
-      [sequelize.fn("count", sequelize.col("userId")), "numAttending"],
+      [
+        sequelize.fn("COUNT", sequelize.col("Attendance.eventId")),
+        "numAttending",
+      ],
     ],
+    raw: true,
   });
 
   // console.log("eventById", eventById.toJSON());
@@ -635,7 +639,7 @@ router.get("/:eventId", async (req, res, next) => {
   } else {
     let event = eventById.toJSON();
     if (findNumAttending) {
-      event.numAttending = parseInt(findNumAttending.toJSON().numAttending);
+      event.numAttending = parseInt(findNumAttending.numAttending);
     } else {
       event.numAttending = 0;
     }

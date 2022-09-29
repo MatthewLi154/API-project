@@ -851,44 +851,52 @@ router.get("/:id", async (req, res, next) => {
     ],
   });
 
-  console.log("groupById", groupById.toJSON());
+  // console.log("groupById", groupById.toJSON());
 
-  let obj = groupById.toJSON();
+  if (groupById) {
+    let obj = groupById.toJSON();
 
-  if (!obj.Memberships.length) {
-    obj.numMembers = obj.Memberships.length;
-  }
+    if (!obj.Memberships.length) {
+      obj.numMembers = obj.Memberships.length;
+    }
 
-  if (!obj.id) {
+    if (!obj.id) {
+      res.status(404);
+      return res.json({
+        message: "Group couldn't be found",
+        statusCode: 404,
+      });
+    }
+
+    if (!obj.Venues.length) {
+      obj.Venues = null;
+    }
+
+    let group = {
+      id: obj.id,
+      organizerId: obj.organizerId,
+      name: obj.name,
+      about: obj.about,
+      type: obj.type,
+      private: obj.private,
+      city: obj.city,
+      state: obj.state,
+      createdAt: obj.createdAt,
+      updatedAt: obj.updatedAt,
+      numMembers: obj.Memberships.length,
+      GroupImages: obj.GroupImages,
+      Organizer: obj.User,
+      Venues: obj.Venues,
+    };
+
+    return res.json(group);
+  } else {
     res.status(404);
     return res.json({
       message: "Group couldn't be found",
       statusCode: 404,
     });
   }
-
-  if (!obj.Venues.length) {
-    obj.Venues = null;
-  }
-
-  let group = {
-    id: obj.id,
-    organizerId: obj.organizerId,
-    name: obj.name,
-    about: obj.about,
-    type: obj.type,
-    private: obj.private,
-    city: obj.city,
-    state: obj.state,
-    createdAt: obj.createdAt,
-    updatedAt: obj.updatedAt,
-    numMembers: obj.Memberships.length,
-    GroupImages: obj.GroupImages,
-    Organizer: obj.User,
-    Venues: obj.Venues,
-  };
-
-  return res.json(group);
 });
 
 // Create a group
