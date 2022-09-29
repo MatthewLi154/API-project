@@ -317,9 +317,13 @@ router.post("/:groupId/events", requireAuth, async (req, res, next) => {
       status: "co-host",
     });
 
-    console.log(newAttendance.toJSON());
+    const findCreated = await Event.findOne({
+      order: [["createdAt", "DESC"]],
+      attributes: { exclude: ["createdAt", "updatedAt"] },
+    });
+    // console.log(findCreated.toJSON());
 
-    return res.json(newEvent);
+    return res.json(findCreated);
   } else {
     return res.json({
       message: "User is not owner or co-host",
@@ -584,7 +588,7 @@ router.post("/:groupId/venues", async (req, res, next) => {
 
       return res.json({
         id: newVenue.id,
-        groupId: req.params.id,
+        groupId: req.params.groupId,
         address: newVenue.address,
         city: newVenue.city,
         state: newVenue.state,
