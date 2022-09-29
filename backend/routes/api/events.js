@@ -617,18 +617,18 @@ router.get("/:eventId", async (req, res, next) => {
     where: {
       eventId: req.params.eventId,
     },
-    attributes: [
-      "eventId",
-      [
-        sequelize.fn("COUNT", sequelize.col("Attendance.eventId")),
-        "numAttending",
-      ],
-    ],
+    // attributes: [
+    //   "eventId",
+    //   [
+    //     sequelize.fn("COUNT", sequelize.col("Attendance.eventId")),
+    //     "numAttending",
+    //   ],
+    // ],
     raw: true,
   });
 
   // console.log("eventById", eventById.toJSON());
-  // console.log("numAttending", findNumAttending.toJSON());
+  // console.log("numAttending", findNumAttending);
 
   if (!eventById) {
     res.status(404);
@@ -638,8 +638,8 @@ router.get("/:eventId", async (req, res, next) => {
     });
   } else {
     let event = eventById.toJSON();
-    if (findNumAttending) {
-      event.numAttending = parseInt(findNumAttending.numAttending);
+    if (eventById.Attendances.length) {
+      event.numAttending = parseInt(eventById.Attendances.length);
     } else {
       event.numAttending = 0;
     }
