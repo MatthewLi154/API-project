@@ -596,7 +596,6 @@ router.get("/:eventId", async (req, res, next) => {
         attributes: [
           [sequelize.fn("count", sequelize.col("userId")), "numAttending"],
         ],
-        raw: true,
       },
       {
         model: Group,
@@ -612,6 +611,8 @@ router.get("/:eventId", async (req, res, next) => {
       },
     ],
   });
+
+  console.log(eventById.toJSON());
 
   if (!eventById.toJSON().id) {
     res.status(404);
