@@ -790,7 +790,12 @@ router.get("/:id", async (req, res, next) => {
     include: [
       {
         model: Membership,
-        attributes: [[sequelize.fn("count", "userId"), "numAttending"]],
+        attributes: [
+          [
+            sequelize.fn("COUNT", sequelize.col("Memberships.id")),
+            "numAttending",
+          ],
+        ],
       },
       {
         model: GroupImage,
