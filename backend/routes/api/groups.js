@@ -790,9 +790,7 @@ router.get("/:id", async (req, res, next) => {
     include: [
       {
         model: Membership,
-        attributes: [
-          [sequelize.fn("count", sequelize.col("Group.id")), "numAttending"],
-        ],
+        attributes: [[sequelize.fn("count"), "numAttending"]],
       },
       {
         model: GroupImage,
@@ -895,7 +893,7 @@ router.get("/", async (req, res, next) => {
     });
 
     // Set numMembers
-    resGroup.numMembers = numMembers[0].numMembers;
+    resGroup.numMembers = parseInt(numMembers[0].numMembers);
 
     // For preview Image
     const previewImage = await GroupImage.findAll({
