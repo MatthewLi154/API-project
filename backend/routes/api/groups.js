@@ -791,7 +791,7 @@ router.get("/:id", async (req, res, next) => {
       {
         model: Membership,
         attributes: [
-          [sequelize.fn("count", sequelize.col("userId")), "numAttending"],
+          [sequelize.fn("count", sequelize.col("Group.id")), "numAttending"],
         ],
       },
       {
@@ -823,6 +823,10 @@ router.get("/:id", async (req, res, next) => {
       message: "Group couldn't be found",
       statusCode: 404,
     });
+  }
+
+  if (!obj.Venues.length) {
+    obj.Venues = null;
   }
 
   let group = {
