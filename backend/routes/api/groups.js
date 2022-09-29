@@ -790,12 +790,12 @@ router.get("/:id", async (req, res, next) => {
     include: [
       {
         model: Membership,
-        attributes: [
-          [
-            sequelize.fn("COUNT", sequelize.col("Memberships.id")),
-            "numAttending",
-          ],
-        ],
+        // attributes: [
+        //   [
+        //     sequelize.fn("COUNT", sequelize.col("Memberships.id")),
+        //     "numAttending",
+        //   ],
+        // ],
         raw: true,
       },
       {
