@@ -1,5 +1,6 @@
 {
   "scripts": {
+    "heroku-postbuild": "npm run build --prefix frontend",
     "install": "npm --prefix backend install backend",
     "dev:backend": "npm install --prefix backend start",
     "sequelize": "npm run --prefix backend sequelize",
