@@ -1,3 +1,5 @@
+# README for WeebUp (MeetUp Clone)
+
 Weebup is a clone website of Meetup, but specifically for anime enjoyers and enthusiasts. Weebup is used for creating groups and organizing events by the anime loving community, new and old.
 
 <a href="https://meetup-api-project.herokuapp.com/">Link to live site</a>
