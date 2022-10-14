@@ -1,35 +1,10 @@
-# README for MeetUp clone and Wiki
+# `Meetup API Project`
 
-Weebup is a clone website of Meetup, but specifically for anime enjoyers and enthusiasts. Weebup is used for creating groups and organizing events by the anime loving community, new and old.
+## Database Schema Design
 
-<a href="https://meetup-api-project.herokuapp.com/">Link to live site</a>
+![alt text](https://i.imgur.com/4ZAkhfm.png)
 
-# Wiki Links
-
-[Feature List](https://github.com/MatthewLi154/API-project/wiki/FEATURE-LIST)
-<br />
-[API Documentation](https://github.com/MatthewLi154/API-project/wiki/API-DOCUMENTATION)
-<br />
-[Database Schema](https://github.com/MatthewLi154/API-project/wiki/DATABASE-SCHEMA)
-<br />
-[Redux State Shape](https://github.com/MatthewLi154/API-project/wiki/REDUX-STATE-SHAPE)
-<br />
-
-# Built with
-
-JavaScript
-<br />
-PostgreSQL
-<br />
-Sequelize
-<br />
-Express
-<br />
-React
-<br />
-Redux
-
-# API Documentation
+## API Documentation
 
 ## USER AUTHENTICATION/AUTHORIZATION
 
@@ -2206,71 +2181,3 @@ Return events filtered by query parameters.
       }
     }
     ```
-
-# Database Schema
-
-![alt text](https://i.imgur.com/4ZAkhfm.png)
-
-# Feature List
-
-## Groups
-
-<li>A group might not exist for a particular interest. Users can create a new group with valid submission information.</li>
-<li>Groups may change as the group grows or shrinks with time. Users can edit a group's information if they are the group organizer or are a co-host of the group</li>
-<li>Users can delete a group if they are the group organizer</li>
-<li>Any user can view a group's page</li>
-
-## Events
-
-<li>Events are important for group growth and nurturing. Users can create an event for their group if they are co-host or group organizer</li>
-<li>Visuals are nice to have for users to gain a better idea of an event. Users can add event images to the event</li>
-<li>Weather might be bad for a particular day. Users can delete an event if they are event organizer or co-host of event</li>
-
-# Redux State Shape
-
-```
-store = {
-  session: {},
-  groups: {
-    allGroups: {
-      [groupId]: {
-        groupData,
-      },
-      optionalOrderedList: [],
-    },
-    singleGroup: {
-      groupData,
-      GroupImages: [imagesData],
-      Organizer: {
-        organizerData,
-      },
-      Venues: [venuesData],
-    },
-  },
-  events: {
-    allEvents: {
-      [eventId]: {
-        eventData,
-        Group: {
-          groupData,
-        },
-        Venue: {
-          venueData,
-        },
-      },
-    },
-    singleEvent: {
-      eventData,
-      Group: {
-        groupData,
-      },
-      Venue: {
-        venueData,
-      },
-      EventImages: [imagesData],
-      Members: [membersData],
-      Attendees: [attendeeData],
-    },
-  },
-};
-```

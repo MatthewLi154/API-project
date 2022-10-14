@@ -42,13 +42,15 @@ router.post("/", validateLogin, async (req, res, next) => {
 
   // console.log(user);
 
-  return res.json({
-    id: user.dataValues.id,
-    firstName: user.dataValues.firstName,
-    lastName: user.dataValues.lastName,
-    email: user.dataValues.email,
-    token: user.dataValues.token,
-  });
+  return res.json(user.toSafeObject());
+
+  // return res.json({
+  //   id: user.dataValues.id,
+  //   firstName: user.dataValues.firstName,
+  //   lastName: user.dataValues.lastName,
+  //   email: user.dataValues.email,
+  //   token: user.dataValues.token,
+  // });
 });
 
 // router.get("/", async (req, res, next) => {
@@ -84,13 +86,9 @@ router.delete("/", (_req, res) => {
 router.get("/", restoreUser, (req, res) => {
   // User info comes from auth/restoreUser
   const { user } = req;
+
   if (user) {
-    return res.json({
-      id: user.toSafeObject().id,
-      firstName: user.toSafeObject().firstName,
-      lastName: user.toSafeObject().lastName,
-      email: user.toSafeObject().email,
-    });
+    return res.json(user.toSafeObject());
   } else return res.json(null);
 });
 
