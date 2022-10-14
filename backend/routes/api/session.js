@@ -84,7 +84,6 @@ router.delete("/", (_req, res) => {
 router.get("/", restoreUser, (req, res) => {
   // User info comes from auth/restoreUser
   const { user } = req;
-  console.log(user.toSafeObject());
   if (user) {
     return res.json({
       id: user.toSafeObject().id,
@@ -92,7 +91,7 @@ router.get("/", restoreUser, (req, res) => {
       lastName: user.toSafeObject().lastName,
       email: user.toSafeObject().email,
     });
-  } else return res.json({});
+  } else return res.json(null);
 });
 
 module.exports = router;
