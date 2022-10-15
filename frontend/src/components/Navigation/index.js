@@ -14,21 +14,30 @@ function Navigation({ isLoaded }) {
   } else {
     sessionLinks = (
       <>
-        <LoginFormModal />
-        <NavLink to="/signup">Sign Up</NavLink>
+        <div className="loginSignupContainer">
+          <div className="loginButton">
+            <LoginFormModal />
+          </div>
+          <div className="signupButton">
+            <NavLink
+              to="/signup"
+              style={{ textDecoration: "none", color: "black" }}
+            >
+              Sign Up
+            </NavLink>
+          </div>
+        </div>
       </>
     );
   }
 
   return (
-    <ul>
-      <li>
-        <NavLink exact to="/">
-          Home
-        </NavLink>
-        {isLoaded && sessionLinks}
-      </li>
-    </ul>
+    <div className="navDivContainer">
+      <NavLink exact to="/" style={{ textDecoration: "none", color: "red" }}>
+        Weeb Up
+      </NavLink>
+      {isLoaded && sessionLinks}
+    </div>
   );
 }
 

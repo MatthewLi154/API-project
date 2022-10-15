@@ -1,0 +1,36 @@
+.navDivContainer {
+  padding: 1rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-family: "Damion", cursive;
+  font-weight: bold;
+  font-size: 2.5rem;
+}
+
+.homebutton {
+  display: flex;
+  justify-content: flex-start;
+  color: red;
+}
+
+.loginSignupContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  padding: 10px;
+  font-family: "Noto Sans", sans-serif;
+  font-size: 1rem;
+}
+
+.loginButton {
+  display: flex;
+  padding-right: 10px;
+  border: none;
+}
+
+.signupButton {
+  display: flex;
+  padding-left: 10px;
+  text-decoration: none;
+}
