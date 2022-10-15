@@ -1,17 +1,18 @@
 .navDivContainer {
-  padding: 1rem;
+  padding: 0.75rem;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   font-family: "Damion", cursive;
   font-weight: bold;
   font-size: 2.5rem;
+  margin-left: 2rem;
 }
 
 .homebutton {
   display: flex;
   justify-content: flex-start;
-  color: red;
+  color: rgb(178, 25, 25);
 }
 
 .loginSignupContainer {
