@@ -8,8 +8,6 @@ const Groups = () => {
   const allGroups = useSelector((state) => state.groups.allGroups);
   const dispatch = useDispatch();
 
-  console.log(allGroups);
-
   useEffect(() => {
     dispatch(fetchGroups());
   }, [dispatch]);
@@ -17,33 +15,56 @@ const Groups = () => {
   return (
     <>
       <div className="groupsContainer">
+        <div className="eventsGroupsContainer">
+          <div className="eventsToggleContainer">
+            <NavLink
+              to="/events"
+              style={{ textDecoration: "none", color: "gray" }}
+            >
+              Events
+            </NavLink>
+          </div>
+          <div className="groupsToggleContainer">
+            <NavLink
+              to="/groups"
+              style={{ textDecoration: "none", color: "gray" }}
+            >
+              Groups
+            </NavLink>
+          </div>
+        </div>
         {allGroups &&
           allGroups.map((group) => (
-            <div className="singleGroupContainer" key={group.id}>
-              <div className="groupCard">
-                <div className="leftImg">
-                  <img src={group.previewImage}></img>
-                </div>
-                <div className="rightText">
-                  <div className="groupTitle">
-                    <h2>{group.name}</h2>
+            <NavLink
+              to={`/groups/${group.id}`}
+              style={{ textDecoration: "none" }}
+            >
+              <div className="singleGroupContainer" key={group.id}>
+                <div className="groupCard">
+                  <div className="leftImg">
+                    <img src={group.previewImage}></img>
                   </div>
-                  <div className="groupLocation">
-                    <h3>{group.city}</h3>
+                  <div className="rightText">
+                    <div className="groupTitle">
+                      <h2>{group.name}</h2>
+                    </div>
+                    <div className="groupLocation">
+                      <h3>{group.city}</h3>
+                    </div>
+                    <div className="groupDescription">
+                      <p>{group.about}</p>
+                    </div>
+                    <div className="groupNumMembers">
+                      <span>
+                        {group.numMembers} members ·{" "}
+                        {group.private ? `Private` : `Public`}
+                      </span>
+                    </div>
+                    <div className="status"></div>
                   </div>
-                  <div className="groupDescription">
-                    <p>{group.about}</p>
-                  </div>
-                  <div className="groupNumMembers">
-                    <span>
-                      {group.numMembers} members ·{" "}
-                      {group.private ? `Private` : `Public`}
-                    </span>
-                  </div>
-                  <div className="status"></div>
                 </div>
               </div>
-            </div>
+            </NavLink>
           ))}
       </div>
     </>

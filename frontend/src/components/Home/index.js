@@ -7,7 +7,7 @@ import Groups from "../Groups";
 function Home() {
   return (
     <>
-      <div>
+      <div className="homeContainer">
         <div className="upperSection">
           <div className="upperSectionleftText">
             <h1>Celebrate 12 years of real Anime connections on Weeb Up</h1>

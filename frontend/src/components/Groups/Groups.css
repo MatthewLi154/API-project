@@ -6,6 +6,40 @@
   width: 50rem;
 }
 
+.eventsGroupsContainer {
+  display: flex;
+  flex-direction: row;
+  padding: 10px 0px;
+  margin: 0px;
+  justify-content: flex-start;
+  border-bottom: 2px solid lightgray;
+  width: 365px;
+}
+
+.eventsToggleContainer {
+  padding: 0rem;
+  font-size: 20px;
+  font-weight: bold;
+  font-family: "Noto Sans", sans-serif;
+  color: lightgray;
+}
+
+.eventsToggleContainer:hover {
+  text-decoration: underline;
+}
+
+.groupsToggleContainer {
+  padding: 0rem 2rem;
+  font-size: 20px;
+  font-weight: bold;
+  font-family: "Noto Sans", sans-serif;
+  color: lightgray;
+}
+
+.groupsToggleContainer:hover {
+  text-decoration: underline;
+}
+
 .groupCard {
   border-bottom: 2px solid lightgray;
   padding-bottom: 1rem;
@@ -26,6 +60,7 @@
   margin: 3px 0px;
   font-family: "Noto Sans", sans-serif;
   font-size: 20px;
+  color: black;
 }
 
 .groupLocation h3 {
