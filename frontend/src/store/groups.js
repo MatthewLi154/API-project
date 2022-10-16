@@ -47,6 +47,10 @@ const groupReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOAD:
       groupStateObj = { ...state };
+      groupStateObj.allGroups = {};
+      // action.groups.Groups.forEach((group) => {
+      //   groupStateObj.allGroups[group.id] = group;
+      // });
       groupStateObj.allGroups = action.groups.Groups;
       return groupStateObj;
     case LOAD_SINGLE:

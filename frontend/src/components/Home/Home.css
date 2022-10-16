@@ -19,6 +19,7 @@ h1 {
 .upperSectionRightImg {
   display: flex;
   align-items: center;
+  margin-left: 20px;
 }
 
 .upperSectionleftText {

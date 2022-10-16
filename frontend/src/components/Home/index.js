@@ -2,6 +2,7 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 import "./Home.css";
+import Groups from "../Groups";
 
 function Home() {
   return (
