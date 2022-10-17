@@ -10,6 +10,10 @@ const SetGroupLocation = () => {
   const [groupLocation, setGroupLocation] = useState("Pasadena, CA");
   newGroupObj.groupLocation = groupLocation;
 
+  useEffect(() => {
+    console.log(newGroupObj);
+  }, [groupLocation]);
+
   return (
     <>
       <div className="fullProgressBar">
@@ -71,7 +75,6 @@ const SetGroupLocation = () => {
           >
             <button>Next</button>
           </NavLink>
-          {/* <SetGroupName /> */}
         </div>
       </footer>
     </>

@@ -8,6 +8,11 @@ const SetGroupName = () => {
   const newGroupObj = location.state?.newGroupObj;
   const [groupName, setGroupName] = useState(newGroupObj.groupName || "");
 
+  useEffect(() => {
+    // const newGroupObj = location.state?.newGroupObj;
+    console.log(newGroupObj);
+  }, []);
+
   return (
     <>
       <div className="fullProgressBar">
@@ -24,7 +29,10 @@ const SetGroupName = () => {
           change your mind.
         </h3>
         <div className="setGroupNameInput">
-          <form className="setGroupNameForm">
+          <form
+            className="setGroupNameForm"
+            onSubmit={(e) => e.preventDefault()}
+          >
             <input
               type="text"
               placeholder="What is your group name?"

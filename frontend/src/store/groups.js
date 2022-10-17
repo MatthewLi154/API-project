@@ -1,6 +1,7 @@
 //TODO: string for types
 const LOAD = "groups/loadGroups";
 const LOAD_SINGLE = "groups/loadSingleGroup";
+const ADD_SINGLE = "groups/addSingleGroup";
 
 //TODO: action creator
 export const loadGroups = (data) => {
@@ -14,6 +15,13 @@ export const loadSingleGroup = (data) => {
   return {
     type: LOAD_SINGLE,
     group: data,
+  };
+};
+
+export const addGroup = (data) => {
+  return {
+    type: ADD_SINGLE,
+    data: data,
   };
 };
 
@@ -38,6 +46,20 @@ export const fetchSingleGroup = (id) => async (dispatch) => {
   return response;
 };
 
+export const createSingleGroup = (groupDataObj) => async (dispatch) => {
+  const response = await fetch("/api/groups", {
+    credentials: "include",
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(groupDataObj),
+  });
+
+  if (response.ok) {
+    const data = await response.json();
+    dispatch(addGroup(data));
+  }
+};
+
 //TODO: reducer
 
 const initialState = {};
@@ -56,6 +78,10 @@ const groupReducer = (state = initialState, action) => {
     case LOAD_SINGLE:
       groupStateObj = { ...state };
       groupStateObj.singleGroup = action.group;
+      return groupStateObj;
+    case ADD_SINGLE:
+      groupStateObj = { ...state };
+      groupStateObj.singleGroup = action.data;
       return groupStateObj;
     default:
       return state;

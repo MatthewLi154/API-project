@@ -21,7 +21,7 @@ const SingleGroup = () => {
           {/* <div>{groupDataObj.name}</div> */}
           <div className="upperSectionDetails">
             <div className="leftImgContainer">
-              <img src={groupDataObj.GroupImages[0].url}></img>
+              <img src={groupDataObj.GroupImages[0]?.url}></img>
             </div>
             <div className="rightSectionDetails">
               <div className="groupName">

@@ -2,20 +2,43 @@ import React, { useEffect, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import "./SetPrivateInPerson.css";
+import { createSingleGroup } from "../../../store/groups";
 
 const SetPrivateInPerson = () => {
   const location = useLocation();
+  const dispatch = useDispatch();
+
   const newGroupObj = location.state?.newGroupObj;
-  const [privateGroup, setPrivateGroup] = useState(false);
-  const [inPerson, setInPerson] = useState("In person");
+  const [privateGroup, setPrivateGroup] = useState(
+    newGroupObj.groupPrivate || 0
+  );
+  const [inPerson, setInPerson] = useState(
+    newGroupObj.groupInPerson || "In person"
+  );
   const [imgurl, setImgurl] = useState("");
 
+  // destructure location from newGroupObj, extract city and state
+  const { groupLocation, groupDescription, groupName } = newGroupObj;
+  const groupLocationArr = groupLocation.split(", ");
+  const [city, state] = groupLocationArr;
+
+  let groupDataObj = {};
   useEffect(() => {
     newGroupObj.groupPrivate = privateGroup;
     newGroupObj.groupInPerson = inPerson;
     newGroupObj.groupImage = imgurl;
-    // console.log(newGroupObj);
+
+    groupDataObj.name = groupName;
+    groupDataObj.about = groupDescription;
+    groupDataObj.type = newGroupObj.groupInPerson;
+    groupDataObj.private = newGroupObj.groupPrivate;
+    groupDataObj.city = city;
+    groupDataObj.state = state;
+
+    console.log(groupDataObj);
   }, [privateGroup, inPerson, imgurl]);
+
+  // dispatch thunk to create group, then navigate to page
 
   return (
     <>
@@ -51,8 +74,8 @@ const SetPrivateInPerson = () => {
             onChange={(e) => setPrivateGroup(e.target.value)}
           >
             <option value="">Please choose an option</option>
-            <option value={true}>Private</option>
-            <option value={false}>Public</option>
+            <option value={1}>Private</option>
+            <option value={0}>Public</option>
           </select>
         </div>
         <div>
@@ -76,28 +99,24 @@ const SetPrivateInPerson = () => {
           >
             <button
               className="backButtonSetName"
-              //   onClick={() => {
-              //     setDescription(description);
-              //     newGroupObj.groupDescription = description;
-              //   }}
+              onClick={() => {
+                newGroupObj.groupPrivate = privateGroup;
+                newGroupObj.groupInPerson = inPerson;
+                newGroupObj.groupImage = imgurl;
+              }}
             >
               Back
             </button>
           </NavLink>
           <NavLink
-            to={
-              {
-                //   pathname: "/groups/create/setPrivateInPerson",
-                //   state: { newGroupObj: newGroupObj },
-              }
-            }
+            to={{
+              pathname: `/groups`,
+            }}
           >
             <button
-            //   onClick={() => {
-            //     setDescription(description);
-            //     newGroupObj.groupDescription = description;
-            //     console.log(newGroupObj);
-            //   }}
+              onClick={() => {
+                dispatch(createSingleGroup(groupDataObj));
+              }}
             >
               Create Group
             </button>
