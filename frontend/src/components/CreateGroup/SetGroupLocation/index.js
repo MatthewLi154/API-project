@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import "./SetGroupLocation.css";
+import SetGroupName from "../SetGroupName";
 
 const SetGroupLocation = () => {
   let newGroupObj = {};
   const [locationLoad, setLocationLoad] = useState(true);
-  const [location, setLocation] = useState("Pasadena, CA");
-  newGroupObj.location = location;
+  const [groupLocation, setGroupLocation] = useState("Pasadena, CA");
+  newGroupObj.groupLocation = groupLocation;
 
   return (
     <>
@@ -26,7 +27,7 @@ const SetGroupLocation = () => {
         <div className="locationContainer">
           {locationLoad ? (
             <div className="locationShown">
-              <div className="location">{location}</div>
+              <div className="location">{groupLocation}</div>
               <div className="changeLocation">
                 <span
                   onClick={() => {
@@ -43,16 +44,16 @@ const SetGroupLocation = () => {
                 className="locationForm"
                 onSubmit={() => {
                   setLocationLoad(!locationLoad);
-                  setLocation(location);
+                  setGroupLocation(groupLocation);
                   console.log(newGroupObj);
                 }}
               >
                 <input
                   type="text"
                   placeholder="City, STATE"
-                  value={location}
+                  value={groupLocation}
                   onChange={(e) => {
-                    setLocation(e.target.value);
+                    setGroupLocation(e.target.value);
                   }}
                 />
               </form>
@@ -62,9 +63,15 @@ const SetGroupLocation = () => {
       </div>
       <footer className="bottomSection">
         <div className="footerButtonContainer">
-          <NavLink to="/groups/create/setName">
+          <NavLink
+            to={{
+              pathname: "/groups/create/setName",
+              state: { newGroupObj: newGroupObj },
+            }}
+          >
             <button>Next</button>
           </NavLink>
+          {/* <SetGroupName /> */}
         </div>
       </footer>
     </>

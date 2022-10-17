@@ -39,3 +39,7 @@
   font-size: 16px;
   padding-left: 1rem;
 }
+
+.setGroupNameInput input:focus {
+  border: #0098ab solid 2px;
+}

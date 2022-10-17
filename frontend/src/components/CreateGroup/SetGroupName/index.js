@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import "./SetGroupName.css";
 
 const SetGroupName = () => {
   const [groupName, setGroupName] = useState("");
+  const location = useLocation();
+  const newGroupObj = location.state?.newGroupObj;
 
   return (
     <>
@@ -27,7 +29,10 @@ const SetGroupName = () => {
               type="text"
               placeholder="What is your group name?"
               value={groupName}
-              onChange={(e) => setGroupName(e.target.value)}
+              onChange={(e) => {
+                setGroupName(e.target.value);
+                console.log(newGroupObj);
+              }}
             />
           </form>
         </div>
