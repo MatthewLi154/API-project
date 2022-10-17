@@ -1,0 +1,22 @@
+.step4 {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.step4 span {
+  font-size: 14px;
+  color: #9b9b9b;
+  font-family: "Roboto", sans-serif;
+}
+
+.progressBar4 {
+  width: 60%;
+  height: 12px;
+  background-color: #0098ab;
+}
+
+.mainContainerPrivateInPerson {
+  margin: 4rem;
+}

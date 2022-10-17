@@ -44,7 +44,7 @@
 }
 
 .mainContainerSetDescription textarea {
-  width: 100%;
+  width: 50%;
   height: 250px;
   resize: none;
   font-family: "Montserrat", sans-serif;
