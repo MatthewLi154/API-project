@@ -1,0 +1,33 @@
+.mainContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-left: 2rem;
+  padding: 4rem 0rem;
+}
+
+.becomeAnOrganizer {
+  display: flex;
+  justify-content: flex-start;
+  margin-left: 0px;
+}
+
+.becomeAnOrganizer h2 {
+  font-size: 16px;
+  margin-left: 0px;
+  color: #7a1d47;
+}
+
+.helpText {
+  margin: 1rem 0rem;
+  font-family: "Roboto", sans-serif;
+}
+
+.helpText span {
+  font-size: 32px;
+  font-weight: bold;
+}
+
+.getStartedButton button {
+  width: 200px;
+}

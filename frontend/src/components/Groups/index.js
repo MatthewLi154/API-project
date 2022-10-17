@@ -38,6 +38,7 @@ const Groups = () => {
             <NavLink
               to={`/groups/${group.id}`}
               style={{ textDecoration: "none" }}
+              key={group.id}
             >
               <div className="singleGroupContainer" key={group.id}>
                 <div className="groupCard">

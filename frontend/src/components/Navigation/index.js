@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 import ProfileButton from "./ProfileButton";
 import LoginFormModal from "../LoginFormModal";
+import SignUpFormModal from "../SignupFormModal";
 import "./Navigation.css";
 
 function Navigation({ isLoaded }) {
@@ -19,12 +20,13 @@ function Navigation({ isLoaded }) {
             <LoginFormModal />
           </div>
           <div className="signupButton">
-            <NavLink
+            {/* <NavLink
               to="/signup"
               style={{ textDecoration: "none", color: "black" }}
             >
               Sign Up
-            </NavLink>
+            </NavLink> */}
+            <SignUpFormModal></SignUpFormModal>
           </div>
         </div>
       </>

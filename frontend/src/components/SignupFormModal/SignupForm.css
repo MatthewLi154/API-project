@@ -1,0 +1,82 @@
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  font-family: "Noto Sans", sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+  /* border: 2px red solid;
+  border-top-left-radius: 1em; */
+}
+
+form {
+  width: 484px;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  border: 2px red solid;
+  border-top-left-radius: 1em;
+  box-shadow: 0 2px 8px rgba(255, 255, 255, 0);
+}
+
+h2 {
+  margin-left: 3rem;
+  margin-bottom: 0px;
+  font-size: 25px;
+  font-family: "Noto Sans", sans-serif;
+}
+
+.nameIsRequired {
+  color: red;
+}
+
+.inputField {
+  margin-left: 3rem;
+}
+
+.tinyTextUnderYourName {
+  font-size: 10px;
+  margin-bottom: 1rem;
+  font-weight: normal;
+}
+
+.emailContainer {
+  margin-bottom: 1rem;
+}
+
+.usernameContainer {
+  margin-bottom: 1rem;
+}
+
+.passwordContainer {
+  margin-bottom: 1rem;
+}
+
+.confirmPasswordContainer {
+  margin-bottom: 1rem;
+}
+
+button {
+  width: 345px;
+  height: 30px;
+  margin-bottom: 2rem;
+  background-color: #f65858;
+  color: white;
+  border: transparent;
+  border-radius: 0.4rem;
+  font-family: "Noto Sans", sans-serif;
+  font-size: 16px;
+}
+
+input {
+  width: 340px;
+  height: 35px;
+  border-radius: 0.5rem;
+  border: 1px lightgray solid;
+}
+
+.alreadyMember {
+  display: flex;
+  margin-bottom: 1rem;
+  margin-left: 3rem;
+}

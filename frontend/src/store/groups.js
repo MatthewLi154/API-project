@@ -13,7 +13,7 @@ export const loadGroups = (data) => {
 export const loadSingleGroup = (data) => {
   return {
     type: LOAD_SINGLE,
-    singleGroup: data,
+    group: data,
   };
 };
 
@@ -55,7 +55,7 @@ const groupReducer = (state = initialState, action) => {
       return groupStateObj;
     case LOAD_SINGLE:
       groupStateObj = { ...state };
-      groupStateObj.singleGroup = action.singleGroup;
+      groupStateObj.singleGroup = action.group;
       return groupStateObj;
     default:
       return state;

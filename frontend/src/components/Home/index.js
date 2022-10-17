@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 import "./Home.css";
 import Groups from "../Groups";
+import SignUpFormModal from "../SignupFormModal";
 
 function Home() {
   return (
@@ -80,7 +81,7 @@ function Home() {
             <img src="https://secure.meetupstatic.com/next/images/shared/joinGroup.svg?w=384"></img>
             <div>
               <NavLink
-                to="/groups"
+                to="/groups/create"
                 style={{
                   textDecoration: "none",
                   color: "rgb(00, 82, 94)",
@@ -98,7 +99,7 @@ function Home() {
         <div className="buttonContainer">
           <div className="joinWeebUpButton">
             <NavLink
-              to="/signup"
+              to="/register"
               style={{
                 textDecoration: "none",
                 color: "white",

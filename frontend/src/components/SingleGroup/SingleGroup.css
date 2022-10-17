@@ -1,0 +1,59 @@
+.pageContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.upperSectionDetails {
+  display: flex;
+  margin: 1rem 0rem;
+  border-bottom: 1px lightgray solid;
+  padding-bottom: 1rem;
+  width: 100%;
+}
+
+.leftImgContainer img {
+  width: 500px;
+  height: 280px;
+  margin: 0px auto;
+  overflow: hidden;
+  border-radius: 5%;
+  padding-left: 1rem;
+}
+
+.rightSectionDetails {
+  margin: 0rem 1rem;
+  display: flex;
+  flex-direction: column;
+  font-family: "Montserrat", sans-serif;
+  font-size: 12px;
+}
+
+.groupName h1 {
+  margin: 0px;
+  display: flex;
+  align-items: flex-start;
+  font-size: 32px;
+  font-family: "Noto Sans", sans-serif;
+}
+
+.groupLocation {
+  font-family: "Montserrat", sans-serif;
+}
+
+.middleSectionContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 100%;
+  background-color: rgb(233, 233, 233);
+}
+
+.middleSectoinLeftSide {
+  display: flex;
+}
+
+.middleSectionRightSide {
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: column;
+}
