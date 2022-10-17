@@ -1,7 +1,10 @@
+import { csrfFetch } from "./csrf";
+
 //TODO: string for types
 const LOAD = "groups/loadGroups";
 const LOAD_SINGLE = "groups/loadSingleGroup";
 const ADD_SINGLE = "groups/addSingleGroup";
+const ADD_IMAGE = "groups/addImageToGroup";
 
 //TODO: action creator
 export const loadGroups = (data) => {
@@ -22,6 +25,14 @@ export const addGroup = (data) => {
   return {
     type: ADD_SINGLE,
     data: data,
+  };
+};
+
+export const addImage = (data, groupId) => {
+  return {
+    type: ADD_IMAGE,
+    image: data,
+    id: groupId,
   };
 };
 
@@ -47,7 +58,7 @@ export const fetchSingleGroup = (id) => async (dispatch) => {
 };
 
 export const createSingleGroup = (groupDataObj) => async (dispatch) => {
-  const response = await fetch("/api/groups", {
+  const response = await csrfFetch("/api/groups", {
     credentials: "include",
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -57,6 +68,19 @@ export const createSingleGroup = (groupDataObj) => async (dispatch) => {
   if (response.ok) {
     const data = await response.json();
     dispatch(addGroup(data));
+  }
+};
+
+export const addImageToGroup = (groupId, imgUrl) => async (dispatch) => {
+  const response = await csrfFetch(`/api/groups/${groupId}/images`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ url: imgUrl, preview: true }),
+  });
+
+  if (response.ok) {
+    const data = await response.json();
+    dispatch(addImage(data, groupId));
   }
 };
 
@@ -83,6 +107,9 @@ const groupReducer = (state = initialState, action) => {
       groupStateObj = { ...state };
       groupStateObj.singleGroup = action.data;
       return groupStateObj;
+    case ADD_IMAGE:
+      groupStateObj = { ...state };
+
     default:
       return state;
   }

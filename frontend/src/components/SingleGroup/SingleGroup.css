@@ -1,19 +1,30 @@
 .pageContainer {
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 
 .upperSectionDetails {
   display: flex;
-  margin: 1rem 0rem;
+  margin: 1rem 2rem;
   border-bottom: 1px lightgray solid;
   padding-bottom: 1rem;
+  justify-content: flex-start;
   width: 100%;
 }
 
-.leftImgContainer img {
+.leftImgContainer {
   width: 500px;
   height: 280px;
+  border-radius: 5%;
+  margin-left: 8rem;
+  margin-right: 1rem;
+}
+
+.leftImgContainer img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   margin: 0px auto;
   overflow: hidden;
   border-radius: 5%;
@@ -43,17 +54,35 @@
 .middleSectionContainer {
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: center;
   width: 100%;
   background-color: rgb(233, 233, 233);
+  margin: 1rem 0rem;
 }
 
-.middleSectoinLeftSide {
+.middleSectionLeftSide {
   display: flex;
+  flex-direction: column;
+  width: 30rem;
+  margin: 1rem 3rem;
+}
+
+.middleSectionLeftSide h2 {
+  margin: auto 0rem;
 }
 
 .middleSectionRightSide {
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
   flex-direction: column;
+  width: 50rem;
+  margin: 1rem 3rem;
+}
+
+.middleSectionRightSide h2 {
+  /* margin: 0rem 3rem; */
+}
+
+.middleSectionRightSide h3 {
+  margin: 0rem 3rem;
 }

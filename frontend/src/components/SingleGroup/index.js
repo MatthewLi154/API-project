@@ -21,7 +21,9 @@ const SingleGroup = () => {
           {/* <div>{groupDataObj.name}</div> */}
           <div className="upperSectionDetails">
             <div className="leftImgContainer">
-              <img src={groupDataObj.GroupImages[0]?.url}></img>
+              {groupDataObj.GroupImages && (
+                <img src={groupDataObj.GroupImages[0]?.url}></img>
+              )}
             </div>
             <div className="rightSectionDetails">
               <div className="groupName">
@@ -40,10 +42,12 @@ const SingleGroup = () => {
                   </h3>
                 </div>
                 <div className="groupOrganizer">
-                  <h3>
-                    Organized by {groupDataObj.Organizer.firstName}{" "}
-                    {groupDataObj.Organizer.lastName}
-                  </h3>
+                  {groupDataObj.Organizer && (
+                    <h3>
+                      Organized by {groupDataObj.Organizer.firstName}{" "}
+                      {groupDataObj.Organizer.lastName}
+                    </h3>
+                  )}
                 </div>
                 <div className="groupShare"></div>
               </div>
@@ -59,11 +63,23 @@ const SingleGroup = () => {
               </div>
             </div>
             <div className="middleSectionRightSide">
-              <h2>Organizers</h2>
-              <h3>
-                {groupDataObj.Organizer.firstName}{" "}
-                {groupDataObj.Organizer.lastName}
-              </h3>
+              <div>
+                <h2>Organizers</h2>
+                {groupDataObj.Organizer && (
+                  <h3>
+                    {groupDataObj.Organizer.firstName}{" "}
+                    {groupDataObj.Organizer.lastName}
+                  </h3>
+                )}
+              </div>
+              <div>
+                <h2>Members</h2>
+                <h3>
+                  <ul>
+                    <li>List members here</li>
+                  </ul>
+                </h3>
+              </div>
             </div>
           </div>
         </div>

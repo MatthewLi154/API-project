@@ -27,7 +27,7 @@ const Groups = () => {
           <div className="groupsToggleContainer">
             <NavLink
               to="/groups"
-              style={{ textDecoration: "none", color: "gray" }}
+              style={{ textDecoration: "underline", color: "#008294" }}
             >
               Groups
             </NavLink>
