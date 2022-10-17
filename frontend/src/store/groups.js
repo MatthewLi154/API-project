@@ -109,7 +109,17 @@ const groupReducer = (state = initialState, action) => {
       return groupStateObj;
     case ADD_IMAGE:
       groupStateObj = { ...state };
-
+      // normalize groupStateObj
+      // let newObj = {};
+      // groupStateObj.groups.allGroups.forEach((group) => {
+      //   newObj[group.id] = group;
+      // });
+      // groupStateObj.groups.allGroups = newObj;
+      // groupStateObj.groups.allGroups[action.id].previewImage = action.image;
+      console.log(groupStateObj);
+      groupStateObj.allGroups[groupStateObj.allGroups.length - 1].previewImage =
+        action.image;
+      return groupStateObj;
     default:
       return state;
   }

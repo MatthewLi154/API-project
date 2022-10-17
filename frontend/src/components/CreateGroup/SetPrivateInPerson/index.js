@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import "./SetPrivateInPerson.css";
-import { createSingleGroup } from "../../../store/groups";
+import { createSingleGroup, addImageToGroup } from "../../../store/groups";
 
 const SetPrivateInPerson = () => {
   const location = useLocation();
   const dispatch = useDispatch();
+  const history = useHistory();
+  const createdGroupObj = useSelector((state) => state.groups.singleGroup);
 
   const newGroupObj = location.state?.newGroupObj;
   const [privateGroup, setPrivateGroup] = useState(
@@ -37,6 +39,16 @@ const SetPrivateInPerson = () => {
 
     console.log(groupDataObj);
   }, [privateGroup, inPerson, imgurl]);
+
+  const onCreateGroup = async (e) => {
+    e.preventDefault();
+    console.log(groupDataObj);
+    await dispatch(createSingleGroup(groupDataObj));
+
+    // console.log(imgurl);
+    dispatch(addImageToGroup(createdGroupObj.id, imgurl));
+    history.push("/groups");
+  };
 
   // dispatch thunk to create group, then navigate to page
 
@@ -114,8 +126,11 @@ const SetPrivateInPerson = () => {
             }}
           >
             <button
-              onClick={() => {
-                dispatch(createSingleGroup(groupDataObj));
+              onClick={(e) => {
+                newGroupObj.groupPrivate = privateGroup;
+                newGroupObj.groupInPerson = inPerson;
+                newGroupObj.groupImage = imgurl;
+                onCreateGroup(e);
               }}
             >
               Create Group
