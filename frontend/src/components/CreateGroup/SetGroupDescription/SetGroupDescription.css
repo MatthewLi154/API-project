@@ -1,0 +1,18 @@
+.step3 {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.step3 span {
+  font-size: 14px;
+  color: #9b9b9b;
+  font-family: "Roboto", sans-serif;
+}
+
+.progressBar3 {
+  width: 45%;
+  height: 12px;
+  background-color: #0098ab;
+}

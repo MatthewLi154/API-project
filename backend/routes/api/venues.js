@@ -41,7 +41,7 @@ router.put("/:venueId", async (req, res, next) => {
     });
   } else {
     // check if current user is owner or cohost of group
-    console.log(req.user.toJSON());
+    // console.log(req.user.toJSON());
 
     // get Venue
     const getVenue = await Venue.findOne({
@@ -50,7 +50,7 @@ router.put("/:venueId", async (req, res, next) => {
       },
     });
 
-    console.log("Venue:", getVenue.toJSON());
+    // console.log("Venue:", getVenue.toJSON());
 
     // check if current user is owner of group with matching groupId
     //   console.log("Get Venue From Id", getVenue.toJSON());
@@ -92,7 +92,7 @@ router.put("/:venueId", async (req, res, next) => {
 
     let isCoHost = false;
     checkMembership.forEach((membership) => {
-      console.log(membership.toJSON());
+      // console.log(membership.toJSON());
       let memb = membership.toJSON();
       if (req.user.id === memb.userId && memb.status === "co-host") {
         isCoHost = true;
@@ -102,7 +102,7 @@ router.put("/:venueId", async (req, res, next) => {
     if (isCoHost || groupOwner) {
       // Verified co-host or owner
       const { address, city, state, lat, lng } = req.body;
-      console.log("VENUE", getVenue.toJSON());
+      // console.log("VENUE", getVenue.toJSON());
       getVenue.update({
         address,
         city,

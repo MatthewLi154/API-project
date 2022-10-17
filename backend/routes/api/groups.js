@@ -94,7 +94,7 @@ router.put("/:groupId/membership", requireAuth, async (req, res, next) => {
   // To change the status from pending to member, Current User must be organizer or have a membership to the group with the status co-host
   // To change the status from member to co-host, current user must already be organizer
   const { memberId, status } = req.body;
-  console.log("REQBODY", req.body);
+  // console.log("REQBODY", req.body);
 
   let isOrganizer = false;
   let isCoHost = false;
@@ -113,7 +113,7 @@ router.put("/:groupId/membership", requireAuth, async (req, res, next) => {
   // console.log(findGroup.toJSON());
 
   if (findGroup) {
-    console.log("memberId", memberId);
+    // console.log("memberId", memberId);
     let group = findGroup.toJSON();
     // first check if organizer
     if (group.organizerId === req.user.id) {
@@ -128,8 +128,8 @@ router.put("/:groupId/membership", requireAuth, async (req, res, next) => {
       }
     }
 
-    console.log("isCoHost", isCoHost);
-    console.log("isOrganizer", isOrganizer);
+    // console.log("isCoHost", isCoHost);
+    // console.log("isOrganizer", isOrganizer);
 
     const findMembership = await Membership.findOne({
       where: {
@@ -372,7 +372,7 @@ router.get("/:groupId/events", async (req, res, next) => {
   eventsForGroup.forEach((event) => {
     event = event.toJSON();
     event = event.Events;
-    console.log(event);
+    // console.log(event);
     event.forEach((singleEvent) => {
       let eventsObj = {};
       eventsObj.id = singleEvent.id;
@@ -464,7 +464,7 @@ router.delete("/:groupId", requireAuth, async (req, res, next) => {
   let group;
   if (findGroup) {
     group = findGroup.toJSON();
-    console.log(group);
+    // console.log(group);
 
     if (group.organizerId !== req.user.id) {
       return res.json({
@@ -584,7 +584,7 @@ router.post("/:groupId/venues", async (req, res, next) => {
         lng,
       });
 
-      console.log(newVenue.toJSON());
+      // console.log(newVenue.toJSON());
 
       return res.json({
         id: newVenue.id,

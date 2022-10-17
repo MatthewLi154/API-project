@@ -448,7 +448,7 @@ router.post("/:eventId/images", requireAuth, async (req, res, next) => {
 
     let isValidUser = false;
     event.Attendances.forEach((attendance) => {
-      console.log(attendance);
+      // console.log(attendance);
       if (
         req.user.id === attendance.userId &&
         (attendance.status === "member" ||
@@ -562,7 +562,7 @@ router.put("/:eventId", requireAuth, async (req, res, next) => {
         endDate,
       });
 
-      console.log("Updated findEvent", findEvent);
+      // console.log("Updated findEvent", findEvent);
 
       return res.json({
         id: findEvent.id,

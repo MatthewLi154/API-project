@@ -11,6 +11,7 @@ import SingleGroup from "./components/SingleGroup";
 import CreateGroup from "./components/CreateGroup";
 import SetGroupLocation from "./components/CreateGroup/SetGroupLocation";
 import SetGroupName from "./components/CreateGroup/SetGroupName";
+import SetGroupDescription from "./components/CreateGroup/SetGroupDescription";
 
 function App() {
   const dispatch = useDispatch();
@@ -29,6 +30,9 @@ function App() {
           </Route>
           <Route exact path="/">
             <Home />
+          </Route>
+          <Route path="/groups/create/setDescription">
+            <SetGroupDescription />
           </Route>
           <Route path="/groups/create/setLocation">
             <SetGroupLocation />

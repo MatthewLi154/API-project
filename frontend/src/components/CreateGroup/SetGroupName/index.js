@@ -4,9 +4,9 @@ import { useSelector, useDispatch } from "react-redux";
 import "./SetGroupName.css";
 
 const SetGroupName = () => {
-  const [groupName, setGroupName] = useState("");
   const location = useLocation();
   const newGroupObj = location.state?.newGroupObj;
+  const [groupName, setGroupName] = useState("");
 
   return (
     <>
@@ -31,7 +31,8 @@ const SetGroupName = () => {
               value={groupName}
               onChange={(e) => {
                 setGroupName(e.target.value);
-                console.log(newGroupObj);
+                newGroupObj.groupName = groupName;
+                // console.log(newGroupObj);
               }}
             />
           </form>
@@ -39,10 +40,20 @@ const SetGroupName = () => {
       </div>
       <footer className="bottomSection">
         <div className="footerButtonContainerSetName">
-          <NavLink to="/groups/create/setLocation">
+          <NavLink
+            to={{
+              pathname: "/groups/create/setLocation",
+              state: { newGroupObj: newGroupObj },
+            }}
+          >
             <button className="backButtonSetName">Back</button>
           </NavLink>
-          <NavLink to="">
+          <NavLink
+            to={{
+              pathname: "/groups/create/setDescription",
+              state: { newGroupObj: newGroupObj },
+            }}
+          >
             <button>Next</button>
           </NavLink>
         </div>

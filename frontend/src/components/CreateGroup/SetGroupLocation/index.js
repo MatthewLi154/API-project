@@ -45,7 +45,7 @@ const SetGroupLocation = () => {
                 onSubmit={() => {
                   setLocationLoad(!locationLoad);
                   setGroupLocation(groupLocation);
-                  console.log(newGroupObj);
+                  //   console.log(newGroupObj);
                 }}
               >
                 <input
