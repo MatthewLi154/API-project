@@ -6,7 +6,7 @@ import "./SetGroupName.css";
 const SetGroupName = () => {
   const location = useLocation();
   const newGroupObj = location.state?.newGroupObj;
-  const [groupName, setGroupName] = useState("");
+  const [groupName, setGroupName] = useState(newGroupObj.groupName || "");
 
   return (
     <>
@@ -46,7 +46,15 @@ const SetGroupName = () => {
               state: { newGroupObj: newGroupObj },
             }}
           >
-            <button className="backButtonSetName">Back</button>
+            <button
+              className="backButtonSetName"
+              onClick={() => {
+                setGroupName(groupName);
+                newGroupObj.groupName = groupName;
+              }}
+            >
+              Back
+            </button>
           </NavLink>
           <NavLink
             to={{
@@ -54,7 +62,15 @@ const SetGroupName = () => {
               state: { newGroupObj: newGroupObj },
             }}
           >
-            <button>Next</button>
+            <button
+              onClick={() => {
+                setGroupName(groupName);
+                newGroupObj.groupName = groupName;
+                console.log(newGroupObj);
+              }}
+            >
+              Next
+            </button>
           </NavLink>
         </div>
       </footer>
