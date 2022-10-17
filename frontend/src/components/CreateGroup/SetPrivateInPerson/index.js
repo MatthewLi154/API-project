@@ -8,6 +8,14 @@ const SetPrivateInPerson = () => {
   const newGroupObj = location.state?.newGroupObj;
   const [privateGroup, setPrivateGroup] = useState(false);
   const [inPerson, setInPerson] = useState("In person");
+  const [imgurl, setImgurl] = useState("");
+
+  useEffect(() => {
+    newGroupObj.groupPrivate = privateGroup;
+    newGroupObj.groupInPerson = inPerson;
+    newGroupObj.groupImage = imgurl;
+    // console.log(newGroupObj);
+  }, [privateGroup, inPerson, imgurl]);
 
   return (
     <>
@@ -23,20 +31,46 @@ const SetPrivateInPerson = () => {
         </div>
         <div>
           <h3>Is this an in person or online group?</h3>
+          <select
+            name="inperson"
+            value={inPerson}
+            onChange={(e) => {
+              setInPerson(e.target.value);
+            }}
+          >
+            <option value="">Please choose an option</option>
+            <option value="In Person">In Person</option>
+            <option value="Online">Online</option>
+          </select>
         </div>
         <div>
           <h3>Is this group private or public?</h3>
+          <select
+            name="inperson"
+            value={privateGroup}
+            onChange={(e) => setPrivateGroup(e.target.value)}
+          >
+            <option value="">Please choose an option</option>
+            <option value={true}>Private</option>
+            <option value={false}>Public</option>
+          </select>
         </div>
         <div>
           <h3>Please add in image url for your group below:</h3>
-          <input type="text" />
+          <input
+            type="text"
+            value={imgurl}
+            onChange={(e) => {
+              setImgurl(e.target.value);
+            }}
+          />
         </div>
       </div>
       <footer className="bottomSection">
         <div className="footerButtonContainerSetName">
           <NavLink
             to={{
-              pathname: "/groups/create/setName",
+              pathname: "/groups/create/setDescription",
               state: { newGroupObj: newGroupObj },
             }}
           >
@@ -65,7 +99,7 @@ const SetPrivateInPerson = () => {
             //     console.log(newGroupObj);
             //   }}
             >
-              Next
+              Create Group
             </button>
           </NavLink>
         </div>

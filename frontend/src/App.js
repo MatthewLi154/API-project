@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Route, Switch } from "react-router-dom";
-import { PersistGate } from "redux-persist/integration/react";
-import { store, persistor } from "./store/index";
 import SignupFormModal from "./components/SignupFormModal";
 import SignupFormPage from "./components/SignupFormModal/SignUpForm";
 import * as sessionActions from "./store/session";
@@ -25,7 +23,6 @@ function App() {
 
   return (
     <>
-      {/* <PersistGate persistor={persistor}> */}
       <Navigation isLoaded={isLoaded} />
       {isLoaded && (
         <Switch>
@@ -58,7 +55,6 @@ function App() {
           </Route>
         </Switch>
       )}
-      {/* </PersistGate> */}
     </>
   );
 }
