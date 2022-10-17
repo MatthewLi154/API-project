@@ -60,6 +60,13 @@ const SetGroupLocation = () => {
           )}
         </div>
       </div>
+      <footer className="bottomSection">
+        <div className="footerButtonContainer">
+          <NavLink to="/groups/create/setName">
+            <button>Next</button>
+          </NavLink>
+        </div>
+      </footer>
     </>
   );
 };

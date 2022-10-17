@@ -18,6 +18,7 @@
 .mainContainer {
   display: flex;
   flex-direction: column;
+  margin-left: 4rem;
 }
 
 .fullProgressBar {
@@ -68,4 +69,21 @@
 .locationShown {
   display: flex;
   flex-direction: row;
+}
+
+.bottomSection {
+  position: absolute;
+  display: flex;
+  justify-content: flex-end;
+  bottom: 0;
+  width: 100%;
+  border-top: 2px lightgray solid;
+  height: 76px;
+}
+
+.bottomSection button {
+  margin: 1rem;
+  padding: 10px 20px;
+  width: 206px;
+  height: 44px;
 }
