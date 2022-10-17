@@ -16,9 +16,12 @@ const CreateGroup = () => {
             We'll walk you through a few steps to build your local community
           </span>
         </div>
-        <div className="getStartedButton">
-          <button>Get Started</button>
-        </div>
+        <NavLink
+          to="/groups/create/setLocation"
+          style={{ textDecoration: "none", color: "white" }}
+        >
+          <button className="getStartedButton">Get Started</button>
+        </NavLink>
       </div>
     </>
   );

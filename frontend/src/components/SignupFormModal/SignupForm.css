@@ -8,7 +8,7 @@
   border-top-left-radius: 1em; */
 }
 
-form {
+.signupform {
   width: 484px;
   height: auto;
   display: flex;

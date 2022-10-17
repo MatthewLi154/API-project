@@ -38,101 +38,103 @@ function SignupFormPage() {
     <>
       <div className="formContainer">
         <form onSubmit={handleSubmit}>
-          <div className="formTitle">
-            <h2>Finish signing up</h2>
-          </div>
-          <ul>
-            {errors.map((error, idx) => (
-              <li key={idx}>{error}</li>
-            ))}
-          </ul>
-          <div className="inputField">
-            <div>
-              <label className="yourNameText">Your name</label>
+          <div className="signupform">
+            <div className="formTitle">
+              <h2>Finish signing up</h2>
             </div>
-            <div>
-              <input
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-              ></input>
-            </div>
-            <div className="tinyTextUnderYourName">
-              <span>
-                {/*if input is empty, show "name is required in red, if input is not empty, show "Your name will be public on your Meetup profile*/}
-                Your name will be public on your Meetup profile.
-              </span>
+            <ul>
+              {errors.map((error, idx) => (
+                <li key={idx}>{error}</li>
+              ))}
+            </ul>
+            <div className="inputField">
+              <div>
+                <label className="yourNameText">Your name</label>
+              </div>
+              <div>
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                ></input>
+              </div>
+              <div className="tinyTextUnderYourName">
+                <span>
+                  {/*if input is empty, show "name is required in red, if input is not empty, show "Your name will be public on your Meetup profile*/}
+                  Your name will be public on your Meetup profile.
+                </span>
 
-              {/* {name.length === 0 && (
+                {/* {name.length === 0 && (
               <span className="nameIsRequired">Name is required</span>
             )} */}
+              </div>
+              <div className="emailContainer">
+                <div>
+                  <label>Email</label>
+                </div>
+                <div>
+                  <input
+                    type="text"
+                    placeholder="example@email.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                  />
+                </div>
+              </div>
+              <div className="usernameContainer">
+                <div>
+                  <label>Username</label>
+                </div>
+                <div>
+                  <input
+                    type="text"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    required
+                  />
+                </div>
+              </div>
+              <div className="passwordContainer">
+                <div>
+                  <label>Password</label>
+                </div>
+                <div>
+                  <input
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                  />
+                </div>
+              </div>
+              <div className="confirmPasswordContainer">
+                <div>
+                  <label>Confirm Password</label>
+                </div>
+                <div>
+                  <input
+                    type="password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    required
+                  />
+                </div>
+              </div>
+              <button className="signupButtonForm" type="submit">
+                Sign Up
+              </button>
             </div>
-            <div className="emailContainer">
-              <div>
-                <label>Email</label>
-              </div>
-              <div>
-                <input
-                  type="text"
-                  placeholder="example@email.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                />
-              </div>
-            </div>
-            <div className="usernameContainer">
-              <div>
-                <label>Username</label>
-              </div>
-              <div>
-                <input
-                  type="text"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  required
-                />
-              </div>
-            </div>
-            <div className="passwordContainer">
-              <div>
-                <label>Password</label>
-              </div>
-              <div>
-                <input
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                />
-              </div>
-            </div>
-            <div className="confirmPasswordContainer">
-              <div>
-                <label>Confirm Password</label>
-              </div>
-              <div>
-                <input
-                  type="password"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  required
-                />
-              </div>
-            </div>
-            <button className="signupButtonForm" type="submit">
-              Sign Up
-            </button>
-          </div>
-          <div>
-            <span className="alreadyMember">
-              Already a member?
-              <span>
-                {" "}
-                <LoginFormModal />
+            <div>
+              <span className="alreadyMember">
+                Already a member?
+                <span>
+                  {" "}
+                  <LoginFormModal />
+                </span>
               </span>
-            </span>
+            </div>
           </div>
         </form>
       </div>

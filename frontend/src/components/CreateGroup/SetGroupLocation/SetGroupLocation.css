@@ -1,0 +1,71 @@
+* {
+  margin: 0;
+}
+
+.step1 {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.step1 span {
+  font-size: 14px;
+  color: #9b9b9b;
+  font-family: "Roboto", sans-serif;
+}
+
+.mainContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.fullProgressBar {
+  width: 100%;
+  height: 12px;
+  background-color: #e6e6e6;
+}
+
+.progressBar {
+  width: 14.67%;
+  height: 12px;
+  background-color: #0098ab;
+}
+
+.mainContainer h3 {
+  margin-top: 1.5rem;
+  margin-right: 4rem;
+  font-family: "Montserrat", sans-serif;
+  font-size: 16px;
+}
+
+.locationContainer {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: row;
+}
+
+.location {
+  font-size: 32px;
+  font-family: "Montserrat", sans-serif;
+  font-weight: bold;
+  display: flex;
+  align-items: flex-end;
+}
+
+.changeLocation {
+  display: flex;
+  align-items: flex-end;
+  padding-left: 1.5rem;
+}
+
+.changeLocation span {
+  color: #0098ab;
+  font-size: 16px;
+  font-family: "Montserrat", sans-serif;
+}
+
+.locationShown {
+  display: flex;
+  flex-direction: row;
+}

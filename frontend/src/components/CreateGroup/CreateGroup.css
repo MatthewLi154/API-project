@@ -28,6 +28,7 @@
   font-weight: bold;
 }
 
-.getStartedButton button {
+.getStartedButton {
+  margin-top: 1rem;
   width: 200px;
 }
