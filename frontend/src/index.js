@@ -5,13 +5,15 @@ import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import { ModalProvider } from "./context/Modal";
+import { store, persistor } from "./store/index";
+import { PersistGate } from "redux-persist/integration/react";
 
 import configureStore from "./store";
 import { restoreCSRF, csrfFetch } from "./store/csrf";
 import * as sessionActions from "./store/session";
 import * as groupActions from "./store/groups";
 
-const store = configureStore();
+// const store = configureStore();
 
 if (process.env.NODE_ENV !== "production") {
   restoreCSRF();
@@ -25,11 +27,13 @@ if (process.env.NODE_ENV !== "production") {
 function Root() {
   return (
     <Provider store={store}>
-      <ModalProvider>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </ModalProvider>
+      <PersistGate persistor={persistor}>
+        <ModalProvider>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </ModalProvider>
+      </PersistGate>
     </Provider>
   );
 }
