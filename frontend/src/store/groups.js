@@ -5,6 +5,7 @@ const LOAD = "groups/loadGroups";
 const LOAD_SINGLE = "groups/loadSingleGroup";
 const ADD_SINGLE = "groups/addSingleGroup";
 const ADD_IMAGE = "groups/addImageToGroup";
+const GET_LAST_GROUP = "groups/getLastGroup";
 
 //TODO: action creator
 export const loadGroups = (data) => {
@@ -36,6 +37,12 @@ export const addImage = (data, groupId) => {
   };
 };
 
+export const getLastCreatedGroup = () => {
+  return {
+    type: GET_LAST_GROUP,
+  };
+};
+
 //TODO: thunk action creator
 export const fetchGroups = () => async (dispatch) => {
   const response = await fetch("/api/groups");
@@ -59,7 +66,6 @@ export const fetchSingleGroup = (id) => async (dispatch) => {
 
 export const createSingleGroup = (groupDataObj) => async (dispatch) => {
   const response = await csrfFetch("/api/groups", {
-    // credentials: "include",
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(groupDataObj),
@@ -68,7 +74,9 @@ export const createSingleGroup = (groupDataObj) => async (dispatch) => {
   if (response.ok) {
     const data = await response.json();
     dispatch(addGroup(data));
+    return data;
   }
+  // return response;
 };
 
 export const addImageToGroup = (groupId, imgUrl) => async (dispatch) => {
@@ -82,6 +90,7 @@ export const addImageToGroup = (groupId, imgUrl) => async (dispatch) => {
     const data = await response.json();
     dispatch(addImage(data, groupId));
   }
+  return response;
 };
 
 //TODO: reducer
@@ -106,11 +115,17 @@ const groupReducer = (state = initialState, action) => {
     case ADD_SINGLE:
       groupStateObj = { ...state };
       groupStateObj.singleGroup = action.data;
+      groupStateObj.allGroups.push();
       return groupStateObj;
     case ADD_IMAGE:
       groupStateObj = { ...state };
-      console.log("add_image groupStateObj", groupStateObj);
-      // groupStateObj;
+      console.log(action.image);
+      // console.log(groupStateObj);
+      return groupStateObj;
+    case GET_LAST_GROUP:
+      groupStateObj = { ...state };
+      groupStateObj.lastGroup =
+        groupStateObj.allGroups[groupStateObj.allGroups.length - 1];
       return groupStateObj;
     default:
       return state;

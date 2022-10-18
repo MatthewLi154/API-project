@@ -6,6 +6,8 @@ import {
   createSingleGroup,
   addImageToGroup,
   fetchGroups,
+  fetchSingleGroup,
+  getLastCreatedGroup,
 } from "../../../store/groups";
 
 const SetPrivateInPerson = () => {
@@ -29,9 +31,13 @@ const SetPrivateInPerson = () => {
   const groupLocationArr = groupLocation.split(", ");
   const [city, state] = groupLocationArr;
 
-  // let createdGroupObj = useSelector((state) => state.groups.singleGroup);
-
   let groupDataObj = {};
+
+  // Load initial state of groups
+  useEffect(() => {
+    dispatch(fetchGroups());
+  }, []);
+
   useEffect(() => {
     newGroupObj.groupPrivate = privateGroup;
     newGroupObj.groupInPerson = inPerson;
@@ -50,29 +56,20 @@ const SetPrivateInPerson = () => {
 
   const onCreateGroup = async (e) => {
     e.preventDefault();
-    console.log(groupDataObj);
 
-    let createdGroup;
-    try {
-      createdGroup = await dispatch(createSingleGroup(groupDataObj));
-    } catch (error) {
-      setErrorMessages(error.errors);
-    }
+    // Update the state with new group, and set single group as created group
 
-    if (createdGroup) {
-      setErrorMessages({});
-      console.log(createdGroup);
-    } else {
-      console.log("NO GROUP CREATED");
-    }
+    const createdGroup = await dispatch(createSingleGroup(groupDataObj));
 
-    // await dispatch(createSingleGroup(groupDataObj));
+    dispatch(fetchGroups());
 
-    // dispatch(fetchGroups());
+    console.log(createdGroup);
 
-    // console.log("createdGroupObj", createdGroupObj);
-    // dispatch(addImageToGroup(createdGroupObj.id, imgurl));
-    // history.push("/groups");
+    await dispatch(fetchSingleGroup(createdGroup.id));
+
+    // use thunk to add img to newly created group
+    await dispatch(addImageToGroup(createdGroup.id, imgurl));
+    history.push("/groups");
   };
 
   // dispatch thunk to create group, then navigate to page
@@ -156,7 +153,7 @@ const SetPrivateInPerson = () => {
                 newGroupObj.groupInPerson = inPerson;
                 newGroupObj.groupImage = imgurl;
                 onCreateGroup(e);
-                history.push("/groups");
+                // history.push("/groups");
               }}
             >
               Create Group

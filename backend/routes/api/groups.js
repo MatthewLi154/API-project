@@ -397,7 +397,7 @@ router.get("/:groupId/events", async (req, res, next) => {
   return res.json({ Events });
 });
 
-// Add an image to a gorup based on the group's id
+// Add an image to a group based on the group's id
 router.post("/:groupId/images", requireAuth, async (req, res, next) => {
   // Current user must be the organizer of the group
   // Check if user is organizer of group
