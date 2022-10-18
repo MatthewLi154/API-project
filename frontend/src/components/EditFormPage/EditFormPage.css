@@ -1,0 +1,51 @@
+.pageContainerEditForm {
+  display: flex;
+  flex-direction: column;
+  align-content: flex-start;
+  margin: 1rem 6rem;
+  font-family: "Roboto", sans-serif;
+}
+
+.editPageTitle h1 {
+  font-family: "Roboto", sans-serif;
+  font-size: 42px;
+}
+
+form div {
+  margin: 1rem 0;
+}
+
+.pageContainerEditForm select {
+  height: 30px;
+  font-size: 16px;
+  border-radius: 0.25rem;
+  border: 1px lightgray solid;
+}
+
+.pageContainerEditForm input[type="text"] {
+  font-size: 16px;
+  box-sizing: border-box;
+  padding-left: 10px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.pageContainerEditForm textarea {
+  width: 50%;
+  height: 150px;
+  resize: none;
+  border-radius: 0.25rem;
+  border: 1px lightgray solid;
+}
+
+.pageContainerEditForm textarea[type="text"] {
+  font-size: 16px;
+  box-sizing: border-box;
+  padding-left: 5px;
+  padding-top: 5px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.editFormSubmitButton button {
+  margin: 0.5rem 0rem;
+  width: 6rem;
+}

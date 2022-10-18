@@ -13,6 +13,7 @@ import SetGroupLocation from "./components/CreateGroup/SetGroupLocation";
 import SetGroupName from "./components/CreateGroup/SetGroupName";
 import SetGroupDescription from "./components/CreateGroup/SetGroupDescription";
 import SetPrivateInPerson from "./components/CreateGroup/SetPrivateInPerson";
+import EditFormPage from "./components/EditFormPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -43,6 +44,9 @@ function App() {
           </Route>
           <Route path="/groups/create/setName">
             <SetGroupName />
+          </Route>
+          <Route path="/groups/:groupId/edit">
+            <EditFormPage />
           </Route>
           <Route exact path="/groups/create">
             <CreateGroup />

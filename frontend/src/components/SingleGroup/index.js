@@ -7,12 +7,20 @@ import "./SingleGroup.css";
 const SingleGroup = () => {
   const { id } = useParams();
   const groupDataObj = useSelector((state) => state.groups.singleGroup);
+  const currentUser = useSelector((state) => state.session.user);
   // console.log(groupDataObj);
 
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchSingleGroup(id));
   }, [dispatch]);
+
+  console.log(groupDataObj);
+  console.log(currentUser);
+
+  // validate current session user and organizer
+  const isOrganizer =
+    currentUser.id === groupDataObj.organizerId ? true : false;
 
   return (
     <>
@@ -52,6 +60,21 @@ const SingleGroup = () => {
                 <div className="groupShare"></div>
               </div>
             </div>
+          </div>
+          <div>
+            {isOrganizer && (
+              <div className="deleteEditButtons">
+                <div>
+                  <NavLink to={`/groups/${groupDataObj.id}/edit`}>
+                    {" "}
+                    <button>Edit</button>
+                  </NavLink>
+                </div>
+                <div>
+                  <button>Delete</button>
+                </div>
+              </div>
+            )}
           </div>
           <div className="middleSectionContainer">
             <div className="middleSectionLeftSide">
