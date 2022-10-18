@@ -157,10 +157,14 @@ const groupReducer = (state = initialState, action) => {
       console.log(action.image);
       // console.log(groupStateObj);
       return groupStateObj;
+    case GET_LAST_GROUP:
+      groupStateObj = { ...state };
+      groupStateObj.lastGroup =
+        groupStateObj.allGroups[groupStateObj.allGroups.length - 1];
     case EDIT_GROUP:
       groupStateObj = { ...state };
       groupStateObj.singleGroup = action.data;
-      console.log("EDIT_GROUP RUNNING");
+      console.log(EDIT_GROUP);
       return groupStateObj;
     default:
       return state;

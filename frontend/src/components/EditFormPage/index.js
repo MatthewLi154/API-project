@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { NavLink, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 import "./EditFormPage.css";
 import {
   fetchSingleGroup,
@@ -11,11 +12,12 @@ import {
 const EditFormPage = () => {
   const { groupId } = useParams();
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const [name, setName] = useState("");
   const [location, setLocation] = useState("");
   const [description, setDescription] = useState("");
-  const [type, setType] = useState("In Person");
+  const [type, setType] = useState("In person");
   const [privateGroup, setPrivateGroup] = useState(1);
   const [errorMessages, setErrorMessages] = useState([]);
 
@@ -78,8 +80,10 @@ const EditFormPage = () => {
     };
 
     await dispatch(fetchEditGroup(groupId, formData));
-    // await dispatch(fetchSingleGroup(groupId));
-    // await dispatch(fetchGroups());
+    await dispatch(fetchSingleGroup(groupId));
+    await dispatch(fetchGroups());
+
+    history.push(`/groups/${groupId}`);
   };
 
   return (
@@ -127,7 +131,7 @@ const EditFormPage = () => {
               <select name="inperson">
                 {/* <option value="">Please choose an option</option> */}
                 <option
-                  value="In Person"
+                  value="In person"
                   onChange={(e) => setType(e.target.value)}
                 >
                   In Person

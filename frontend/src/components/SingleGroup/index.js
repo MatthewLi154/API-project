@@ -7,6 +7,7 @@ import "./SingleGroup.css";
 const SingleGroup = () => {
   const { id } = useParams();
   const groupDataObj = useSelector((state) => state.groups.singleGroup);
+  console.log(groupDataObj);
   const currentUser = useSelector((state) => state.session.user);
   console.log(groupDataObj);
 
