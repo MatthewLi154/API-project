@@ -2,13 +2,18 @@ import React, { useEffect, useState } from "react";
 import { NavLink, useLocation, useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import "./SetPrivateInPerson.css";
-import { createSingleGroup, addImageToGroup } from "../../../store/groups";
+import {
+  createSingleGroup,
+  addImageToGroup,
+  fetchGroups,
+} from "../../../store/groups";
 
 const SetPrivateInPerson = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const history = useHistory();
-  const createdGroupObj = useSelector((state) => state.groups.singleGroup);
+
+  const [errorMessages, setErrorMessages] = useState([]);
 
   const newGroupObj = location.state?.newGroupObj;
   const [privateGroup, setPrivateGroup] = useState(
@@ -24,6 +29,8 @@ const SetPrivateInPerson = () => {
   const groupLocationArr = groupLocation.split(", ");
   const [city, state] = groupLocationArr;
 
+  // let createdGroupObj = useSelector((state) => state.groups.singleGroup);
+
   let groupDataObj = {};
   useEffect(() => {
     newGroupObj.groupPrivate = privateGroup;
@@ -38,16 +45,34 @@ const SetPrivateInPerson = () => {
     groupDataObj.state = state;
 
     console.log(groupDataObj);
+    console.log(imgurl);
   }, [privateGroup, inPerson, imgurl]);
 
   const onCreateGroup = async (e) => {
     e.preventDefault();
     console.log(groupDataObj);
-    await dispatch(createSingleGroup(groupDataObj));
 
-    // console.log(imgurl);
-    dispatch(addImageToGroup(createdGroupObj.id, imgurl));
-    history.push("/groups");
+    let createdGroup;
+    try {
+      createdGroup = await dispatch(createSingleGroup(groupDataObj));
+    } catch (error) {
+      setErrorMessages(error.errors);
+    }
+
+    if (createdGroup) {
+      setErrorMessages({});
+      console.log(createdGroup);
+    } else {
+      console.log("NO GROUP CREATED");
+    }
+
+    // await dispatch(createSingleGroup(groupDataObj));
+
+    // dispatch(fetchGroups());
+
+    // console.log("createdGroupObj", createdGroupObj);
+    // dispatch(addImageToGroup(createdGroupObj.id, imgurl));
+    // history.push("/groups");
   };
 
   // dispatch thunk to create group, then navigate to page
@@ -131,6 +156,7 @@ const SetPrivateInPerson = () => {
                 newGroupObj.groupInPerson = inPerson;
                 newGroupObj.groupImage = imgurl;
                 onCreateGroup(e);
+                history.push("/groups");
               }}
             >
               Create Group

@@ -59,7 +59,7 @@ export const fetchSingleGroup = (id) => async (dispatch) => {
 
 export const createSingleGroup = (groupDataObj) => async (dispatch) => {
   const response = await csrfFetch("/api/groups", {
-    credentials: "include",
+    // credentials: "include",
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(groupDataObj),
@@ -109,16 +109,8 @@ const groupReducer = (state = initialState, action) => {
       return groupStateObj;
     case ADD_IMAGE:
       groupStateObj = { ...state };
-      // normalize groupStateObj
-      // let newObj = {};
-      // groupStateObj.groups.allGroups.forEach((group) => {
-      //   newObj[group.id] = group;
-      // });
-      // groupStateObj.groups.allGroups = newObj;
-      // groupStateObj.groups.allGroups[action.id].previewImage = action.image;
-      console.log(groupStateObj);
-      groupStateObj.allGroups[groupStateObj.allGroups.length - 1].previewImage =
-        action.image;
+      console.log("add_image groupStateObj", groupStateObj);
+      // groupStateObj;
       return groupStateObj;
     default:
       return state;
