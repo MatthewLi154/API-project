@@ -6,6 +6,7 @@ const LOAD_SINGLE = "groups/loadSingleGroup";
 const ADD_SINGLE = "groups/addSingleGroup";
 const ADD_IMAGE = "groups/addImageToGroup";
 const GET_LAST_GROUP = "groups/getLastGroup";
+const EDIT_GROUP = "groups/editGroup";
 
 //TODO: action creator
 export const loadGroups = (data) => {
@@ -25,7 +26,7 @@ export const loadSingleGroup = (data) => {
 export const addGroup = (data) => {
   return {
     type: ADD_SINGLE,
-    data: data,
+    data: data, // response data from fetch edit
   };
 };
 
@@ -40,6 +41,13 @@ export const addImage = (data, groupId) => {
 export const getLastCreatedGroup = () => {
   return {
     type: GET_LAST_GROUP,
+  };
+};
+
+export const editGroup = (data) => {
+  return {
+    type: EDIT_GROUP,
+    data: data,
   };
 };
 
@@ -59,6 +67,7 @@ export const fetchSingleGroup = (id) => async (dispatch) => {
 
   if (response.ok) {
     const data = await response.json();
+    console.log(data);
     dispatch(loadSingleGroup(data));
   }
   return response;
@@ -93,6 +102,33 @@ export const addImageToGroup = (groupId, imgUrl) => async (dispatch) => {
   return response;
 };
 
+export const fetchEditGroup = (groupId, formData) => async (dispatch) => {
+  // Fetching this response with input data will update database backend
+  const response = await csrfFetch(`/api/groups/${groupId}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(formData),
+  });
+
+  if (response.ok) {
+    const data = await response.json();
+    console.log(data);
+    dispatch(editGroup(data));
+    return data;
+  }
+};
+
+export const deleteGroup = (groupId) => async (dispatch) => {
+  const response = await csrfFetch(`/api/groups/${groupId}`, {
+    method: "DELETE",
+  });
+
+  if (response.ok) {
+    const data = await response.json();
+    return data;
+  }
+};
+
 //TODO: reducer
 
 const initialState = {};
@@ -115,17 +151,16 @@ const groupReducer = (state = initialState, action) => {
     case ADD_SINGLE:
       groupStateObj = { ...state };
       groupStateObj.singleGroup = action.data;
-      groupStateObj.allGroups.push();
       return groupStateObj;
     case ADD_IMAGE:
       groupStateObj = { ...state };
       console.log(action.image);
       // console.log(groupStateObj);
       return groupStateObj;
-    case GET_LAST_GROUP:
+    case EDIT_GROUP:
       groupStateObj = { ...state };
-      groupStateObj.lastGroup =
-        groupStateObj.allGroups[groupStateObj.allGroups.length - 1];
+      groupStateObj.singleGroup = action.data;
+      console.log("EDIT_GROUP RUNNING");
       return groupStateObj;
     default:
       return state;

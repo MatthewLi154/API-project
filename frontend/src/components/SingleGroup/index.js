@@ -1,17 +1,18 @@
 import React, { useEffect } from "react";
 import { NavLink, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchSingleGroup } from "../../store/groups";
+import { fetchSingleGroup, fetchGroups } from "../../store/groups";
 import "./SingleGroup.css";
 
 const SingleGroup = () => {
   const { id } = useParams();
   const groupDataObj = useSelector((state) => state.groups.singleGroup);
   const currentUser = useSelector((state) => state.session.user);
-  // console.log(groupDataObj);
+  console.log(groupDataObj);
 
   const dispatch = useDispatch();
   useEffect(() => {
+    dispatch(fetchGroups());
     dispatch(fetchSingleGroup(id));
   }, [dispatch]);
 

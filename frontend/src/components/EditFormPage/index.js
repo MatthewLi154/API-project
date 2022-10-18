@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import { NavLink, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import "./EditFormPage.css";
-import { fetchSingleGroup, fetchGroups } from "../../store/groups";
+import {
+  fetchSingleGroup,
+  fetchGroups,
+  fetchEditGroup,
+} from "../../store/groups";
 
 const EditFormPage = () => {
   const { groupId } = useParams();
@@ -17,7 +21,7 @@ const EditFormPage = () => {
 
   useEffect(() => {
     dispatch(fetchSingleGroup(groupId));
-    dispatch(fetchGroups());
+    // dispatch(fetchGroups());
   }, [dispatch]);
 
   const validate = () => {
@@ -52,13 +56,30 @@ const EditFormPage = () => {
     return errors;
   };
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     const errors = validate();
 
     if (errors.length > 0) {
       e.preventDefault();
       return setErrorMessages(errors);
     }
+
+    // get city and state from location
+    let cityState = location.split(", ");
+    let [city, state] = cityState;
+
+    let formData = {
+      name: name,
+      about: description,
+      type: type,
+      private: privateGroup,
+      city: city,
+      state: state,
+    };
+
+    await dispatch(fetchEditGroup(groupId, formData));
+    // await dispatch(fetchSingleGroup(groupId));
+    // await dispatch(fetchGroups());
   };
 
   return (
