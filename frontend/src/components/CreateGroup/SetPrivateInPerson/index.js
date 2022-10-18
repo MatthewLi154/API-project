@@ -15,8 +15,6 @@ const SetPrivateInPerson = () => {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const [errorMessages, setErrorMessages] = useState([]);
-
   const newGroupObj = location.state?.newGroupObj;
   const [privateGroup, setPrivateGroup] = useState(
     newGroupObj.groupPrivate || 0
@@ -25,6 +23,7 @@ const SetPrivateInPerson = () => {
     newGroupObj.groupInPerson || "In person"
   );
   const [imgurl, setImgurl] = useState("");
+  const [errorMessages, setErrorMessages] = useState([]);
 
   // destructure location from newGroupObj, extract city and state
   const { groupLocation, groupDescription, groupName } = newGroupObj;
@@ -36,7 +35,23 @@ const SetPrivateInPerson = () => {
   // Load initial state of groups
   useEffect(() => {
     dispatch(fetchGroups());
+    setErrorMessages([]);
   }, []);
+
+  const validate = () => {
+    const errorMessages = [];
+
+    if (!imgurl) {
+      errorMessages.push("Please add in an image");
+    } else if (!imgurl.endsWith(".jpg")) {
+      if (!imgurl.endsWith(".png")) {
+        errorMessages.push("Image does not end with jpg or png.");
+      }
+    }
+
+    setErrorMessages(errorMessages);
+    return errorMessages;
+  };
 
   useEffect(() => {
     newGroupObj.groupPrivate = privateGroup;
@@ -51,11 +66,14 @@ const SetPrivateInPerson = () => {
     groupDataObj.state = state;
 
     console.log(groupDataObj);
-    console.log(imgurl);
   }, [privateGroup, inPerson, imgurl]);
 
   const onCreateGroup = async (e) => {
     e.preventDefault();
+
+    const errors = validate();
+
+    if (errors.length > 0) return setErrorMessages(errors);
 
     // Update the state with new group, and set single group as created group
 
@@ -86,6 +104,17 @@ const SetPrivateInPerson = () => {
         <div>
           <h1>Final Steps...</h1>
         </div>
+        {errorMessages.length > 0 && (
+          <div>
+            <ul>
+              {errorMessages.map((error) => (
+                <li key={error} style={{ color: "red", fontWeight: "bold" }}>
+                  {error}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
         <div>
           <h3>Is this an in person or online group?</h3>
           <select
@@ -95,7 +124,7 @@ const SetPrivateInPerson = () => {
               setInPerson(e.target.value);
             }}
           >
-            <option value="">Please choose an option</option>
+            {/* <option value="">Please choose an option</option> */}
             <option value="In Person">In Person</option>
             <option value="Online">Online</option>
           </select>
@@ -107,7 +136,7 @@ const SetPrivateInPerson = () => {
             value={privateGroup}
             onChange={(e) => setPrivateGroup(e.target.value)}
           >
-            <option value="">Please choose an option</option>
+            {/* <option value="">Please choose an option</option> */}
             <option value={1}>Private</option>
             <option value={0}>Public</option>
           </select>
@@ -153,7 +182,6 @@ const SetPrivateInPerson = () => {
                 newGroupObj.groupInPerson = inPerson;
                 newGroupObj.groupImage = imgurl;
                 onCreateGroup(e);
-                // history.push("/groups");
               }}
             >
               Create Group

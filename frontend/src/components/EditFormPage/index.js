@@ -2,8 +2,16 @@ import React, { useEffect } from "react";
 import { NavLink, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import "./EditFormPage.css";
+import { fetchSingleGroup, fetchGroups } from "../../store/groups";
 
 const EditFormPage = () => {
+  const { groupId } = useParams();
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchSingleGroup(groupId));
+    dispatch(fetchGroups());
+  }, [dispatch]);
+
   return (
     <>
       <div className="pageContainerEditForm">
@@ -51,7 +59,7 @@ const EditFormPage = () => {
               </select>
             </div>
             <div className="editFormSubmitButton">
-              <NavLink to="/groups/:id">
+              <NavLink to={`/groups/${groupId}`}>
                 {" "}
                 <button>Submit</button>
               </NavLink>

@@ -87,3 +87,10 @@
   width: 206px;
   height: 44px;
 }
+
+.errorList {
+  margin-top: 1rem;
+  color: red;
+  font-weight: bold;
+  font-family: "Montserrat", sans-serif;
+}

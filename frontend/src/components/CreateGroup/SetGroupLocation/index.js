@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import "./SetGroupLocation.css";
 import SetGroupName from "../SetGroupName";
@@ -8,11 +8,43 @@ const SetGroupLocation = () => {
   let newGroupObj = {};
   const [locationLoad, setLocationLoad] = useState(true);
   const [groupLocation, setGroupLocation] = useState("Pasadena, CA");
+  const [errorMessages, setErrorMessages] = useState([]);
+
+  const history = useHistory();
   newGroupObj.groupLocation = groupLocation;
 
   useEffect(() => {
     console.log(newGroupObj);
   }, [groupLocation]);
+
+  useEffect(() => {
+    setErrorMessages([]);
+  }, []);
+
+  const validate = () => {
+    const errorMessages = [];
+
+    const regex = /[A-Za-z]+[ ]?[A-Za-z]+,[ ]?[A-Z]{2}$/;
+
+    console.log(regex.test(groupLocation));
+
+    if (!regex.test(groupLocation)) {
+      errorMessages.push("Please use valid City, State (e.g. New York, NY)");
+    }
+
+    if (errorMessages.length > 0) setErrorMessages(errorMessages);
+    return errorMessages;
+  };
+
+  const onSubmit = (e) => {
+    const errors = validate();
+    console.log(errors);
+
+    if (errors.length > 0) {
+      e.preventDefault();
+      return setErrorMessages(errors);
+    }
+  };
 
   return (
     <>
@@ -28,6 +60,13 @@ const SetGroupLocation = () => {
           Weebup groups meet locally, inperson and online. We'll connect you
           with people in your area, and more can join you online.
         </h3>
+        {errorMessages.length > 0 && (
+          <ul className="errorList">
+            {errorMessages.map((error) => (
+              <li key={error}>{error}</li>
+            ))}
+          </ul>
+        )}
         <div className="locationContainer">
           {locationLoad ? (
             <div className="locationShown">
@@ -73,7 +112,7 @@ const SetGroupLocation = () => {
               state: { newGroupObj: newGroupObj },
             }}
           >
-            <button>Next</button>
+            <button onClick={(e) => onSubmit(e)}>Next</button>
           </NavLink>
         </div>
       </footer>

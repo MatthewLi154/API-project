@@ -15,12 +15,9 @@ const SingleGroup = () => {
     dispatch(fetchSingleGroup(id));
   }, [dispatch]);
 
-  console.log(groupDataObj);
-  console.log(currentUser);
-
   // validate current session user and organizer
-  const isOrganizer =
-    currentUser.id === groupDataObj.organizerId ? true : false;
+  let isOrganizer;
+  isOrganizer = currentUser.id === groupDataObj?.organizerId ? true : false;
 
   return (
     <>
