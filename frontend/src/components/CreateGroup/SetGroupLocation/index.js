@@ -26,8 +26,6 @@ const SetGroupLocation = () => {
 
     const regex = /[A-Za-z]+[ ]?[A-Za-z]+,[ ]?[A-Z]{2}$/;
 
-    console.log(regex.test(groupLocation));
-
     if (!regex.test(groupLocation)) {
       errorMessages.push("Please use valid City, State (e.g. New York, NY)");
     }
@@ -38,7 +36,6 @@ const SetGroupLocation = () => {
 
   const onSubmit = (e) => {
     const errors = validate();
-    console.log(errors);
 
     if (errors.length > 0) {
       e.preventDefault();

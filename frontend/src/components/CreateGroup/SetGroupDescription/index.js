@@ -9,6 +9,34 @@ const SetGroupDescription = () => {
   const [description, setDescription] = useState(
     newGroupObj.groupDescription || ""
   );
+  const [errorMessages, setErrorMessages] = useState([]);
+
+  useEffect(() => {
+    console.log(description, description.length);
+  }, [description]);
+
+  const validate = () => {
+    const errors = [];
+
+    if (description.length < 30) {
+      console.log(description.length);
+      errors.push("Please write at least 30 characters.");
+    }
+
+    if (errors.length > 0) setErrorMessages(errors);
+    console.log(errors);
+    return errors;
+  };
+
+  const onSubmit = (e) => {
+    const errors = validate();
+
+    if (errors.length > 0) {
+      e.preventDefault();
+      return setErrorMessages(errors);
+    }
+  };
+
   return (
     <>
       <div className="fullProgressBar">
@@ -23,6 +51,13 @@ const SetGroupDescription = () => {
           People will see this when we promote your group, but you'll be able to
           add to it later, too.
         </h3>
+        {errorMessages.length > 0 && (
+          <ul className="groupDescriptionError">
+            {errorMessages.map((error) => (
+              <li key={error}>{error}</li>
+            ))}
+          </ul>
+        )}
         <ol>
           <li>What's the purpose of the group?</li>
           <li>Who should join?</li>
@@ -65,10 +100,10 @@ const SetGroupDescription = () => {
             }}
           >
             <button
-              onClick={() => {
+              onClick={(e) => {
                 setDescription(description);
                 newGroupObj.groupDescription = description;
-                console.log(newGroupObj);
+                onSubmit(e);
               }}
             >
               Next

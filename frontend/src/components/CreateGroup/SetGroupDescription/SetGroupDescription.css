@@ -50,3 +50,10 @@
   font-family: "Montserrat", sans-serif;
   font-size: 16px;
 }
+
+.groupDescriptionError {
+  margin-top: 1rem;
+  color: red;
+  font-weight: bold;
+  font-family: "Montserrat", sans-serif;
+}

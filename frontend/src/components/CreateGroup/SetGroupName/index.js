@@ -7,11 +7,35 @@ const SetGroupName = () => {
   const location = useLocation();
   const newGroupObj = location.state?.newGroupObj;
   const [groupName, setGroupName] = useState(newGroupObj.groupName || "");
+  const [errorMessages, setErrorMessages] = useState([]);
 
   useEffect(() => {
     // const newGroupObj = location.state?.newGroupObj;
     console.log(newGroupObj);
   }, []);
+
+  const validate = () => {
+    const errors = [];
+
+    if (groupName.length === 0) {
+      errors.push("Please enter your group name.");
+    } else if (groupName.length > 50) {
+      errors.push("Group name is too long. Please use 50 characters or less");
+    }
+
+    if (errors.length > 0) setErrorMessages(errors);
+
+    return errors;
+  };
+
+  const onSubmit = (e) => {
+    const errors = validate();
+
+    if (errors.length > 0) {
+      e.preventDefault();
+      return setErrorMessages(errors);
+    }
+  };
 
   return (
     <>
@@ -23,6 +47,13 @@ const SetGroupName = () => {
       </div>
       <div className="mainContainerSetName">
         <h1>What will your group's name be?</h1>
+        {errorMessages.length > 0 && (
+          <ul className="errorListName">
+            {errorMessages.map((error) => (
+              <li key={error}>{error}</li>
+            ))}
+          </ul>
+        )}
         <h3>
           Choose a name that will give people a clear idea of what the group is
           about. Feel free to get creative! You can edit this later if you
@@ -71,10 +102,11 @@ const SetGroupName = () => {
             }}
           >
             <button
-              onClick={() => {
+              onClick={(e) => {
                 setGroupName(groupName);
                 newGroupObj.groupName = groupName;
                 console.log(newGroupObj);
+                onSubmit(e);
               }}
             >
               Next
