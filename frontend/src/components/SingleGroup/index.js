@@ -1,21 +1,32 @@
 import React, { useEffect } from "react";
-import { NavLink, useParams } from "react-router-dom";
+import { NavLink, useParams, useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchSingleGroup, fetchGroups } from "../../store/groups";
+import { fetchSingleGroup, fetchGroups, deleteGroup } from "../../store/groups";
 import "./SingleGroup.css";
 
 const SingleGroup = () => {
   const { id } = useParams();
+  const history = useHistory();
+  const dispatch = useDispatch();
+
+  // use
   const groupDataObj = useSelector((state) => state.groups.singleGroup);
   console.log(groupDataObj);
   const currentUser = useSelector((state) => state.session.user);
   console.log(groupDataObj);
 
-  const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchGroups());
     dispatch(fetchSingleGroup(id));
   }, [dispatch]);
+
+  const onDelete = async (e) => {
+    e.preventDefault();
+
+    await dispatch(deleteGroup(id));
+
+    history.push("/groups");
+  };
 
   // validate current session user and organizer
   let isOrganizer;
@@ -70,7 +81,13 @@ const SingleGroup = () => {
                   </NavLink>
                 </div>
                 <div>
-                  <button>Delete</button>
+                  <button
+                    onClick={(e) => {
+                      onDelete(e);
+                    }}
+                  >
+                    Delete
+                  </button>
                 </div>
               </div>
             )}

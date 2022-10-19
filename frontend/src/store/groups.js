@@ -7,6 +7,7 @@ const ADD_SINGLE = "groups/addSingleGroup";
 const ADD_IMAGE = "groups/addImageToGroup";
 const GET_LAST_GROUP = "groups/getLastGroup";
 const EDIT_GROUP = "groups/editGroup";
+const DELETE_GROUP = "groups/deleteGroup";
 
 //TODO: action creator
 export const loadGroups = (data) => {
@@ -38,16 +39,17 @@ export const addImage = (data, groupId) => {
   };
 };
 
-export const getLastCreatedGroup = () => {
-  return {
-    type: GET_LAST_GROUP,
-  };
-};
-
 export const editGroup = (data) => {
   return {
     type: EDIT_GROUP,
     data: data,
+  };
+};
+
+export const deleteGroupCreator = (groupId) => {
+  return {
+    type: DELETE_GROUP,
+    id: groupId,
   };
 };
 
@@ -125,6 +127,7 @@ export const deleteGroup = (groupId) => async (dispatch) => {
 
   if (response.ok) {
     const data = await response.json();
+    dispatch(deleteGroupCreator(groupId));
     return data;
   }
 };
@@ -165,6 +168,13 @@ const groupReducer = (state = initialState, action) => {
       groupStateObj = { ...state };
       groupStateObj.singleGroup = action.data;
       console.log(EDIT_GROUP);
+      return groupStateObj;
+    case DELETE_GROUP:
+      groupStateObj = { ...state };
+      delete groupStateObj.singleGroup;
+      groupStateObj.allGroups = groupStateObj.allGroups.filter(
+        (group) => group.id !== action.id
+      );
       return groupStateObj;
     default:
       return state;
