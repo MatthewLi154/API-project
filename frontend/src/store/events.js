@@ -3,6 +3,7 @@ import { csrfFetch } from "./csrf";
 // TODO: string for types
 const LOAD_ALL_EVENTS = "events/loadAllEvents";
 const LOAD_SINGLE_EVENT = "events/loadSingleEvent";
+const DELETE_SINGLE_EVENT = "events/deleteSingleEvent";
 
 // TODO: action creators
 export const loadAllEvents = (data) => {
@@ -19,10 +20,17 @@ export const loadSingleEvent = (data) => {
   };
 };
 
+export const deleteEvent = (data) => {
+  return {
+    type: DELETE_SINGLE_EVENT,
+    eventId: data,
+  };
+};
+
 // TODO: thunk action creator
 
 export const fetchAllEvents = () => async (dispatch) => {
-  const response = await fetch("/api/events");
+  const response = await csrfFetch("/api/events");
 
   if (response.ok) {
     const data = await response.json();
@@ -32,11 +40,23 @@ export const fetchAllEvents = () => async (dispatch) => {
 };
 
 export const fetchSingleEvent = (eventId) => async (dispatch) => {
-  const response = await fetch(`/api/events/${eventId}`);
+  const response = await csrfFetch(`/api/events/${eventId}`);
 
   if (response.ok) {
     const data = await response.json();
     dispatch(loadSingleEvent(data));
+    return data;
+  }
+};
+
+export const deleteSingleEvent = (eventId) => async (dispatch) => {
+  const response = await csrfFetch(`/api/events/${eventId}`, {
+    method: "DELETE",
+  });
+
+  if (response.ok) {
+    const data = await response.json();
+    dispatch(deleteEvent(eventId));
     return data;
   }
 };
@@ -59,6 +79,11 @@ const eventReducer = (state = initialState, action) => {
       eventStateObj = { ...state };
       // add or replace data to single group obj
       eventStateObj.singleEvent = action.event;
+      return eventStateObj;
+    case DELETE_SINGLE_EVENT:
+      eventStateObj = { ...state };
+      //   action.eventId
+      delete eventStateObj.allEvents[action.eventId];
       return eventStateObj;
     default:
       return state;

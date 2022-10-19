@@ -1,3 +1,7 @@
+.eventDetailsPageContainer {
+  width: 100%;
+}
+
 .hostPicture img {
   width: 3.5rem;
   height: 3.5rem;
@@ -45,6 +49,10 @@
   border-top: 0.5px solid lightgray;
 }
 
+.eventDetailsLeft {
+  width: 45rem;
+}
+
 .eventDetailsLeft div {
   margin: 0rem 4rem;
 }
@@ -66,4 +74,112 @@
 .eventDetailsLeft p {
   font-family: "Montserrat", sans-serif;
   font-size: 16px;
+}
+
+.eventDetailsRight {
+  position: fixed;
+  left: 50rem;
+}
+
+.eventGroupCard {
+  margin-top: 3rem;
+  background-color: white;
+  width: 18rem;
+  height: 8rem;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+}
+
+.eventGroupCard img {
+  width: 4.5rem;
+  height: 4.5rem;
+  border-radius: 1;
+  display: flex;
+}
+
+.eventGroupImgLeft {
+  margin-left: 2rem;
+}
+
+.rightSideGroupNamePrivate {
+  margin: 0rem 1rem;
+  padding-right: 2rem;
+  font-family: "Roboto", sans-serif;
+  display: flex;
+  flex-direction: column;
+  height: 4.5rem;
+}
+
+.eventGroupName {
+  font-size: 14px;
+  font-family: "Roboto", sans-serif;
+}
+
+.eventGroupPrivate {
+  font-size: 12px;
+  font-family: "Montserrat", sans-serif;
+  color: gray;
+  margin: 0.5rem 0rem;
+}
+
+.eventLocationTime {
+  margin-top: 1rem;
+  background-color: white;
+  border-radius: 15px;
+  height: auto;
+  width: 18rem;
+  padding: 1rem 0rem;
+}
+
+.topDate {
+  display: flex;
+  flex-direction: row;
+  margin: 0rem 1rem;
+}
+
+.timeLogo {
+  display: flex;
+  align-items: center;
+  font-size: 20px;
+  color: rgb(192, 192, 192);
+}
+
+.topDate div {
+  padding: 0rem 1rem;
+}
+
+.dateBlock {
+  font-family: "Montserrat", sans-serif;
+  font-size: 14px;
+}
+
+.bottomLocation {
+  display: flex;
+  flex-direction: row;
+  padding-top: 1rem;
+}
+
+.locationLogo {
+  padding-left: 2.5rem;
+  display: flex;
+  align-items: center;
+  color: gray;
+}
+
+.locationAddress {
+  padding: 0rem 2rem;
+  font-family: "Montserrat", sans-serif;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+}
+
+.deleteButtonContainer {
+  margin: 1rem 0rem;
+}
+
+.deleteButtonContainer button {
+  width: 8rem;
+  height: 2rem;
 }
