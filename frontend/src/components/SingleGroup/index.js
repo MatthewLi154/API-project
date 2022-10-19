@@ -11,9 +11,8 @@ const SingleGroup = () => {
 
   // use
   const groupDataObj = useSelector((state) => state.groups.singleGroup);
-  console.log(groupDataObj);
+
   const currentUser = useSelector((state) => state.session.user);
-  console.log(groupDataObj);
 
   useEffect(() => {
     dispatch(fetchGroups());

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchAllEvents } from "../../store/events";
+import { fetchAllEvents, fetchSingleEvent } from "../../store/events";
 import "./Events.css";
 
 const Events = () => {
@@ -20,6 +20,11 @@ const Events = () => {
   useEffect(() => {
     dispatch(fetchAllEvents());
   }, [dispatch]);
+
+  //   const onClick = async (event) => {
+  //     await dispatch(fetchSingleEvent(event));
+  //     return;
+  //   };
 
   const parseDayTime = (dayTimeString) => {
     const [date, time] = dayTimeString.split("T");

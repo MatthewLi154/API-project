@@ -1,0 +1,69 @@
+.hostPicture img {
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 100%;
+}
+
+.eventHeader {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 4rem;
+  border-bottom: 2px solid lightgray;
+}
+
+.eventHeader h1 {
+  font-family: "Roboto", sans-serif;
+  font-size: 35px;
+}
+
+.hostSection {
+  display: flex;
+  flex-direction: row;
+  margin: 1rem 0rem;
+}
+
+.hostedByOrganizerSection {
+  margin: 0rem 1rem;
+}
+
+.hostedBy h3 {
+  font-family: "Montserrat", sans-serif;
+  font-size: 16px;
+}
+
+.hostName h3 {
+  font-family: "Montserrat", sans-serif;
+  font-size: 16px;
+}
+
+.middleSectionEventDetails {
+  background-color: rgb(243, 239, 239);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  border-top: 0.5px solid lightgray;
+}
+
+.eventDetailsLeft div {
+  margin: 0rem 4rem;
+}
+
+.eventDetailsLeft h2 {
+  display: flex;
+  margin: 1rem 0rem;
+  font-size: 20px;
+  font-family: "Roboto", sans-serif;
+}
+
+.eventDetailsLeft img {
+  width: 42rem;
+  height: 25rem;
+  object-fit: cover;
+  margin-top: 3rem;
+}
+
+.eventDetailsLeft p {
+  font-family: "Montserrat", sans-serif;
+  font-size: 16px;
+}
