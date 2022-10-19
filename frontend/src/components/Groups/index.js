@@ -50,7 +50,9 @@ const Groups = () => {
                       <h2>{group.name}</h2>
                     </div>
                     <div className="groupLocation">
-                      <h3>{group.city}</h3>
+                      <h3>
+                        {group.city}, {group.state}
+                      </h3>
                     </div>
                     <div className="groupDescription">
                       <p>{group.about}</p>

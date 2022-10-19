@@ -13,7 +13,7 @@
   margin: 0px;
   justify-content: flex-start;
   border-bottom: 2px solid lightgray;
-  width: 365px;
+  width: 30rem;
 }
 
 .eventsToggleContainer {
@@ -44,6 +44,7 @@
   padding-top: 2rem;
   display: flex;
   flex-direction: row;
+  width: 30rem;
 }
 
 .leftImg {
