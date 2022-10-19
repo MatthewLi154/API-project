@@ -4,11 +4,13 @@ import thunk from "redux-thunk";
 // import storage from "redux-persist/lib/storage";
 import sessionReducer from "./session";
 import groupReducer from "./groups";
+import eventReducer from "./events";
 
 const rootReducer = combineReducers({
   // add reducer functions here
   session: sessionReducer,
   groups: groupReducer,
+  events: eventReducer,
 });
 
 // const persistConfig = {
