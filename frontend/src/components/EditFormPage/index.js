@@ -14,9 +14,11 @@ const EditFormPage = () => {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const [name, setName] = useState("");
-  const [location, setLocation] = useState("");
-  const [description, setDescription] = useState("");
+  const [name, setName] = useState("Cow Farmers");
+  const [location, setLocation] = useState("Farm City, NY");
+  const [description, setDescription] = useState(
+    "In this world, there are a lot of cows, and we need those cows. This group is about farmers who do all things cows! Join and learn more."
+  );
   const [type, setType] = useState("In person");
   const [privateGroup, setPrivateGroup] = useState(1);
   const [errorMessages, setErrorMessages] = useState([]);

@@ -5,12 +5,12 @@ module.exports = {
     await queryInterface.bulkInsert("GroupImages", [
       {
         groupId: 1,
-        url: "https://www.humanesociety.org/sites/default/files/styles/1240x698/public/2020-07/kitten-510651.jpg?h=f54c7448&itok=ZhplzyJ9",
+        url: "https://www.pngitem.com/pimgs/m/128-1284663_shiba-inu-clipart-cute-anime-chibi-cute-kawaii.png",
         preview: true,
       },
       {
         groupId: 2,
-        url: "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/golden-retriever-royalty-free-image-506756303-1560962726.jpg?crop=0.672xw:1.00xh;0.166xw,0&resize=640:*",
+        url: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Cow_female_black_white.jpg/1280px-Cow_female_black_white.jpg",
         preview: true,
       },
       {

@@ -7,7 +7,8 @@ const SetGroupDescription = () => {
   const location = useLocation();
   const newGroupObj = location.state?.newGroupObj;
   const [description, setDescription] = useState(
-    newGroupObj.groupDescription || ""
+    newGroupObj.groupDescription ||
+      "This group is for all anime lovers and enjoyers. Watched Naruto and thoroughly enjoyed it? Can't get enough of wicked animation action? Check us out!"
   );
   const [errorMessages, setErrorMessages] = useState([]);
 

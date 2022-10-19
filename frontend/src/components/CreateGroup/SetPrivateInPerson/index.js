@@ -22,12 +22,14 @@ const SetPrivateInPerson = () => {
   const [inPerson, setInPerson] = useState(
     newGroupObj.groupInPerson || "In person"
   );
-  const [imgurl, setImgurl] = useState("");
+  const [imgurl, setImgurl] = useState(
+    "https://img3.stockfresh.com/files/i/imagedb/m/99/5981548_stock-photo-pims20090605sa0439jpg.jpg"
+  );
   const [errorMessages, setErrorMessages] = useState([]);
 
   // destructure location from newGroupObj, extract city and state
   const { groupLocation, groupDescription, groupName } = newGroupObj;
-  const groupLocationArr = groupLocation.split(", ");
+  const groupLocationArr = newGroupObj.groupLocation.split(", ");
   const [city, state] = groupLocationArr;
 
   let groupDataObj = {};
@@ -54,19 +56,23 @@ const SetPrivateInPerson = () => {
   };
 
   useEffect(() => {
-    newGroupObj.groupPrivate = privateGroup;
-    newGroupObj.groupInPerson = inPerson;
-    newGroupObj.groupImage = imgurl;
+    // newGroupObj.groupPrivate = privateGroup;
+    // newGroupObj.groupInPerson = inPerson;
+    // newGroupObj.groupImage = imgurl;
 
-    groupDataObj.name = groupName;
-    groupDataObj.about = groupDescription;
-    groupDataObj.type = newGroupObj.groupInPerson;
-    groupDataObj.private = newGroupObj.groupPrivate;
+    groupDataObj.name = newGroupObj.groupName;
+    groupDataObj.about = newGroupObj.groupDescription;
+    groupDataObj.type = inPerson;
+    groupDataObj.private = privateGroup;
     groupDataObj.city = city;
     groupDataObj.state = state;
-
-    console.log(groupDataObj);
   }, [privateGroup, inPerson, imgurl]);
+
+  useEffect(() => {
+    console.log(newGroupObj);
+  }, []);
+
+  console.log(newGroupObj);
 
   const onCreateGroup = async (e) => {
     e.preventDefault();
@@ -77,13 +83,16 @@ const SetPrivateInPerson = () => {
 
     // Update the state with new group, and set single group as created group
 
+    groupDataObj.name = newGroupObj.groupName;
+    groupDataObj.about = newGroupObj.groupDescription;
+    groupDataObj.type = inPerson;
+    groupDataObj.private = privateGroup;
+    groupDataObj.city = city;
+    groupDataObj.state = state;
+    console.log(groupDataObj);
     const createdGroup = await dispatch(createSingleGroup(groupDataObj));
 
     dispatch(fetchGroups());
-
-    console.log(createdGroup);
-
-    await dispatch(fetchSingleGroup(createdGroup.id));
 
     // use thunk to add img to newly created group
     await dispatch(addImageToGroup(createdGroup.id, imgurl));
@@ -178,9 +187,9 @@ const SetPrivateInPerson = () => {
           >
             <button
               onClick={(e) => {
-                newGroupObj.groupPrivate = privateGroup;
-                newGroupObj.groupInPerson = inPerson;
-                newGroupObj.groupImage = imgurl;
+                // newGroupObj.groupPrivate = privateGroup;
+                // newGroupObj.groupInPerson = inPerson;
+                // newGroupObj.groupImage = imgurl;
                 onCreateGroup(e);
               }}
             >

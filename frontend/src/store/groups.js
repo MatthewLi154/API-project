@@ -157,7 +157,7 @@ const groupReducer = (state = initialState, action) => {
       return groupStateObj;
     case ADD_IMAGE:
       groupStateObj = { ...state };
-      console.log(action.image);
+      // console.log(action.image);
       // console.log(groupStateObj);
       return groupStateObj;
     case GET_LAST_GROUP:

@@ -6,7 +6,9 @@ import "./SetGroupName.css";
 const SetGroupName = () => {
   const location = useLocation();
   const newGroupObj = location.state?.newGroupObj;
-  const [groupName, setGroupName] = useState(newGroupObj.groupName || "");
+  const [groupName, setGroupName] = useState(
+    newGroupObj.groupName || "Weeb Meet Up Group"
+  );
   const [errorMessages, setErrorMessages] = useState([]);
 
   useEffect(() => {
