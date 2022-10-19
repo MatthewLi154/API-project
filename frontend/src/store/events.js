@@ -2,12 +2,20 @@ import { csrfFetch } from "./csrf";
 
 // TODO: string for types
 const LOAD_ALL_EVENTS = "events/loadAllEvents";
+const LOAD_SINGLE_EVENT = "events/loadSingleEvent";
 
 // TODO: action creators
 export const loadAllEvents = (data) => {
   return {
     type: LOAD_ALL_EVENTS,
     events: data,
+  };
+};
+
+export const loadSingleEvent = (data) => {
+  return {
+    type: LOAD_SINGLE_EVENT,
+    event: data,
   };
 };
 
@@ -19,6 +27,16 @@ export const fetchAllEvents = () => async (dispatch) => {
   if (response.ok) {
     const data = await response.json();
     dispatch(loadAllEvents(data));
+    return data;
+  }
+};
+
+export const fetchSingleEvent = (eventId) => async (dispatch) => {
+  const response = await fetch(`/api/events/${eventId}`);
+
+  if (response.ok) {
+    const data = await response.json();
+    dispatch(loadSingleEvent(data));
     return data;
   }
 };
@@ -36,6 +54,11 @@ const eventReducer = (state = initialState, action) => {
       action.events.Events.forEach((event) => {
         eventStateObj.allEvents[event.id] = event;
       });
+      return eventStateObj;
+    case LOAD_SINGLE_EVENT:
+      eventStateObj = { ...state };
+      // add or replace data to single group obj
+      eventStateObj.singleEvent = action.event;
       return eventStateObj;
     default:
       return state;

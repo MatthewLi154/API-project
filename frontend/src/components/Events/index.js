@@ -78,7 +78,11 @@ const Events = () => {
         </div>
         {eventsArr.length > 0 &&
           eventsArr.map((event) => (
-            <NavLink to={""} style={{ textDecoration: "none" }} key={event.id}>
+            <NavLink
+              to={`/events/${event.id}`}
+              style={{ textDecoration: "none" }}
+              key={event.id}
+            >
               <div className="SingleEventContainer" key={event.id}>
                 <div className="eventCard">
                   <div className="EventLeftImg">
