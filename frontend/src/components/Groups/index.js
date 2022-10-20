@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchGroups } from "../../store/groups";
+import { fetchAllEvents } from "../../store/events";
 import "./Groups.css";
 
 const Groups = () => {

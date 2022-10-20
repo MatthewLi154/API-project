@@ -25,7 +25,7 @@ const CreateEventForm = () => {
   const [startDate, setStartDate] = useState("2022-10-19T19:30");
   const [endDate, setEndDate] = useState("2022-10-19T20:30");
   const [eventImg, setEventImg] = useState(
-    "https://m.media-amazon.com/images/I/6116uH18WSL._AC_.jpg"
+    "https://wallpaperaccess.com/full/374195.jpg"
   );
   const [errorMessages, setErrorMessages] = useState([]);
 

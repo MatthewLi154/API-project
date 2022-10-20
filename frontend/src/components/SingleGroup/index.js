@@ -8,6 +8,7 @@ import {
   fetchMembers,
 } from "../../store/groups";
 import "./SingleGroup.css";
+import { fetchAllEvents } from "../../store/events";
 
 const SingleGroup = () => {
   const { id } = useParams();
@@ -30,12 +31,15 @@ const SingleGroup = () => {
     dispatch(fetchGroups());
     dispatch(fetchSingleGroup(id));
     dispatch(fetchMembers(id));
+    dispatch(fetchAllEvents());
   }, [dispatch]);
 
   const onDelete = async (e) => {
     e.preventDefault();
 
     await dispatch(deleteGroup(id));
+
+    await dispatch(fetchAllEvents());
 
     history.push("/groups");
   };

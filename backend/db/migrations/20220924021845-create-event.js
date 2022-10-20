@@ -13,6 +13,7 @@ module.exports = {
       },
       groupId: {
         type: Sequelize.INTEGER,
+        onDelete: "CASCADE",
       },
       name: {
         type: Sequelize.STRING,
