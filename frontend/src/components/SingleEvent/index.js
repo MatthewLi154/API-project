@@ -32,8 +32,6 @@ const SingleEvent = () => {
     allGroupsObj[group.id] = group;
   });
 
-  console.log(allGroupsObj);
-
   // Get group id from event
   let groupId = singleEventObj.groupId;
 
@@ -45,6 +43,40 @@ const SingleEvent = () => {
     e.preventDefault();
     await dispatch(deleteSingleEvent(eventId));
     history.push("/events");
+  };
+
+  const parseDayTime = (dayTimeString) => {
+    const [date, time] = dayTimeString.split("T");
+    const [year, month, day] = date.split("-");
+    const [hour, minute, seconds] = time.split(":");
+    let newDate = new Date(year, month, day);
+    let dayOfWeek = newDate.getDay();
+    let week = ["SUN", "MON", "TUES", "WED", "THU", "FRI", "SAT"];
+    let monthStr = [
+      "JAN",
+      "FEB",
+      "MAR",
+      "APR",
+      "MAY",
+      "JUNE",
+      "JULY",
+      "AUG",
+      "SEPT",
+      "OCT",
+      "NOV",
+      "DEC",
+    ];
+
+    let AMPM = "PM";
+    if (hour > 12) {
+      hour = hour - 12;
+      AMPM = "AM";
+    }
+
+    let newDayTimeString = `${week[dayOfWeek]}, ${
+      monthStr[month - 1]
+    } ${day} · ${hour}:${minute} ${AMPM}`;
+    return newDayTimeString;
   };
 
   return (
@@ -87,23 +119,28 @@ const SingleEvent = () => {
             </div>
             <div className="eventDetailsRight">
               <div>
-                <div className="eventGroupCard">
-                  <div className="eventGroupImgLeft">
-                    <img src={groupPreviewImage}></img>
-                  </div>
-                  <div className="rightSideGroupNamePrivate">
-                    <div className="eventGroupName">
-                      <h3>{allGroupsObj[groupId]?.name}</h3>
+                <NavLink
+                  to={`/groups/${groupId}`}
+                  style={{ textDecoration: "none", color: "none" }}
+                >
+                  <div className="eventGroupCard">
+                    <div className="eventGroupImgLeft">
+                      <img src={groupPreviewImage}></img>
                     </div>
-                    <div className="eventGroupPrivate">
-                      {allGroupsObj[groupId]?.private ? (
-                        <h3>Private</h3>
-                      ) : (
-                        <h3>Public</h3>
-                      )}
+                    <div className="rightSideGroupNamePrivate">
+                      <div className="eventGroupName">
+                        <h3>{allGroupsObj[groupId]?.name}</h3>
+                      </div>
+                      <div className="eventGroupPrivate">
+                        {allGroupsObj[groupId]?.private ? (
+                          <h3>Private</h3>
+                        ) : (
+                          <h3>Public</h3>
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
+                </NavLink>
                 <div className="eventLocationTime">
                   <div className="topDate">
                     <div className="timeLogo">
@@ -112,7 +149,8 @@ const SingleEvent = () => {
                     <div className="dateBlock">
                       {" "}
                       <span>
-                        {singleEventObj.startDate} to {singleEventObj.endDate}
+                        {parseDayTime(singleEventObj.startDate)} to{" "}
+                        {parseDayTime(singleEventObj.endDate)}
                       </span>
                     </div>
                   </div>

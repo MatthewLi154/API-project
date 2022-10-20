@@ -97,6 +97,7 @@
   height: 4.5rem;
   border-radius: 1;
   display: flex;
+  color: black;
 }
 
 .eventGroupImgLeft {
@@ -131,6 +132,7 @@
   height: auto;
   width: 18rem;
   padding: 1rem 0rem;
+  font-weight: bold;
 }
 
 .topDate {
