@@ -16,7 +16,7 @@ form div {
 }
 
 .pageContainerEditForm select {
-  height: 30px;
+  height: 2rem;
   font-size: 16px;
   border-radius: 0.25rem;
   border: 1px lightgray solid;

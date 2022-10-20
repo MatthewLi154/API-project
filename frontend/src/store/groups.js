@@ -8,6 +8,7 @@ const ADD_IMAGE = "groups/addImageToGroup";
 const GET_LAST_GROUP = "groups/getLastGroup";
 const EDIT_GROUP = "groups/editGroup";
 const DELETE_GROUP = "groups/deleteGroup";
+const GET_MEMBERS = "groups/getMembers";
 
 //TODO: action creator
 export const loadGroups = (data) => {
@@ -50,6 +51,13 @@ export const deleteGroupCreator = (groupId) => {
   return {
     type: DELETE_GROUP,
     id: groupId,
+  };
+};
+
+export const getMembers = (memberData) => {
+  return {
+    type: GET_MEMBERS,
+    members: memberData,
   };
 };
 
@@ -132,6 +140,16 @@ export const deleteGroup = (groupId) => async (dispatch) => {
   }
 };
 
+export const fetchMembers = (groupId) => async (dispatch) => {
+  const response = await csrfFetch(`/api/groups/${groupId}/members`);
+
+  if (response.ok) {
+    const data = await response.json();
+    dispatch(getMembers(data));
+    return data;
+  }
+};
+
 //TODO: reducer
 
 const initialState = {};
@@ -175,6 +193,10 @@ const groupReducer = (state = initialState, action) => {
       groupStateObj.allGroups = groupStateObj.allGroups.filter(
         (group) => group.id !== action.id
       );
+      return groupStateObj;
+    case GET_MEMBERS:
+      groupStateObj = { ...state };
+      groupStateObj.members = action.members;
       return groupStateObj;
     default:
       return state;

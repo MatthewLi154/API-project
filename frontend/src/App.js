@@ -16,6 +16,7 @@ import SetPrivateInPerson from "./components/CreateGroup/SetPrivateInPerson";
 import EditFormPage from "./components/EditFormPage";
 import Events from "./components/Events";
 import SingleEvent from "./components/SingleEvent";
+import CreateEventForm from "./components/CreateEventForm";
 
 function App() {
   const dispatch = useDispatch();
@@ -34,6 +35,9 @@ function App() {
           </Route>
           <Route exact path="/">
             <Home />
+          </Route>
+          <Route path="/groups/:groupId/events/create">
+            <CreateEventForm />
           </Route>
           <Route path="/events/:eventId">
             <SingleEvent />

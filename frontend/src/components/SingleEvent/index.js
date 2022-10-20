@@ -7,7 +7,7 @@ import {
   fetchSingleEvent,
   deleteSingleEvent,
 } from "../../store/events";
-import { fetchGroups } from "../../store/groups";
+import { fetchGroups, fetchMembers } from "../../store/groups";
 
 const SingleEvent = () => {
   const dispatch = useDispatch();
