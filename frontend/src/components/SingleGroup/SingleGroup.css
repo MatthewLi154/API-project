@@ -173,3 +173,15 @@ html,
   color: black;
   font-family: "Roboto", sans-serif;
 }
+
+.groupUpcomingEvents h2 {
+  margin-top: 3rem;
+}
+
+.upcomingEventsCard {
+  display: flex;
+  flex-direction: column;
+  width: 30rem;
+  height: 10rem;
+  background-color: white;
+}

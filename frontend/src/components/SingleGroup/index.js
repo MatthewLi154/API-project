@@ -8,7 +8,7 @@ import {
   fetchMembers,
 } from "../../store/groups";
 import "./SingleGroup.css";
-import { fetchAllEvents } from "../../store/events";
+import { deleteSingleEvent, fetchAllEvents } from "../../store/events";
 
 const SingleGroup = () => {
   const { id } = useParams();
@@ -19,13 +19,7 @@ const SingleGroup = () => {
   const groupDataObj = useSelector((state) => state.groups.singleGroup);
   const currentUser = useSelector((state) => state.session.user);
   const groupMembersArr = useSelector((state) => state.groups.members);
-
-  let members;
-  if (groupMembersArr) {
-    members = groupMembersArr?.Members;
-  }
-
-  console.log(members);
+  const allEvents = useSelector((state) => state.events?.allEvents);
 
   useEffect(() => {
     dispatch(fetchGroups());
@@ -34,8 +28,27 @@ const SingleGroup = () => {
     dispatch(fetchAllEvents());
   }, [dispatch]);
 
+  console.log(allEvents);
+  let groupEvents = [];
+  for (const key in allEvents) {
+    if (allEvents[key].groupId == id) {
+      groupEvents.push(allEvents[key]);
+    }
+  }
+
+  console.log(groupEvents);
+
+  let members;
+  if (groupMembersArr) {
+    members = groupMembersArr?.Members;
+  }
+
   const onDelete = async (e) => {
     e.preventDefault();
+
+    for (let i = 0; i < groupEvents.length; i++) {
+      await dispatch(deleteSingleEvent(groupEvents[i].id));
+    }
 
     await dispatch(deleteGroup(id));
 
@@ -149,6 +162,24 @@ const SingleGroup = () => {
                 </div>
                 <div>
                   <p>{groupDataObj.about}</p>
+                </div>
+                <div className="upcomingEventsContainer">
+                  <div className="groupUpcomingEvents">
+                    <h2>Upcoming Events</h2>
+                  </div>
+                  {allEvents && (
+                    <div className="upcomingEventsCard">
+                      <div className="eventDateAndTime">
+                        <span>
+                          {/* <i class="fa-regular fa-clock"></i> */}
+                          SATURDAY
+                        </span>
+                      </div>
+                      <div>event name</div>
+                      <div>event location</div>
+                      <div>num attendees</div>
+                    </div>
+                  )}
                 </div>
               </div>
               <div className="middleSectionRightSide">
