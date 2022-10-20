@@ -17,7 +17,24 @@ const CreateEventForm = () => {
   );
   const [startDate, setStartDate] = useState("2022-10-19T19:30");
   const [endDate, setEndDate] = useState("2022-10-19T19:30");
+  const [errorMessages, setErrorMessages] = useState([]);
 
+  const validate = () => {
+    const errors = [];
+
+    // name validations
+    if (!eventName.length) errors.push("Please enter an event name.");
+    if (eventName.length > 50)
+      errors.push("Name must be 50 characters or less");
+
+    // capactiy validations
+    if (!Number.isInteger(capacity)) errors.push("Capacity must be a number");
+    else if (eventCapacity < 0)
+      errors.push("Capacity can not be a negative number");
+
+    // price validations
+    if (!Number) errors.push("Price must be a valid number");
+  };
   useEffect(() => {
     dispatch(fetchSingleGroup(groupId));
   }, [dispatch]);
