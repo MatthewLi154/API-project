@@ -52,15 +52,15 @@ const SingleGroup = () => {
 
   // validate current session user and organizer
   let isOrganizer;
-  isOrganizer = currentUser.id === groupDataObj?.organizerId ? true : false;
+  isOrganizer = currentUser?.id === groupDataObj?.organizerId ? true : false;
 
   // check if currentUser.id === membersid and if Membership status = member or co-host
   let isMember;
   members?.forEach((member) => {
     if (
       member.id === currentUser.id &&
-      (member.Membership.status === "co-host" ||
-        member.Memebership.status === "member")
+      (member.Membership?.status === "co-host" ||
+        member.Memebership?.status === "member")
     ) {
       isMember = true;
     }
@@ -106,37 +106,39 @@ const SingleGroup = () => {
             </div>
           </div>
           {(isMember || isOrganizer) && (
-            <div className="centerButtons">
-              {isMember && (
-                <div className="createEventButton">
-                  <button
-                    onClick={(e) => {
-                      onCreateEvent(e);
-                    }}
-                  >
-                    Create Event
-                  </button>
-                </div>
-              )}
-              {isOrganizer && (
-                <div className="deleteEditButtons">
-                  <div>
-                    <NavLink to={`/groups/${groupDataObj.id}/edit`}>
-                      {" "}
-                      <button>Edit</button>
-                    </NavLink>
-                  </div>
-                  <div>
+            <div className="centerButtonsContainer">
+              <div className="centerButtons">
+                {isMember && (
+                  <div className="createEventButton">
                     <button
                       onClick={(e) => {
-                        onDelete(e);
+                        onCreateEvent(e);
                       }}
                     >
-                      Delete
+                      Create Event
                     </button>
                   </div>
-                </div>
-              )}
+                )}
+                {isOrganizer && (
+                  <div className="deleteEditButtons">
+                    <div>
+                      <NavLink to={`/groups/${groupDataObj.id}/edit`}>
+                        {" "}
+                        <button>Edit</button>
+                      </NavLink>
+                    </div>
+                    <div>
+                      <button
+                        onClick={(e) => {
+                          onDelete(e);
+                        }}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           )}
           <div className="middleSectionMain">
@@ -159,11 +161,18 @@ const SingleGroup = () => {
                     </h3>
                   )}
                 </div>
-                <div>
+                <div className="membersContainer">
                   <h2>Members</h2>
                   <h3>
-                    <ul>
-                      <li>List members here</li>
+                    <ul className="memberList">
+                      {members?.map((member) => (
+                        <li key={member.id}>
+                          {member.firstName} {member.lastName} ·{" "}
+                          <span className="memberLi">
+                            {member.Membership?.status}
+                          </span>
+                        </li>
+                      ))}
                     </ul>
                   </h3>
                 </div>

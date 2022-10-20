@@ -21,11 +21,6 @@ const Events = () => {
     dispatch(fetchAllEvents());
   }, [dispatch]);
 
-  //   const onClick = async (event) => {
-  //     await dispatch(fetchSingleEvent(event));
-  //     return;
-  //   };
-
   const parseDayTime = (dayTimeString) => {
     const [date, time] = dayTimeString.split("T");
     const [year, month, day] = date.split("-");
