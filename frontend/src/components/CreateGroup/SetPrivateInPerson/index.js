@@ -68,11 +68,9 @@ const SetPrivateInPerson = () => {
     groupDataObj.state = state;
   }, [privateGroup, inPerson, imgurl]);
 
-  useEffect(() => {
-    console.log(newGroupObj);
-  }, []);
-
-  console.log(newGroupObj);
+  // useEffect(() => {
+  //   console.log(newGroupObj);
+  // }, []);
 
   const onCreateGroup = async (e) => {
     e.preventDefault();
@@ -89,7 +87,7 @@ const SetPrivateInPerson = () => {
     groupDataObj.private = privateGroup;
     groupDataObj.city = city;
     groupDataObj.state = state;
-    console.log(groupDataObj);
+    // console.log(groupDataObj);
     const createdGroup = await dispatch(createSingleGroup(groupDataObj));
 
     dispatch(fetchGroups());

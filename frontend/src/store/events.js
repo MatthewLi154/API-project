@@ -4,6 +4,8 @@ import { csrfFetch } from "./csrf";
 const LOAD_ALL_EVENTS = "events/loadAllEvents";
 const LOAD_SINGLE_EVENT = "events/loadSingleEvent";
 const DELETE_SINGLE_EVENT = "events/deleteSingleEvent";
+const CREATE_EVENT = "events/createSingleEvent";
+const ADD_IMAGE = "events/addImageToEvent";
 
 // TODO: action creators
 export const loadAllEvents = (data) => {
@@ -24,6 +26,20 @@ export const deleteEvent = (data) => {
   return {
     type: DELETE_SINGLE_EVENT,
     eventId: data,
+  };
+};
+
+export const createEvent = (data) => {
+  return {
+    type: CREATE_EVENT,
+    data: data,
+  };
+};
+
+export const addImage = (data) => {
+  return {
+    type: ADD_IMAGE,
+    data: data,
   };
 };
 
@@ -61,6 +77,35 @@ export const deleteSingleEvent = (eventId) => async (dispatch) => {
   }
 };
 
+export const createSingleEvent = (formData, groupId) => async (dispatch) => {
+  const response = await csrfFetch(`/api/groups/${groupId}/events`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(formData),
+  });
+
+  if (response.ok) {
+    const data = await response.json();
+    dispatch(createEvent(data));
+    return data;
+  }
+};
+
+export const addImageToEvent = (eventId, imgData) => async (dispatch) => {
+  const response = await csrfFetch(`/api/events/${eventId}/images`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(imgData),
+  });
+
+  if (response.ok) {
+    const data = await response.json();
+    console.log(data);
+    // dispatch(addImage(data.url));
+    return data;
+  }
+};
+
 // TODO: reducer
 
 const initialState = { allEvents: {}, singleEvent: {} };
@@ -84,6 +129,13 @@ const eventReducer = (state = initialState, action) => {
       eventStateObj = { ...state };
       //   action.eventId
       delete eventStateObj.allEvents[action.eventId];
+      return eventStateObj;
+    case CREATE_EVENT:
+      eventStateObj = { ...state };
+      eventStateObj.singleEvent = action.data;
+      return eventStateObj;
+    case ADD_IMAGE:
+      eventStateObj = { ...state };
       return eventStateObj;
     default:
       return state;
