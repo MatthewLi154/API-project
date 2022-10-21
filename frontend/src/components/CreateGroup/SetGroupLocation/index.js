@@ -11,6 +11,7 @@ const SetGroupLocation = () => {
     localStorage.getItem("groupLocation") || "Pasadena, CA"
   );
   const [errorMessages, setErrorMessages] = useState([]);
+  const sessionUser = useSelector((state) => state.session.user);
 
   const history = useHistory();
   newGroupObj.groupLocation = groupLocation;
@@ -31,6 +32,10 @@ const SetGroupLocation = () => {
 
     if (!regex.test(groupLocation)) {
       errorMessages.push("Please use valid City, State (e.g. New York, NY)");
+    }
+
+    if (!sessionUser) {
+      errorMessages.push("User must be logged in to create group");
     }
 
     if (errorMessages.length > 0) setErrorMessages(errorMessages);

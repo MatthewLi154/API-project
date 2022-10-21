@@ -11,9 +11,9 @@ const SetGroupDescription = () => {
       "This group is for all anime lovers and enjoyers. Watched Naruto and thoroughly enjoyed it? Can't get enough of wicked animation action? Check us out!"
   );
   const [errorMessages, setErrorMessages] = useState([]);
+  const sessionUser = useSelector((state) => state.session.user);
 
   useEffect(() => {
-    console.log(description, description.length);
     localStorage.setItem("description", description);
   }, [description]);
 
@@ -21,8 +21,15 @@ const SetGroupDescription = () => {
     const errors = [];
 
     if (description.length < 30) {
-      console.log(description.length);
       errors.push("Please write at least 30 characters.");
+    }
+
+    if (description.length > 255) {
+      errors.push("Please use less than 255 characters");
+    }
+
+    if (!sessionUser) {
+      errorMessages.push("User must be logged in to create group");
     }
 
     if (errors.length > 0) setErrorMessages(errors);

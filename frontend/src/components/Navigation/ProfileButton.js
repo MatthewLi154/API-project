@@ -51,6 +51,7 @@ function ProfileButton({ user }) {
             <div className="profile-dropdown">
               {/* <div>{user.username}</div>
               <div>{user.email}</div> */}
+              <div className="userName">Welcome, {user.firstName}</div>
               <div
                 onClick={(e) => {
                   e.preventDefault();

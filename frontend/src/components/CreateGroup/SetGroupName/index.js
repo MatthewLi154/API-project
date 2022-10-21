@@ -10,11 +10,7 @@ const SetGroupName = () => {
     newGroupObj.groupName || "Weeb Meet Up Group"
   );
   const [errorMessages, setErrorMessages] = useState([]);
-
-  useEffect(() => {
-    // const newGroupObj = location.state?.newGroupObj;
-    console.log(newGroupObj);
-  }, []);
+  const sessionUser = useSelector((state) => state.session.user);
 
   const validate = () => {
     const errors = [];
@@ -23,6 +19,10 @@ const SetGroupName = () => {
       errors.push("Please enter your group name.");
     } else if (groupName.length > 50) {
       errors.push("Group name is too long. Please use 50 characters or less");
+    }
+
+    if (!sessionUser) {
+      errors.push("User must be logged in to create group");
     }
 
     if (errors.length > 0) setErrorMessages(errors);

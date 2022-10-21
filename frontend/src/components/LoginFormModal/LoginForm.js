@@ -20,6 +20,16 @@ function LoginForm() {
     );
   };
 
+  const onDemoUser = (e) => {
+    e.preventDefault();
+    return dispatch(
+      sessionActions.login({ credential: "Demo-lition", password: "password" })
+    ).catch(async (res) => {
+      const data = await res.json();
+      if (data && data.errors) setErrors(data.errors);
+    });
+  };
+
   return (
     <>
       <div className="loginFormContainer">
@@ -58,9 +68,17 @@ function LoginForm() {
               />
             </div>
           </div>
-
-          <button type="submit">Log In</button>
+          <div className="login-demouser-buttons">
+            <div>
+              <button type="submit">Log In</button>
+            </div>
+          </div>
         </form>
+        <div>
+          <button type="submit" onClick={(e) => onDemoUser(e)}>
+            Demo User
+          </button>
+        </div>
       </div>
     </>
   );

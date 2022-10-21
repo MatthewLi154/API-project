@@ -24,6 +24,7 @@ const SetPrivateInPerson = () => {
   );
   const [imgurl, setImgurl] = useState(localStorage.getItem("imgurl"));
   const [errorMessages, setErrorMessages] = useState([]);
+  const sessionUser = useSelector((state) => state.session.user);
 
   // destructure location from newGroupObj, extract city and state
   const { groupLocation, groupDescription, groupName } = newGroupObj;
@@ -53,6 +54,14 @@ const SetPrivateInPerson = () => {
       if (!imgurl.endsWith(".png")) {
         errorMessages.push("Image does not end with jpg or png.");
       }
+    }
+
+    if (imgurl.length > 255) {
+      errorMessages.push("URL must be under 255 characters");
+    }
+
+    if (!sessionUser) {
+      errorMessages.push("User must be logged in to create group");
     }
 
     setErrorMessages(errorMessages);
