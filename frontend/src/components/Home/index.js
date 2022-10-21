@@ -52,7 +52,7 @@ function Home() {
                   color: "rgb(00, 82, 94)",
                 }}
               >
-                Join a group
+                See all groups
               </NavLink>
             </div>
             <p>

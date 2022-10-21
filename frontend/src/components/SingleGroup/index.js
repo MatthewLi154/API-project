@@ -120,169 +120,171 @@ const SingleGroup = () => {
 
   return (
     <>
-      {groupDataObj && (
-        <div className="pageContainer">
-          {/* <div>{groupDataObj.name}</div> */}
-          <div className="upperSectionDetails">
-            <div className="leftImgContainer">
-              {groupDataObj.GroupImages && (
-                <img src={groupDataObj.GroupImages[0]?.url}></img>
-              )}
-            </div>
-            <div className="rightSectionDetails">
-              <div className="groupName">
-                <h1>{groupDataObj.name}</h1>
-              </div>
-              <div className="groupDetailContainer">
-                <div className="groupLocation">
-                  <h3>
-                    {groupDataObj.city}, {groupDataObj.state}
-                  </h3>
-                </div>
-                <div className="groupNumMembersPrivate">
-                  <h3>
-                    {groupDataObj.numMembers} members ·{" "}
-                    {groupDataObj.private ? `Private Group` : `Public Group`}
-                  </h3>
-                </div>
-                <div className="groupOrganizer">
-                  {groupDataObj.Organizer && (
-                    <h3>
-                      Organized by {groupDataObj.Organizer.firstName}{" "}
-                      {groupDataObj.Organizer.lastName}
-                    </h3>
-                  )}
-                </div>
-                <div className="groupShare"></div>
-              </div>
-            </div>
-          </div>
-          {(isMember || isOrganizer) && (
-            <div className="centerButtonsContainer">
-              <div className="centerButtons">
-                {isMember && (
-                  <div className="createEventButton">
-                    <button
-                      onClick={(e) => {
-                        onCreateEvent(e);
-                      }}
-                    >
-                      Create Event
-                    </button>
-                  </div>
+      <div className="groupBody">
+        {groupDataObj && (
+          <div className="pageContainer">
+            {/* <div>{groupDataObj.name}</div> */}
+            <div className="upperSectionDetails">
+              <div className="leftImgContainer">
+                {groupDataObj.GroupImages && (
+                  <img src={groupDataObj.GroupImages[0]?.url}></img>
                 )}
-                {isOrganizer && (
-                  <div className="deleteEditButtons">
-                    <div>
-                      <NavLink to={`/groups/${groupDataObj.id}/edit`}>
-                        {" "}
-                        <button>Edit</button>
-                      </NavLink>
-                    </div>
-                    <div>
+              </div>
+              <div className="rightSectionDetails">
+                <div className="groupName">
+                  <h1>{groupDataObj.name}</h1>
+                </div>
+                <div className="groupDetailContainer">
+                  <div className="groupLocation">
+                    <h3>
+                      {groupDataObj.city}, {groupDataObj.state}
+                    </h3>
+                  </div>
+                  <div className="groupNumMembersPrivate">
+                    <h3>
+                      {groupDataObj.numMembers} members ·{" "}
+                      {groupDataObj.private ? `Private Group` : `Public Group`}
+                    </h3>
+                  </div>
+                  <div className="groupOrganizer">
+                    {groupDataObj.Organizer && (
+                      <h3>
+                        Organized by {groupDataObj.Organizer.firstName}{" "}
+                        {groupDataObj.Organizer.lastName}
+                      </h3>
+                    )}
+                  </div>
+                  <div className="groupShare"></div>
+                </div>
+              </div>
+            </div>
+            {(isMember || isOrganizer) && (
+              <div className="centerButtonsContainer">
+                <div className="centerButtons">
+                  {isMember && (
+                    <div className="createEventButton">
                       <button
                         onClick={(e) => {
-                          onDelete(e);
+                          onCreateEvent(e);
                         }}
                       >
-                        Delete
+                        Create Event
                       </button>
                     </div>
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
-          <div className="middleSectionMain">
-            <div className="middleSectionContainer">
-              <div className="middleSectionLeftSide">
-                <div>
-                  <h2>What we're about</h2>
-                </div>
-                <div>
-                  <p>{groupDataObj.about}</p>
-                </div>
-                {groupEvents.length > 0 && (
-                  <div className="upcomingEventsContainer">
-                    <div className="groupUpcomingEvents">
-                      <h2>
-                        Upcoming Events{" "}
-                        {groupEvents?.length > 0 && (
-                          <span>{`(${groupEvents.length})`}</span>
-                        )}
-                      </h2>
-                    </div>
-                    {groupEvents?.length > 0 &&
-                      groupEvents?.map((event) => (
-                        <NavLink
-                          to={`/events/${event.id}`}
-                          style={{ textDecoration: "none", color: "none" }}
-                        >
-                          <div key={event.id} className="upcomingEventsCard">
-                            <div className="eventDateAndTime">
-                              <div>
-                                <i class="fa-regular fa-clock"></i>
-                              </div>
-                              <div className="dateTimeText">
-                                {parseDayTime(event.startDate)}
-                              </div>
-                            </div>
-                            <div className="eventName">{event.name}</div>
-                            <div className="groupEventLocation">
-                              {event.Venue === null ? (
-                                <div>Online</div>
-                              ) : (
-                                <div>
-                                  {event.Venue?.city}, {event.Venue?.state}
-                                </div>
-                              )}
-                            </div>
-                            <div className="groupEventNumAttendees">
-                              <div>{event.numAttending} attendees</div>
-                            </div>
-                          </div>
+                  )}
+                  {isOrganizer && (
+                    <div className="deleteEditButtons">
+                      <div>
+                        <NavLink to={`/groups/${groupDataObj.id}/edit`}>
+                          {" "}
+                          <button>Edit</button>
                         </NavLink>
-                      ))}
-                  </div>
-                )}
-              </div>
-              <div className="middleSectionRightSide">
-                <div>
-                  <h2>Organizers</h2>
-                  {groupDataObj.Organizer && (
-                    <h3>
-                      {groupDataObj.Organizer.firstName}{" "}
-                      {groupDataObj.Organizer.lastName}
-                    </h3>
+                      </div>
+                      <div>
+                        <button
+                          onClick={(e) => {
+                            onDelete(e);
+                          }}
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </div>
                   )}
                 </div>
-                <div className="membersContainer">
-                  <h2>Members</h2>
-                  <h3>
-                    {sessionUser ? (
-                      <ul className="memberList">
-                        {members?.length > 0 &&
-                          members?.map((member) => (
-                            <li key={member.id}>
-                              {member.firstName} {member.lastName} ·{" "}
-                              <span className="memberLi">
-                                {member.Membership?.status}
-                              </span>
-                            </li>
-                          ))}
-                      </ul>
-                    ) : (
-                      <div className="memberList">
-                        <span>Must be logged in to see members</span>
+              </div>
+            )}
+            <div className="middleSectionMain">
+              <div className="middleSectionContainer">
+                <div className="middleSectionLeftSide">
+                  <div>
+                    <h2>What we're about</h2>
+                  </div>
+                  <div>
+                    <p>{groupDataObj.about}</p>
+                  </div>
+                  {groupEvents.length > 0 && (
+                    <div className="upcomingEventsContainer">
+                      <div className="groupUpcomingEvents">
+                        <h2>
+                          Upcoming Events{" "}
+                          {groupEvents?.length > 0 && (
+                            <span>{`(${groupEvents.length})`}</span>
+                          )}
+                        </h2>
                       </div>
+                      {groupEvents?.length > 0 &&
+                        groupEvents?.map((event) => (
+                          <NavLink
+                            to={`/events/${event.id}`}
+                            style={{ textDecoration: "none", color: "none" }}
+                          >
+                            <div key={event.id} className="upcomingEventsCard">
+                              <div className="eventDateAndTime">
+                                <div>
+                                  <i class="fa-regular fa-clock"></i>
+                                </div>
+                                <div className="dateTimeText">
+                                  {parseDayTime(event.startDate)}
+                                </div>
+                              </div>
+                              <div className="eventName">{event.name}</div>
+                              <div className="groupEventLocation">
+                                {event.Venue === null ? (
+                                  <div>Online</div>
+                                ) : (
+                                  <div>
+                                    {event.Venue?.city}, {event.Venue?.state}
+                                  </div>
+                                )}
+                              </div>
+                              <div className="groupEventNumAttendees">
+                                <div>{event.numAttending} attendees</div>
+                              </div>
+                            </div>
+                          </NavLink>
+                        ))}
+                    </div>
+                  )}
+                </div>
+                <div className="middleSectionRightSide">
+                  <div>
+                    <h2>Organizers</h2>
+                    {groupDataObj.Organizer && (
+                      <h3>
+                        {groupDataObj.Organizer.firstName}{" "}
+                        {groupDataObj.Organizer.lastName}
+                      </h3>
                     )}
-                  </h3>
+                  </div>
+                  <div className="membersContainer">
+                    <h2>Members</h2>
+                    <h3>
+                      {sessionUser ? (
+                        <ul className="memberList">
+                          {members?.length > 0 &&
+                            members?.map((member) => (
+                              <li key={member.id}>
+                                {member.firstName} {member.lastName} ·{" "}
+                                <span className="memberLi">
+                                  {member.Membership?.status}
+                                </span>
+                              </li>
+                            ))}
+                        </ul>
+                      ) : (
+                        <div className="memberList">
+                          <span>Must be logged in to see members</span>
+                        </div>
+                      )}
+                    </h3>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </>
   );
 };

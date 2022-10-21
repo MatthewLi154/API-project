@@ -58,66 +58,68 @@ const Events = () => {
 
   return (
     <>
-      <div className="allEventsContainer">
-        <div className="eventsGroupsContainer">
-          <div className="eventsToggleContainer">
-            <NavLink
-              to="/events"
-              style={{ textDecoration: "underline", color: "#008294" }}
-            >
-              Events
-            </NavLink>
+      <div className="eventBody">
+        <div className="allEventsContainer">
+          <div className="eventsGroupsContainer">
+            <div className="eventsToggleContainer">
+              <NavLink
+                to="/events"
+                style={{ textDecoration: "underline", color: "#008294" }}
+              >
+                Events
+              </NavLink>
+            </div>
+            <div className="groupsToggleContainer">
+              <NavLink
+                to="/groups"
+                style={{ textDecoration: "none", color: "gray" }}
+              >
+                Groups
+              </NavLink>
+            </div>
           </div>
-          <div className="groupsToggleContainer">
-            <NavLink
-              to="/groups"
-              style={{ textDecoration: "none", color: "gray" }}
-            >
-              Groups
-            </NavLink>
-          </div>
-        </div>
-        {eventsArr.length > 0 &&
-          eventsArr.map((event) => (
-            <NavLink
-              to={`/events/${event.id}`}
-              style={{ textDecoration: "none" }}
-              key={event.id}
-            >
-              <div className="SingleEventContainer" key={event.id}>
-                <div className="eventCard">
-                  <div className="EventLeftImg">
-                    {event.previewImage !== "no image" ? (
-                      <img src={event.previewImage}></img>
-                    ) : (
-                      <img src="https://img3.stockfresh.com/files/i/imagedb/m/79/6143587_stock-photo-pims20100729as0027jpg.jpg"></img>
-                    )}
-                  </div>
-                  <div className="EventRightText">
-                    <div className="startDate">
-                      {parseDayTime(event.startDate)}
-                    </div>
-                    <div className="eventTitle">
-                      <h2>{event.name}</h2>
-                    </div>
-                    <div className="eventLocation">
-                      {event.Venue ? (
-                        <h3>
-                          {event.Group?.name} · {event.Venue.city},{" "}
-                          {event.Venue?.state}
-                        </h3>
+          {eventsArr.length > 0 &&
+            eventsArr.map((event) => (
+              <NavLink
+                to={`/events/${event.id}`}
+                style={{ textDecoration: "none" }}
+                key={event.id}
+              >
+                <div className="SingleEventContainer" key={event.id}>
+                  <div className="eventCard">
+                    <div className="EventLeftImg">
+                      {event.previewImage !== "no image" ? (
+                        <img src={event.previewImage}></img>
                       ) : (
-                        <h3>Online</h3>
+                        <img src="https://img3.stockfresh.com/files/i/imagedb/m/79/6143587_stock-photo-pims20100729as0027jpg.jpg"></img>
                       )}
                     </div>
-                    <div className="numAttendees">
-                      <h4>{event.numAttending} attendees</h4>
+                    <div className="EventRightText">
+                      <div className="startDate">
+                        {parseDayTime(event.startDate)}
+                      </div>
+                      <div className="eventTitle">
+                        <h2>{event.name}</h2>
+                      </div>
+                      <div className="eventLocation">
+                        {event.Venue ? (
+                          <h3>
+                            {event.Group?.name} · {event.Venue.city},{" "}
+                            {event.Venue?.state}
+                          </h3>
+                        ) : (
+                          <h3>Online</h3>
+                        )}
+                      </div>
+                      <div className="numAttendees">
+                        <h4>{event.numAttending} attendees</h4>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </NavLink>
-          ))}
+              </NavLink>
+            ))}
+        </div>
       </div>
     </>
   );

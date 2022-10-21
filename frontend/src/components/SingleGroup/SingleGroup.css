@@ -8,6 +8,11 @@ html,
   background: transparent; /* make scrollbar transparent */
 }
 
+.groupBody {
+  display: flex;
+  justify-content: center;
+}
+
 .pageContainer {
   display: flex;
   flex-direction: column;
