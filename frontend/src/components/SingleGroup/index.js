@@ -20,6 +20,7 @@ const SingleGroup = () => {
   const currentUser = useSelector((state) => state.session.user);
   const groupMembersArr = useSelector((state) => state.groups.members);
   const allEvents = useSelector((state) => state.events.allEvents);
+  const sessionUser = useSelector((state) => state.session.user);
 
   useEffect(() => {
     dispatch(fetchGroups());
@@ -258,17 +259,23 @@ const SingleGroup = () => {
                 <div className="membersContainer">
                   <h2>Members</h2>
                   <h3>
-                    <ul className="memberList">
-                      {members?.length > 0 &&
-                        members?.map((member) => (
-                          <li key={member.id}>
-                            {member.firstName} {member.lastName} ·{" "}
-                            <span className="memberLi">
-                              {member.Membership?.status}
-                            </span>
-                          </li>
-                        ))}
-                    </ul>
+                    {sessionUser ? (
+                      <ul className="memberList">
+                        {members?.length > 0 &&
+                          members?.map((member) => (
+                            <li key={member.id}>
+                              {member.firstName} {member.lastName} ·{" "}
+                              <span className="memberLi">
+                                {member.Membership?.status}
+                              </span>
+                            </li>
+                          ))}
+                      </ul>
+                    ) : (
+                      <div className="memberList">
+                        <span>Must be logged in to see members</span>
+                      </div>
+                    )}
                   </h3>
                 </div>
               </div>
