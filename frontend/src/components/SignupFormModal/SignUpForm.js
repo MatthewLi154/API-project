@@ -126,7 +126,7 @@ const SignupFormPage = () => {
                 Sign Up
               </button>
             </div>
-            <div>
+            {/* <div>
               <span className="alreadyMember">
                 Already a member?
                 <span>
@@ -134,7 +134,7 @@ const SignupFormPage = () => {
                   <LoginFormModal />
                 </span>
               </span>
-            </div>
+            </div> */}
           </div>
         </form>
       </div>
