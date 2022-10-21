@@ -41,11 +41,26 @@ module.exports = {
       {
         userId: 8,
         groupId: 3,
-        status: "pending",
+        status: "co-host",
       },
       {
         userId: 9,
-        groupId: 3,
+        groupId: 4,
+        status: "co-host",
+      },
+      {
+        userId: 10,
+        groupId: 4,
+        status: "member",
+      },
+      {
+        userId: 11,
+        groupId: 5,
+        status: "co-host",
+      },
+      {
+        userId: 12,
+        groupId: 6,
         status: "co-host",
       },
     ]);

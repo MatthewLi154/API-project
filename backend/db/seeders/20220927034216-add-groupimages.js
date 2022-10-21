@@ -5,18 +5,33 @@ module.exports = {
     await queryInterface.bulkInsert("GroupImages", [
       {
         groupId: 1,
-        url: "https://www.pngitem.com/pimgs/m/128-1284663_shiba-inu-clipart-cute-anime-chibi-cute-kawaii.png",
+        url: "https://cdn.vox-cdn.com/thumbor/v6iJVAeyKD8OetowRsfNn3n58F8=/0x171:1200x771/fit-in/1200x600/cdn.vox-cdn.com/uploads/chorus_asset/file/21932734/ChainsawMan_GN01_C1_Catalog.jpg",
         preview: true,
       },
       {
         groupId: 2,
-        url: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Cow_female_black_white.jpg/1280px-Cow_female_black_white.jpg",
+        url: "https://image.shutterstock.com/shutterstock/photos/1968490054/display_1500/stock-photo-perfect-anime-image-to-be-used-as-wallpaper-1968490054.jpg",
         preview: true,
       },
       {
         groupId: 3,
-        url: "https://ichef.bbci.co.uk/news/976/cpsprodpb/F382/production/_123883326_852a3a31-69d7-4849-81c7-8087bf630251.jpg",
-        preview: false,
+        url: "https://images.hdqwalls.com/wallpapers/anime-ninja-4k-lo.jpg",
+        preview: true,
+      },
+      {
+        groupId: 4,
+        url: "https://wallpaperaccess.com/full/6319352.jpg",
+        preview: true,
+      },
+      {
+        groupId: 5,
+        url: "https://www.fanbolt.com/storage/2021/08/anime-iphone-wallpaper-800x500.jpg",
+        preview: true,
+      },
+      {
+        groupId: 6,
+        url: "https://i.pinimg.com/originals/8a/ce/a9/8acea9261c892e75b0651de1d4f4e0e1.jpg",
+        preview: true,
       },
     ]);
   },

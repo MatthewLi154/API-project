@@ -27,6 +27,30 @@ module.exports = {
         lat: 7.2,
         lng: 7.3,
       },
+      {
+        groupId: 4,
+        address: "Apple Circle",
+        city: "San Diego",
+        state: "CA",
+        lat: 7.2,
+        lng: 7.3,
+      },
+      {
+        groupId: 5,
+        address: "Apple Circle",
+        city: "San Diego",
+        state: "CA",
+        lat: 7.2,
+        lng: 7.3,
+      },
+      {
+        groupId: 6,
+        address: "Apple Circle",
+        city: "San Diego",
+        state: "CA",
+        lat: 7.2,
+        lng: 7.3,
+      },
     ]);
   },
 

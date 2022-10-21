@@ -44,6 +44,8 @@ const SingleGroup = () => {
     members = groupMembersArr?.Members;
   }
 
+  console.log(members);
+
   const parseDayTime = (dayTimeString) => {
     const [date, time] = dayTimeString.split("T");
     const [year, month, day] = date.split("-");
@@ -104,7 +106,7 @@ const SingleGroup = () => {
   isOrganizer = currentUser?.id === groupDataObj?.organizerId ? true : false;
 
   // check if currentUser.id === membersid and if Membership status = member or co-host
-  let isMember;
+  let isMember = false;
   members?.forEach((member) => {
     if (
       member.id === currentUser.id &&
@@ -257,14 +259,15 @@ const SingleGroup = () => {
                   <h2>Members</h2>
                   <h3>
                     <ul className="memberList">
-                      {members?.map((member) => (
-                        <li key={member.id}>
-                          {member.firstName} {member.lastName} ·{" "}
-                          <span className="memberLi">
-                            {member.Membership?.status}
-                          </span>
-                        </li>
-                      ))}
+                      {members?.length > 0 &&
+                        members?.map((member) => (
+                          <li key={member.id}>
+                            {member.firstName} {member.lastName} ·{" "}
+                            <span className="memberLi">
+                              {member.Membership?.status}
+                            </span>
+                          </li>
+                        ))}
                     </ul>
                   </h3>
                 </div>
