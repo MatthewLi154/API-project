@@ -19,7 +19,7 @@ const SingleGroup = () => {
   // use
   const groupDataObj = useSelector((state) => state.groups.singleGroup);
   const currentUser = useSelector((state) => state.session.user);
-  const groupMembersArr = useSelector((state) => state.groups.members);
+  const groupMembersArr = useSelector((state) => state.groups?.members);
   const allEvents = useSelector((state) => state.events.allEvents);
   const sessionUser = useSelector((state) => state.session.user);
 
@@ -128,7 +128,7 @@ const SingleGroup = () => {
   let isMember = false;
   members?.forEach((member) => {
     if (
-      member.id === currentUser.id &&
+      member?.id === currentUser?.id &&
       (member.Membership?.status === "co-host" ||
         member.Memebership?.status === "member")
     ) {
