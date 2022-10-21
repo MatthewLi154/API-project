@@ -67,14 +67,15 @@ const SingleGroup = () => {
     ];
 
     let AMPM = "PM PDT";
+    let parsedHour = hour;
     if (hour > 12) {
-      hour = hour - 12;
+      parsedHour = hour - 12;
       AMPM = "AM PDT";
     }
 
     let newDayTimeString = `${week[dayOfWeek]}, ${
       monthStr[month - 1]
-    } ${day} · ${hour}:${minute} ${AMPM}`;
+    } ${day} · ${parsedHour}:${minute} ${AMPM}`;
     return newDayTimeString;
   };
 
