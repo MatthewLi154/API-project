@@ -19,7 +19,7 @@ const SingleGroup = () => {
   const groupDataObj = useSelector((state) => state.groups.singleGroup);
   const currentUser = useSelector((state) => state.session.user);
   const groupMembersArr = useSelector((state) => state.groups.members);
-  const allEvents = useSelector((state) => state?.events?.allEvents);
+  const allEvents = useSelector((state) => state.events.allEvents);
 
   useEffect(() => {
     dispatch(fetchGroups());
@@ -198,47 +198,49 @@ const SingleGroup = () => {
                 <div>
                   <p>{groupDataObj.about}</p>
                 </div>
-                <div className="upcomingEventsContainer">
-                  <div className="groupUpcomingEvents">
-                    <h2>
-                      Upcoming Events{" "}
-                      {groupEvents?.length > 0 && (
-                        <span>{`(${groupEvents.length})`}</span>
-                      )}
-                    </h2>
-                  </div>
-                  {groupEvents?.length > 0 &&
-                    groupEvents.map((event) => (
-                      <NavLink
-                        to={`/events/${event.id}`}
-                        style={{ textDecoration: "none", color: "none" }}
-                      >
-                        <div key={event.id} className="upcomingEventsCard">
-                          <div className="eventDateAndTime">
-                            <div>
-                              <i class="fa-regular fa-clock"></i>
-                            </div>
-                            <div className="dateTimeText">
-                              {parseDayTime(event.startDate)}
-                            </div>
-                          </div>
-                          <div className="eventName">{event.name}</div>
-                          <div className="groupEventLocation">
-                            {event.Venue === null ? (
-                              <div>Online</div>
-                            ) : (
+                {groupEvents.length > 0 && (
+                  <div className="upcomingEventsContainer">
+                    <div className="groupUpcomingEvents">
+                      <h2>
+                        Upcoming Events{" "}
+                        {groupEvents?.length > 0 && (
+                          <span>{`(${groupEvents.length})`}</span>
+                        )}
+                      </h2>
+                    </div>
+                    {groupEvents?.length > 0 &&
+                      groupEvents?.map((event) => (
+                        <NavLink
+                          to={`/events/${event.id}`}
+                          style={{ textDecoration: "none", color: "none" }}
+                        >
+                          <div key={event.id} className="upcomingEventsCard">
+                            <div className="eventDateAndTime">
                               <div>
-                                {event.Venue?.city}, {event.Venue?.state}
+                                <i class="fa-regular fa-clock"></i>
                               </div>
-                            )}
+                              <div className="dateTimeText">
+                                {parseDayTime(event.startDate)}
+                              </div>
+                            </div>
+                            <div className="eventName">{event.name}</div>
+                            <div className="groupEventLocation">
+                              {event.Venue === null ? (
+                                <div>Online</div>
+                              ) : (
+                                <div>
+                                  {event.Venue?.city}, {event.Venue?.state}
+                                </div>
+                              )}
+                            </div>
+                            <div className="groupEventNumAttendees">
+                              <div>{event.numAttending} attendees</div>
+                            </div>
                           </div>
-                          <div className="groupEventNumAttendees">
-                            <div>{event.numAttending} attendees</div>
-                          </div>
-                        </div>
-                      </NavLink>
-                    ))}
-                </div>
+                        </NavLink>
+                      ))}
+                  </div>
+                )}
               </div>
               <div className="middleSectionRightSide">
                 <div>

@@ -17,6 +17,8 @@ const SingleEvent = () => {
   const singleEventObj = useSelector((state) => state.events.singleEvent);
   const allGroupsArr = useSelector((state) => state.groups.allGroups);
 
+  console.log(singleEventObj);
+
   useEffect(() => {
     dispatch(fetchAllEvents());
     dispatch(fetchSingleEvent(eventId));
@@ -46,38 +48,43 @@ const SingleEvent = () => {
   };
 
   const parseDayTime = (dayTimeString) => {
-    const [date, time] = dayTimeString.split("T");
-    const [year, month, day] = date.split("-");
-    const [hour, minute, seconds] = time.split(":");
-    let newDate = new Date(year, month, day);
-    let dayOfWeek = newDate.getDay();
-    let week = ["SUN", "MON", "TUES", "WED", "THU", "FRI", "SAT"];
-    let monthStr = [
-      "JAN",
-      "FEB",
-      "MAR",
-      "APR",
-      "MAY",
-      "JUNE",
-      "JULY",
-      "AUG",
-      "SEPT",
-      "OCT",
-      "NOV",
-      "DEC",
-    ];
+    if (dayTimeString) {
+      const [date, time] = dayTimeString.split("T");
+      const [year, month, day] = date.split("-");
+      const [hour, minute, seconds] = time.split(":");
+      let newDate = new Date(year, month, day);
+      let dayOfWeek = newDate.getDay();
+      let week = ["SUN", "MON", "TUES", "WED", "THU", "FRI", "SAT"];
+      let monthStr = [
+        "JAN",
+        "FEB",
+        "MAR",
+        "APR",
+        "MAY",
+        "JUNE",
+        "JULY",
+        "AUG",
+        "SEPT",
+        "OCT",
+        "NOV",
+        "DEC",
+      ];
 
-    let AMPM = "PM";
-    if (hour > 12) {
-      hour = hour - 12;
-      AMPM = "AM";
+      let AMPM = "PM";
+      if (hour > 12) {
+        hour = hour - 12;
+        AMPM = "AM";
+      }
+
+      let newDayTimeString = `${week[dayOfWeek]}, ${
+        monthStr[month - 1]
+      } ${day} · ${hour}:${minute} ${AMPM}`;
+      return newDayTimeString;
     }
-
-    let newDayTimeString = `${week[dayOfWeek]}, ${
-      monthStr[month - 1]
-    } ${day} · ${hour}:${minute} ${AMPM}`;
-    return newDayTimeString;
   };
+
+  let eventStartDate = parseDayTime(singleEventObj?.startDate);
+  let eventEndDate = parseDayTime(singleEventObj.endDate);
 
   return (
     <>
@@ -147,10 +154,8 @@ const SingleEvent = () => {
                       <i class="fa-regular fa-clock"></i>
                     </div>
                     <div className="dateBlock">
-                      {" "}
                       <span>
-                        {parseDayTime(singleEventObj.startDate)} to{" "}
-                        {parseDayTime(singleEventObj.endDate)}
+                        {eventStartDate} TO {eventEndDate}
                       </span>
                     </div>
                   </div>

@@ -95,11 +95,13 @@ const CreateEventForm = () => {
     // create form data
     let formData = {
       name: eventName,
-      about: eventDescription,
+      description: eventDescription,
       type: eventInPerson,
       private: eventPrivate,
       startDate: startDate,
       endDate: endDate,
+      capacity: eventCapacity,
+      price: eventPrice,
     };
 
     // use thunk to create a new venue for a group by id
