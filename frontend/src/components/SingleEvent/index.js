@@ -118,7 +118,7 @@ const SingleEvent = () => {
   // get organizerId from allGroupsArr by iterating through the array until groupId matches
   let isOrganizer;
   isOrganizer =
-    allGroupsObj[groupId]?.organizerId === sessionUser.id ? true : false;
+    allGroupsObj[groupId]?.organizerId === sessionUser?.id ? true : false;
 
   // isOrganizer = currentUser?.id === groupDataObj?.organizerId ? true : false;
 
