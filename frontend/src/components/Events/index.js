@@ -24,7 +24,7 @@ const Events = () => {
   const parseDayTime = (dayTimeString) => {
     const [date, time] = dayTimeString.split("T");
     const [year, month, day] = date.split("-");
-    const [hour, minute, seconds] = time.split(":");
+    const [hourTime, minute, seconds] = time.split(":");
     let newDate = new Date(year, month, day);
     let dayOfWeek = newDate.getDay();
     let week = ["SUN", "MON", "TUES", "WED", "THU", "FRI", "SAT"];
@@ -44,14 +44,15 @@ const Events = () => {
     ];
 
     let AMPM = "PM PDT";
-    if (hour > 12) {
-      hour = hour - 12;
+    let parsedhourTime = hourTime;
+    if (hourTime > 12) {
+      parsedhourTime = hourTime - 12;
       AMPM = "AM PDT";
     }
 
     let newDayTimeString = `${week[dayOfWeek]}, ${
       monthStr[month - 1]
-    } ${day} · ${hour}:${minute} ${AMPM}`;
+    } ${day} · ${parsedhourTime}:${minute} ${AMPM}`;
     return newDayTimeString;
   };
 
