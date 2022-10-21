@@ -8,7 +8,7 @@ module.exports = {
         groupId: 1,
         name: "Bring Your Own Blanket",
         description:
-          "Some people just aren’t suited to playing the part of the flashy, in-your-face hero or the dastardly, mustache-twirling villain with larger-than-life panache. Instead, they operate in the shadows and pull the strings of society through wit and cleverness. That’s the role Cid wants to play when he’s transported to another world. Cid spins a yarn or three and becomes the unlikely leader of the underground Shadow Garden organization that fights against a menacing cult (which he totally made up). However, there’s a catch even his wild imagination didn’t see coming: the cult he concocted actually exists, and they’re beyond displeased that his power fantasy just got in the way of their evil plans!",
+          "Some people just aren’t suited to playing the part of the flashy, in-your-face hero or the dastardly, mustache-twirling villain with larger-than-life panache.",
         type: "In person",
         capacity: 30,
         price: 10,
@@ -20,7 +20,7 @@ module.exports = {
         groupId: 2,
         name: "Anime Social",
         description:
-          "When new Soul Reapers and a new enemy appear in his hometown of Karakura, Ichigo jumps back into the battlefield with his Zanpakuto to help those in need. Meanwhile, the Soul Society is observing a sudden surge in the number of Hollows being destroyed in the World of the Living. They also receive separate reports of residents in the Rukon District having gone missing. Finally, the Seireitei, home of the Soul Reapers, comes under attack by a group calling themselves the Wandenreich.",
+          "When new Soul Reapers and a new enemy appear in his hometown of Karakura, Ichigo jumps back into the battlefield with his Zanpakuto to help those in need.",
         type: "In person",
         capacity: 50,
         price: 7,
@@ -32,7 +32,7 @@ module.exports = {
         groupId: 3,
         name: "After Party",
         description:
-          "Ittoki Sakuraba was an ordinary student, until his life was turned upside down! He finds out that he is the 19th heir of the famous Iga Ninjas. The Iga must try to defend what is theirs from the Koga, a rivaling clan seeking to end Ittoki’s life. Ittoki is left with no choice but to become a shinobi that’s strong enough to not only protect himself, but also his village. Now a student at Kokuten Ninja Academy, a high school specializing in shinobi techniques, Ittoki learns the way of the modern-day ninja, equipped with high-tech suits and gadgets. Together with students from other villages, Ittoki clashes with the Koga in an attempt to end the rivalry once and for all.",
+          "Ittoki Sakuraba was an ordinary student, until his life was turned upside down! He finds out that he is the 19th heir of the famous Iga Ninjas.",
         type: "In person",
         capacity: 50,
         price: 7,
@@ -44,7 +44,7 @@ module.exports = {
         groupId: 4,
         name: "Shokugeki Duel",
         description:
-          "Third-year high school student Jirou Yakuin hoped to partner with Shiori Sakurazaka of the same class in the mandatory Couple Practical course. In this practical, students must demonstrate that they have the necessary skillset to live with a partner of the opposite sex while presenting a certain level of harmony to the video surveillance that grades them.",
+          "Third-year high school student Jirou Yakuin hoped to partner with Shiori Sakurazaka of the same class in the mandatory Couple Practical course. ",
         type: "In person",
         capacity: 50,
         price: 7,
@@ -56,7 +56,7 @@ module.exports = {
         groupId: 5,
         name: "Anime Social",
         description:
-          "When new Soul Reapers and a new enemy appear in his hometown of Karakura, Ichigo jumps back into the battlefield with his Zanpakuto to help those in need. Meanwhile, the Soul Society is observing a sudden surge in the number of Hollows being destroyed in the World of the Living. They also receive separate reports of residents in the Rukon District having gone missing. Finally, the Seireitei, home of the Soul Reapers, comes under attack by a group calling themselves the Wandenreich.",
+          "When new Soul Reapers and a new enemy appear in his hometown of Karakura, Ichigo jumps back into the battlefield with his Zanpakuto to help those in need. ",
         type: "In person",
         capacity: 50,
         price: 7,

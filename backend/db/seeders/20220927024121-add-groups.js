@@ -9,7 +9,7 @@ module.exports = {
           organizerId: 1,
           name: "Chainsaw Man Fan Club",
           about:
-            "Denji is a teenage boy living with a Chainsaw Devil named Pochita. Due to the debt his father left behind, he has been living a rock-bottom life while repaying his debt by harvesting devil corpses with Pochita. One day, Denji is betrayed and killed. As his consciousness fades, he makes a contract with Pochita and gets revived as 'Chainsaw Man' — a man with a devil's heart.",
+            "Denji is a teenage boy living with a Chainsaw Devil named Pochita. Due to the debt his father left behind, he has been living a rock-bottom life while repaying his debt by harvesting devil corpses with Pochita.",
           type: "In person",
           private: false,
           city: "Tokyo",
@@ -19,7 +19,7 @@ module.exports = {
           organizerId: 2,
           name: "Spy x Family Watch Group",
           about:
-            "Corrupt politicians, frenzied nationalists, and other warmongering forces constantly jeopardize the thin veneer of peace between neighboring countries Ostania and Westalis. In spite of their plots, renowned spy and master of disguise Twilight fulfills dangerous missions one after another in the hope that no child will have to experience the horrors of war. In the bustling Ostanian city of Berlint, Twilight dons the alias of Loid Forger, an esteemed psychiatrist. However, his true intention is to gather intelligence on prominent politician Donovan Desmond, who only appears rarely in public at his sons' school: the prestigious Eden Academy. Enlisting the help of unmarried city hall clerk Yor Briar to act as his wife and adopting the curious six-year-old orphan Anya as his daughter, Loid enacts his master plan. He will enroll Anya in Eden Academy, where Loid hopes she will excel and give him the opportunity to meet Donovan without arousing suspicion.",
+            "Corrupt politicians, frenzied nationalists, and other warmongering forces constantly jeopardize the thin veneer of peace between neighboring countries Ostania and Westalis. In spite of their plots, renowned spy ",
           type: "In person",
           private: false,
           city: "Ostania",
@@ -59,7 +59,7 @@ module.exports = {
           organizerId: 6,
           name: "All Anime Group",
           about:
-            "Some people just arent suited to playing the part of the flashy, in-your-face hero or the dastardly, mustache-twirling villain with larger-than-life panache. Instead, they operate in the shadows and pull the strings of society through wit and cleverness. Thats the role Cid wants to play when hes transported to another world. Cid spins a yarn or three and becomes the unlikely leader of the underground Shadow Garden organization that fights against a menacing cult (which he totally made up). However, theres a catch even his wild imagination didnt see coming: the cult he concocted actually exists, and theyre beyond displeased that his power fantasy just got in the way of their evil plans!",
+            "Some people just arent suited to playing the part of the flashy, in-your-face hero or the dastardly, mustache-twirling villain with larger-than-life panache. Instead, they operate in the shadows ",
           type: "In person",
           private: true,
           city: "Witch Land",
