@@ -97,17 +97,15 @@ function Home() {
           </div>
         </div>
         <div className="buttonContainer">
-          <div className="joinWeebUpButton">
-            <NavLink
-              to="/register"
-              style={{
-                textDecoration: "none",
-                color: "white",
-              }}
-            >
-              Join Weebup
-            </NavLink>
-          </div>
+          <NavLink
+            to="/register"
+            style={{
+              textDecoration: "none",
+              color: "white",
+            }}
+          >
+            <div className="joinWeebUpButton">Join Weebup</div>
+          </NavLink>
         </div>
       </div>
     </>
