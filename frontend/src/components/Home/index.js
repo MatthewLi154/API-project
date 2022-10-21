@@ -1,11 +1,12 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 import "./Home.css";
 import Groups from "../Groups";
 import SignUpFormModal from "../SignupFormModal";
 
 function Home() {
+  const history = useHistory();
   return (
     <>
       <div className="homeContainer">
@@ -97,16 +98,18 @@ function Home() {
           </div>
         </div>
         <div className="buttonContainer">
-          <div className="joinWeebUpButton">
-            <NavLink
-              to="/register"
-              style={{
-                textDecoration: "none",
-                color: "white",
-              }}
-            >
-              Join Weebup
-            </NavLink>
+          <div
+            className="joinWeebUpButton"
+            onClick={(e) => {
+              e.preventDefault();
+              history.push("/groups/create");
+            }}
+            style={{
+              textDecoration: "none",
+              color: "white",
+            }}
+          >
+            Join Weebup
           </div>
         </div>
       </div>

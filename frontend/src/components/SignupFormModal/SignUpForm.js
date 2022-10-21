@@ -6,7 +6,7 @@ import * as sessionActions from "../../store/session";
 import LoginFormModal from "../LoginFormModal";
 import "./SignupForm.css";
 
-function SignupFormPage() {
+const SignupFormPage = () => {
   const dispatch = useDispatch();
   const sessionUser = useSelector((state) => state.session.user);
   const [email, setEmail] = useState("");
@@ -126,7 +126,7 @@ function SignupFormPage() {
                 Sign Up
               </button>
             </div>
-            <div>
+            {/* <div>
               <span className="alreadyMember">
                 Already a member?
                 <span>
@@ -134,12 +134,12 @@ function SignupFormPage() {
                   <LoginFormModal />
                 </span>
               </span>
-            </div>
+            </div> */}
           </div>
         </form>
       </div>
     </>
   );
-}
+};
 
 export default SignupFormPage;
