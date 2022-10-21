@@ -9,6 +9,7 @@
   width: 2.5rem;
   height: 2.5rem;
   border-radius: 50%;
+  cursor: pointer;
 }
 
 .profile-dropdown-container {
@@ -19,6 +20,7 @@
   /* border: gray solid 2px; */
   box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
   border: rgba(0, 0, 0, 0.2) 1px solid;
+  cursor: pointer;
 }
 
 .profile-dropdown-container li {
@@ -64,6 +66,7 @@
   position: absolute;
   top: 1rem;
   right: 0.25rem;
+  cursor: pointer;
 }
 
 .fa-solid.fa-angle-up {
@@ -74,11 +77,13 @@
   position: absolute;
   top: 1rem;
   right: 0.25rem;
+  cursor: pointer;
 }
 
 .userName {
   border-bottom: 1px lightgray solid;
   padding-bottom: 0.45rem;
+  cursor: default;
 }
 
 .login-demouser-buttons button {

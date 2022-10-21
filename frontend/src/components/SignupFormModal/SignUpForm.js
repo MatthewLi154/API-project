@@ -15,23 +15,78 @@ const SignupFormPage = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState([]);
   const [name, setName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
 
   if (sessionUser) return <Redirect to="/" />;
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (password === confirmPassword) {
-      setErrors([]);
-      return dispatch(
-        sessionActions.signup({ email, username, password })
-      ).catch(async (res) => {
-        const data = await res.json();
-        if (data && data.errors) setErrors(data.errors);
-      });
+      // setErrors([]);
+      const errors = validate();
+      if (errors.length === 0) {
+        return dispatch(
+          sessionActions.signup({
+            firstName,
+            lastName,
+            email,
+            username,
+            password,
+          })
+        ).catch(async (res) => {
+          const data = await res.json();
+          if (data && data.errors) setErrors(data.errors);
+        });
+      }
     }
-    return setErrors([
-      "Confirm Password field must be the same as the Password field",
-    ]);
+    // return setErrors([
+    //   "Confirm Password field must be the same as the Password field",
+    // ]);
+  };
+
+  const validate = () => {
+    const errors = [];
+
+    if (firstName.length > 50) {
+      errors.push("First name must be less than 50 characters");
+    }
+
+    if (firstName.length === 0) {
+      errors.push("Please enter a first name");
+    }
+
+    if (lastName.length > 50) {
+      errors.push("Last name must be less than 50 characters");
+    }
+
+    if (lastName.length === 0) {
+      errors.push("Please enter a last name");
+    }
+
+    if (password.length === 0) {
+      errors.push("Please enter a password");
+    }
+
+    if (confirmPassword.length === 0) {
+      errors.push("Please confirm your password");
+    }
+
+    if (password.length > 20) {
+      errors.push("Password must be less than 20 characters");
+    }
+
+    if (password !== confirmPassword) {
+      errors.push("Confirm password does not match password");
+    }
+
+    if (!email.includes("@")) {
+      errors.push("Please enter a valid email");
+    }
+
+    if (errors.length > 0) setErrors(errors);
+
+    return errors;
   };
 
   return (
@@ -42,33 +97,41 @@ const SignupFormPage = () => {
             <div className="formTitle">
               <h2>Finish signing up</h2>
             </div>
-            <ul>
-              {errors.map((error, idx) => (
-                <li key={idx}>{error}</li>
-              ))}
-            </ul>
+            {errors.length > 0 && (
+              <ul className="errorListSignUp">
+                {errors.map((error) => (
+                  <li>{error}</li>
+                ))}
+              </ul>
+            )}
             <div className="inputField">
               <div>
-                <label className="yourNameText">Your name</label>
+                <label className="yourNameText">First Name</label>
               </div>
               <div>
                 <input
                   type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
                   required
                 ></input>
               </div>
-              <div className="tinyTextUnderYourName">
+              <div>
+                <label className="yourNameText">Last Name</label>
+              </div>
+              <div>
+                <input
+                  type="text"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  required
+                ></input>
+              </div>
+              {/* <div className="tinyTextUnderYourName">
                 <span>
-                  {/*if input is empty, show "name is required in red, if input is not empty, show "Your name will be public on your Meetup profile*/}
                   Your name will be public on your Meetup profile.
                 </span>
-
-                {/* {name.length === 0 && (
-              <span className="nameIsRequired">Name is required</span>
-            )} */}
-              </div>
+              </div> */}
               <div className="emailContainer">
                 <div>
                   <label>Email</label>
@@ -122,7 +185,11 @@ const SignupFormPage = () => {
                   />
                 </div>
               </div>
-              <button className="signupButtonForm" type="submit">
+              <button
+                className="signupButtonForm"
+                type="submit"
+                onClick={(e) => handleSubmit(e)}
+              >
                 Sign Up
               </button>
             </div>

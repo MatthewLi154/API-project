@@ -134,4 +134,5 @@ h1 {
 
 .joinWeebUpButton {
   margin: 2rem;
+  cursor: pointer;
 }
