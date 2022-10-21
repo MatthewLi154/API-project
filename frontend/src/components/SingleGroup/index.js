@@ -179,18 +179,16 @@ const SingleGroup = () => {
             {(isOrganizer || isMember) && (
               <div className="centerButtonsContainer">
                 <div className="centerButtons">
-                  {isMember ||
-                    (isOrganizer && (
-                      <div className="createEventButton">
-                        <button
-                          onClick={(e) => {
-                            onCreateEvent(e);
-                          }}
-                        >
-                          Create Event
-                        </button>
-                      </div>
-                    ))}
+                  <div className="createEventButton">
+                    <button
+                      onClick={(e) => {
+                        onCreateEvent(e);
+                      }}
+                    >
+                      Create Event
+                    </button>
+                  </div>
+
                   {isOrganizer && (
                     <div className="deleteEditButtons">
                       <div>
