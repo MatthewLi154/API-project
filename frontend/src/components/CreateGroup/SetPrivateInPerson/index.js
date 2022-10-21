@@ -145,7 +145,7 @@ const SetPrivateInPerson = () => {
             }}
           >
             {/* <option value="">Please choose an option</option> */}
-            <option value="In Person">In Person</option>
+            <option value="In person">In Person</option>
             <option value="Online">Online</option>
           </select>
         </div>
