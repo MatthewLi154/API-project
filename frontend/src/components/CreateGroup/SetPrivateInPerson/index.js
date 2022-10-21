@@ -22,7 +22,7 @@ const SetPrivateInPerson = () => {
   const [inPerson, setInPerson] = useState(
     localStorage.getItem("inPersonGroup") || "In person"
   );
-  const [imgurl, setImgurl] = useState(localStorage.getItem("imgurl"));
+  const [imgurl, setImgurl] = useState(localStorage.getItem("imgurl") || "");
   const [errorMessages, setErrorMessages] = useState([]);
   const sessionUser = useSelector((state) => state.session.user);
 
@@ -48,7 +48,7 @@ const SetPrivateInPerson = () => {
   const validate = () => {
     const errorMessages = [];
 
-    if (!imgurl) {
+    if (imgurl.length === 0) {
       errorMessages.push("Please add in an image");
     } else if (!imgurl.endsWith(".jpg")) {
       if (!imgurl.endsWith(".png")) {
@@ -118,7 +118,7 @@ const SetPrivateInPerson = () => {
         <div className="progressBar4"></div>
       </div>
       <div className="step4">
-        <span>STEP 4 OF 7</span>
+        <span>STEP 4 OF 4</span>
       </div>
       <div className="mainContainerPrivateInPerson">
         <div>

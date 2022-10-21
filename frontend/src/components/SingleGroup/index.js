@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { NavLink, useParams, useHistory } from "react-router-dom";
+import { NavLink, useParams, useHistory, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
   fetchSingleGroup,
@@ -7,6 +7,7 @@ import {
   deleteGroup,
   fetchMembers,
 } from "../../store/groups";
+import EditFormPage from "../EditFormPage";
 import "./SingleGroup.css";
 import { deleteSingleEvent, fetchAllEvents } from "../../store/events";
 
@@ -22,6 +23,7 @@ const SingleGroup = () => {
   const allEvents = useSelector((state) => state.events.allEvents);
   const sessionUser = useSelector((state) => state.session.user);
 
+  let currentData;
   useEffect(() => {
     dispatch(fetchGroups());
     dispatch(fetchSingleGroup(id));
@@ -32,6 +34,16 @@ const SingleGroup = () => {
   useEffect(() => {
     dispatch(fetchAllEvents());
   }, []);
+
+  if (groupDataObj) {
+    currentData = {
+      name: groupDataObj.name,
+      location: `${groupDataObj.city}, ${groupDataObj.state}`,
+      private: groupDataObj.private,
+      type: groupDataObj.type,
+      description: groupDataObj.about,
+    };
+  }
 
   let groupEvents = [];
   for (const key in allEvents) {
@@ -45,7 +57,7 @@ const SingleGroup = () => {
     members = groupMembersArr?.Members;
   }
 
-  console.log(members);
+  // console.log(members);
 
   const parseDayTime = (dayTimeString) => {
     const [date, time] = dayTimeString.split("T");
@@ -175,8 +187,12 @@ const SingleGroup = () => {
                   {isOrganizer && (
                     <div className="deleteEditButtons">
                       <div>
-                        <NavLink to={`/groups/${groupDataObj.id}/edit`}>
-                          {" "}
+                        <NavLink
+                          to={{
+                            pathname: `/groups/${groupDataObj.id}/edit`,
+                            state: { currentData: currentData },
+                          }}
+                        >
                           <button>Edit</button>
                         </NavLink>
                       </div>

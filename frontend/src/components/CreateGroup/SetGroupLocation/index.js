@@ -8,7 +8,7 @@ const SetGroupLocation = () => {
   let newGroupObj = {};
   const [locationLoad, setLocationLoad] = useState(true);
   const [groupLocation, setGroupLocation] = useState(
-    localStorage.getItem("groupLocation") || "Pasadena, CA"
+    localStorage.getItem("groupLocation") || "New York, NY"
   );
   const [errorMessages, setErrorMessages] = useState([]);
   const sessionUser = useSelector((state) => state.session.user);
@@ -57,7 +57,7 @@ const SetGroupLocation = () => {
         <div className="progressBar"></div>
       </div>
       <div className="step1">
-        <span>STEP 1 OF 7</span>
+        <span>STEP 1 OF 4</span>
       </div>
       <div className="mainContainer">
         <h1>First, set your group's location.</h1>

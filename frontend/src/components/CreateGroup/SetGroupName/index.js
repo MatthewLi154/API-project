@@ -6,9 +6,7 @@ import "./SetGroupName.css";
 const SetGroupName = () => {
   const location = useLocation();
   const newGroupObj = location.state?.newGroupObj;
-  const [groupName, setGroupName] = useState(
-    newGroupObj.groupName || "Weeb Meet Up Group"
-  );
+  const [groupName, setGroupName] = useState(newGroupObj.groupName || "");
   const [errorMessages, setErrorMessages] = useState([]);
   const sessionUser = useSelector((state) => state.session.user);
 
@@ -45,7 +43,7 @@ const SetGroupName = () => {
         <div className="progressBarStep2"></div>
       </div>
       <div className="step1">
-        <span>STEP 2 OF 7</span>
+        <span>STEP 2 OF 4</span>
       </div>
       <div className="mainContainerSetName">
         <h1>What will your group's name be?</h1>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { NavLink, useParams } from "react-router-dom";
+import { NavLink, useParams, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import "./EditFormPage.css";
@@ -13,24 +13,24 @@ const EditFormPage = () => {
   const { groupId } = useParams();
   const dispatch = useDispatch();
   const history = useHistory();
+  const locationReact = useLocation();
 
+  const currentData = locationReact.state?.currentData;
+  console.log(currentData);
   const [name, setName] = useState(
-    localStorage.getItem("groupEditName") || "Cow Farmers"
+    localStorage.getItem("groupEditName") || currentData.name
   );
   const [location, setLocation] = useState(
-    localStorage.getItem("groupEditLocation") || "Farm City, NY"
+    localStorage.getItem("groupEditLocation") || currentData.location
   );
   const [description, setDescription] = useState(
-    localStorage.getItem("groupEditDescription") ||
-      "In this world, there are a lot of cows, and we need those cows. This group is about farmers who do all things cows! Join and learn more."
+    localStorage.getItem("groupEditDescription") || currentData.description
   );
   const [type, setType] = useState(
-    localStorage.getItem("groupEditType"),
-    "In person"
+    localStorage.getItem("groupEditType") || currentData.type
   );
   const [privateGroup, setPrivateGroup] = useState(
-    localStorage.getItem("groupEditPrivateGroup"),
-    1
+    localStorage.getItem("groupEditPrivateGroup") || currentData.private
   );
   const [errorMessages, setErrorMessages] = useState([]);
 

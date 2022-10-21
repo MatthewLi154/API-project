@@ -7,8 +7,7 @@ const SetGroupDescription = () => {
   const location = useLocation();
   const newGroupObj = location.state?.newGroupObj;
   const [description, setDescription] = useState(
-    localStorage.getItem("description") ||
-      "This group is for all anime lovers and enjoyers. Watched Naruto and thoroughly enjoyed it? Can't get enough of wicked animation action? Check us out!"
+    localStorage.getItem("description") || ""
   );
   const [errorMessages, setErrorMessages] = useState([]);
   const sessionUser = useSelector((state) => state.session.user);
@@ -52,7 +51,7 @@ const SetGroupDescription = () => {
         <div className="progressBar3"></div>
       </div>
       <div className="step3">
-        <span>STEP 3 OF 7</span>
+        <span>STEP 3 OF 4</span>
       </div>
       <div className="mainContainerSetDescription">
         <h1>Now describe what {newGroupObj.groupName} will be about</h1>

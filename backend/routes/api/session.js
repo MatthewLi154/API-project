@@ -30,12 +30,19 @@ router.post("/", validateLogin, async (req, res, next) => {
   const user = await User.login({ credential, password });
 
   // If no user, return error
+  // if (!user) {
+  //   res.status(401);
+  //   return res.json({
+  //     message: "Invalid credentials",
+  //     statusCode: 401,
+  //   });
+  // }
   if (!user) {
-    res.status(401);
-    return res.json({
-      message: "Invalid credentials",
-      statusCode: 401,
-    });
+    const err = new Error("Login failed");
+    err.status = 401;
+    err.title = "Login failed";
+    err.errors = ["User does not exist"];
+    return next(err);
   }
 
   user.dataValues.token = await setTokenCookie(res, user);

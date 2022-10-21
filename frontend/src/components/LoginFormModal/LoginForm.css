@@ -6,3 +6,9 @@
 .loginFormContainer h2 {
   margin: auto;
 }
+
+.loginErrorList {
+  color: red;
+  list-style-type: none;
+  padding: 1rem 0rem;
+}

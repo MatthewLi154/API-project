@@ -9,7 +9,29 @@ function LoginForm() {
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState([]);
 
-  const validate = () => {};
+  const validate = () => {
+    const errors = [];
+
+    if (credential.length > 50) {
+      errors.push("Invalid username or email");
+    }
+
+    if (credential.length === 0) {
+      errors.push("Please enter a username or email");
+    }
+
+    if (password.length === 0) {
+      errors.push("Please enter a password");
+    }
+
+    if (password.length > 50) {
+      errors.push("Invalid password");
+    }
+
+    if (errors.length > 0) setErrors(errors);
+
+    return errors;
+  };
 
   useEffect(() => {
     console.log(errors);
@@ -17,14 +39,16 @@ function LoginForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setErrors([]);
-    return dispatch(sessionActions.login({ credential, password })).catch(
-      async (res) => {
-        const data = await res.json();
-        console.log(data);
-        if (data && data.errors) setErrors(data.errors);
-      }
-    );
+    const errors = validate();
+    if (errors.length === 0) {
+      setErrors([]);
+      return dispatch(sessionActions.login({ credential, password })).catch(
+        async (res) => {
+          const data = await res.json();
+          if (data && data.errors) setErrors(data.errors);
+        }
+      );
+    }
   };
 
   const onDemoUser = (e) => {
@@ -39,23 +63,16 @@ function LoginForm() {
 
   return (
     <>
-      {errors.length > 0 && (
-        <ul>
-          {errors.map((error) => (
-            <li>error</li>
-          ))}
-        </ul>
-      )}
       <div className="loginFormContainer">
         <h2>Log In</h2>
+        {errors.length > 0 && (
+          <ul className="loginErrorList">
+            {errors.map((error) => (
+              <li>{error}</li>
+            ))}
+          </ul>
+        )}
         <form onSubmit={(e) => handleSubmit(e)}>
-          <div>
-            {/* <ul>
-              {errors.map((error, idx) => (
-                <li key={idx}>{error}</li>
-              ))}
-            </ul> */}
-          </div>
           <div>
             <div>
               <label>Username or Email</label>
@@ -65,7 +82,6 @@ function LoginForm() {
                 type="text"
                 value={credential}
                 onChange={(e) => setCredential(e.target.value)}
-                required
               />
             </div>
           </div>
@@ -78,7 +94,6 @@ function LoginForm() {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                required
               />
             </div>
           </div>
