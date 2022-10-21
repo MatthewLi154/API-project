@@ -51,7 +51,7 @@ const SingleEvent = () => {
     if (dayTimeString) {
       const [date, time] = dayTimeString.split("T");
       const [year, month, day] = date.split("-");
-      const [parsedhour, minute, seconds] = time.split(":");
+      const [hour, minute, seconds] = time.split(":");
       let newDate = new Date(year, month, day);
       let dayOfWeek = newDate.getDay();
       let week = ["SUN", "MON", "TUES", "WED", "THU", "FRI", "SAT"];
@@ -71,14 +71,15 @@ const SingleEvent = () => {
       ];
 
       let AMPM = "PM";
-      if (parsedhour > 12) {
-        parsedhour = parsedhour - 12;
+      let parsedHour = hour;
+      if (hour > 12) {
+        parsedHour = hour - 12;
         AMPM = "AM";
       }
 
       let newDayTimeString = `${week[dayOfWeek]}, ${
         monthStr[month - 1]
-      } ${day} · ${parsedhour}:${minute} ${AMPM}`;
+      } ${day} · ${parsedHour}:${minute} ${AMPM}`;
       return newDayTimeString;
     }
   };
