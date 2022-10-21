@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 import * as sessionActions from "../../store/session";
+import "./ProfileButton.css";
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
+  const history = useHistory();
   const [showMenu, setShowMenu] = useState(false);
 
   const openMenu = () => {
@@ -30,18 +33,47 @@ function ProfileButton({ user }) {
 
   return (
     <>
-      <button onClick={openMenu}>
-        <i className="fas fa-user-circle" />
-      </button>
-      {showMenu && (
-        <ul className="profile-dropdown">
-          <li>{user.username}</li>
-          <li>{user.email}</li>
-          <li>
-            <button onClick={logout}>Log Out</button>
-          </li>
-        </ul>
-      )}
+      <div className="profileButtonContainer">
+        <div className="profile-user-image" onClick={openMenu}>
+          <button>
+            <i className="fa-solid fa-user"></i>
+          </button>
+          <div>
+            {showMenu ? (
+              <i className="fa-solid fa-angle-up"></i>
+            ) : (
+              <i className="fa-solid fa-angle-down"></i>
+            )}
+          </div>
+        </div>
+        {showMenu && (
+          <div className="profile-dropdown-container">
+            <div className="profile-dropdown">
+              {/* <div>{user.username}</div>
+              <div>{user.email}</div> */}
+              <div
+                onClick={(e) => {
+                  e.preventDefault();
+                  history.push("/groups");
+                }}
+              >
+                View groups
+              </div>
+              <div
+                onClick={(e) => {
+                  e.preventDefault();
+                  history.push("/events");
+                }}
+              >
+                View events
+              </div>
+              <div className="log-out-container">
+                <span onClick={logout}>Log Out</span>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
     </>
   );
 }

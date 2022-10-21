@@ -1,12 +1,14 @@
 .navDivContainer {
-  padding: 0.75rem;
+  padding-left: 2rem;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
   font-family: "Damion", cursive;
   font-weight: bold;
   font-size: 2.5rem;
   /* margin-left: 2rem; */
+  height: 4.5rem;
   border-bottom: 1px lightgray solid;
 }
 
@@ -14,6 +16,7 @@
   display: flex;
   justify-content: flex-start;
   color: rgb(178, 25, 25);
+  margin-left: 2rem;
 }
 
 .loginSignupContainer {

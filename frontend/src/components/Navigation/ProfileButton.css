@@ -1,0 +1,82 @@
+.profileButtonContainer {
+  display: flex;
+  align-items: flex-start;
+  font-family: "Roboto", sans-serif;
+  font-size: 20px;
+}
+
+.profileButtonContainer button {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+}
+
+.profile-dropdown-container {
+  position: absolute;
+  top: 5rem;
+  right: 1rem;
+  background-color: white;
+  /* border: gray solid 2px; */
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+  border: rgba(0, 0, 0, 0.2) 1px solid;
+}
+
+.profile-dropdown-container li {
+  border: 1px lightgray solid;
+}
+
+.profile-dropdown div {
+  margin: 0.75rem 1rem;
+  /* border: lightgray solid 1px; */
+  font-size: 16px;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+}
+
+.profile-user-image {
+  position: absolute;
+  right: 2rem;
+  top: 0.5rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.profile-user-image button {
+  background-color: red;
+  position: absolute;
+  right: 2.5rem;
+  top: 0.35rem;
+}
+
+.fa-solid.fa-user {
+  color: white;
+  position: absolute;
+  right: 0.8rem;
+  top: 0.7rem;
+}
+
+.fa-solid.fa-angle-down {
+  color: lightgray;
+  font-size: 25px;
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: 1rem;
+  right: 0.25rem;
+}
+
+.fa-solid.fa-angle-up {
+  color: lightgray;
+  font-size: 25px;
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: 1rem;
+  right: 0.25rem;
+}
+
+.log-out-container {
+  /* border: lightgray solid 1px; */
+  /* background-color: red; */
+}
