@@ -103,8 +103,8 @@ const Events = () => {
                     <div className="eventLocation">
                       {event.Venue ? (
                         <h3>
-                          {event.Group.name} · {event.Venue.city},{" "}
-                          {event.Venue.state}
+                          {event.Group?.name} · {event.Venue.city},{" "}
+                          {event.Venue?.state}
                         </h3>
                       ) : (
                         <h3>Online</h3>
