@@ -39,8 +39,13 @@
   font-family: Arial, Helvetica, sans-serif;
 }
 
-.createEventButton {
+.createEventButtonForm {
   width: 9rem;
+  align-items: center;
+}
+
+.createEventButtonContainer {
+  padding-bottom: 5rem;
 }
 
 .createEventErrorList ul {

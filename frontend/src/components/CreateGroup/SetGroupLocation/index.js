@@ -7,14 +7,17 @@ import SetGroupName from "../SetGroupName";
 const SetGroupLocation = () => {
   let newGroupObj = {};
   const [locationLoad, setLocationLoad] = useState(true);
-  const [groupLocation, setGroupLocation] = useState("Pasadena, CA");
+  const [groupLocation, setGroupLocation] = useState(
+    localStorage.getItem("groupLocation") || "Pasadena, CA"
+  );
   const [errorMessages, setErrorMessages] = useState([]);
 
   const history = useHistory();
   newGroupObj.groupLocation = groupLocation;
 
   useEffect(() => {
-    console.log(newGroupObj);
+    newGroupObj.groupLocation = groupLocation;
+    localStorage.setItem("groupLocation", groupLocation);
   }, [groupLocation]);
 
   useEffect(() => {

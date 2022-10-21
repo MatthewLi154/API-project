@@ -7,13 +7,14 @@ const SetGroupDescription = () => {
   const location = useLocation();
   const newGroupObj = location.state?.newGroupObj;
   const [description, setDescription] = useState(
-    newGroupObj.groupDescription ||
+    localStorage.getItem("description") ||
       "This group is for all anime lovers and enjoyers. Watched Naruto and thoroughly enjoyed it? Can't get enough of wicked animation action? Check us out!"
   );
   const [errorMessages, setErrorMessages] = useState([]);
 
   useEffect(() => {
     console.log(description, description.length);
+    localStorage.setItem("description", description);
   }, [description]);
 
   const validate = () => {

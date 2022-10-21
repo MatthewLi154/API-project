@@ -14,18 +14,33 @@ const CreateEventForm = () => {
   const history = useHistory();
 
   const { groupId } = useParams();
-  const [eventName, setEventName] = useState("Adopt-a-Street Clean Up");
-  const [eventInPerson, setEventInPerson] = useState("In person");
-  const [eventPrivate, setEventPrivate] = useState(1);
-  const [eventCapacity, setEventCapacity] = useState(10);
-  const [eventPrice, setEventPrice] = useState(5);
-  const [eventDescription, setEventDescription] = useState(
-    "Example event description"
+  const [eventName, setEventName] = useState(
+    localStorage.getItem("eventName") || "Adopt-a-Street Clean Up"
   );
-  const [startDate, setStartDate] = useState("2022-10-19T19:30");
-  const [endDate, setEndDate] = useState("2022-10-19T20:30");
+  const [eventInPerson, setEventInPerson] = useState(
+    localStorage.getItem("eventInPerson") || "In person"
+  );
+  const [eventPrivate, setEventPrivate] = useState(
+    localStorage.getItem("eventPrivate") || 1
+  );
+  const [eventCapacity, setEventCapacity] = useState(
+    localStorage.getItem("eventCapacity") || 10
+  );
+  const [eventPrice, setEventPrice] = useState(
+    localStorage.getItem("eventPrice") || 10
+  );
+  const [eventDescription, setEventDescription] = useState(
+    localStorage.getItem("eventDescription") || "Example event description"
+  );
+  const [startDate, setStartDate] = useState(
+    localStorage.getItem("startDate") || "2022-10-19T19:30"
+  );
+  const [endDate, setEndDate] = useState(
+    localStorage.getItem("endDate") || "2022-10-19T20:30"
+  );
   const [eventImg, setEventImg] = useState(
-    "https://wallpaperaccess.com/full/374195.jpg"
+    localStorage.getItem("eventImg") ||
+      "https://wallpaperaccess.com/full/374195.jpg"
   );
   const [errorMessages, setErrorMessages] = useState([]);
 
@@ -38,14 +53,19 @@ const CreateEventForm = () => {
 
     // name validations
     if (eventName.length === 0) errors.push("Please enter an event name.");
-    if (eventName.length > 50)
-      errors.push("Name must be 50 characters or less");
+    if (eventName.length > 60)
+      errors.push("Name must be 60 characters or less");
 
     // capactiy validations
-    if (!Number.isInteger(parseInt(eventCapacity)))
-      errors.push("Capacity must be a valid number");
-    else if (parseInt(eventCapacity) < 0)
+    const regCapacity = /^\d+$/;
+
+    if (!eventCapacity.length) {
+      errors.push("Please enter the event capacity");
+    } else if (eventCapacity < 0) {
       errors.push("Capacity can not be a negative number");
+    } else if (!regCapacity.test(eventCapacity)) {
+      errors.push("Capacity must be a valid number");
+    }
 
     // price validations
     let reg = /^\$?[0-9]+(\.[0-9][0-9])?$/;
@@ -55,7 +75,7 @@ const CreateEventForm = () => {
       );
     }
 
-    // description balidations
+    // description validations
     if (eventDescription.length > 255) {
       errors.push("Description must be less than 255 characters");
     }
@@ -70,6 +90,10 @@ const CreateEventForm = () => {
       if (!eventImg.endsWith(".png")) {
         errors.push("Image does not end with jpg or png");
       }
+    }
+
+    if (eventCapacity > 10000) {
+      errors.push("Capacity must be less than 10000");
     }
 
     // date validations
@@ -150,7 +174,10 @@ const CreateEventForm = () => {
                 type="text"
                 placeholder="What is your event's name?"
                 value={eventName}
-                onChange={(e) => setEventName(e.target.value)}
+                onChange={(e) => {
+                  setEventName(e.target.value);
+                  localStorage.setItem("eventName", e.target.value);
+                }}
               />
             </div>
           </div>
@@ -162,7 +189,10 @@ const CreateEventForm = () => {
               <select
                 name="inperson"
                 value={eventInPerson}
-                onChange={(e) => setEventInPerson(e.target.value)}
+                onChange={(e) => {
+                  setEventInPerson(e.target.value);
+                  localStorage.setItem("eventInPerson", e.target.value);
+                }}
               >
                 <option value="In person">In Person</option>
                 <option value="Online">Online</option>
@@ -177,10 +207,13 @@ const CreateEventForm = () => {
               <select
                 name="privatepublic"
                 value={eventPrivate}
-                onChange={(e) => setEventPrivate(e.target.value)}
+                onChange={(e) => {
+                  setEventPrivate(e.target.value);
+                  localStorage.setItem("eventPrivate", e.target.value);
+                }}
               >
                 <option value={0}>Private</option>
-                <option value={1}>In person</option>
+                <option value={1}>Public</option>
               </select>
             </div>
           </div>
@@ -193,7 +226,10 @@ const CreateEventForm = () => {
                 type="text"
                 placeholder="Max amount of people?"
                 value={eventCapacity}
-                onChange={(e) => setEventCapacity(e.target.value)}
+                onChange={(e) => {
+                  setEventCapacity(e.target.value);
+                  localStorage.setItem("eventCapacity", e.target.value);
+                }}
               ></input>
             </div>
           </div>
@@ -206,7 +242,10 @@ const CreateEventForm = () => {
                 type="text"
                 placeholder="Price"
                 value={eventPrice}
-                onChange={(e) => setEventPrice(e.target.value)}
+                onChange={(e) => {
+                  setEventPrice(e.target.value);
+                  localStorage.setItem("eventPrice", e.target.value);
+                }}
               ></input>
             </div>
           </div>
@@ -218,7 +257,10 @@ const CreateEventForm = () => {
               <textarea
                 name="description"
                 value={eventDescription}
-                onChange={(e) => setEventDescription(e.target.value)}
+                onChange={(e) => {
+                  setEventDescription(e.target.value);
+                  localStorage.setItem("eventDescription", e.target.value);
+                }}
               ></textarea>
             </div>
           </div>
@@ -238,6 +280,7 @@ const CreateEventForm = () => {
                   value={startDate}
                   onChange={(e) => {
                     setStartDate(e.target.value);
+                    localStorage.setItem("startDate", e.target.value);
                   }}
                 />
               </div>
@@ -254,6 +297,7 @@ const CreateEventForm = () => {
                   value={endDate}
                   onChange={(e) => {
                     setEndDate(e.target.value);
+                    localStorage.setItem("endDate", e.target.value);
                   }}
                 />
               </div>
@@ -268,18 +312,23 @@ const CreateEventForm = () => {
                 type="text"
                 placeholder="Please add an image url ending with .jpg or .png"
                 value={eventImg}
-                onChange={(e) => setEventImg(e.target.value)}
+                onChange={(e) => {
+                  setEventImg(e.target.value);
+                  localStorage.setItem("eventImg", e.target.value);
+                }}
               ></input>
             </div>
           </div>
-          <button
-            className="createEventButton"
-            onClick={(e) => {
-              onCreateEvent(e);
-            }}
-          >
-            Create Event
-          </button>
+          <div className="createEventButtonContainer">
+            <button
+              className="createEventButtonForm"
+              onClick={(e) => {
+                onCreateEvent(e);
+              }}
+            >
+              Create Event
+            </button>
+          </div>
         </form>
       </div>
     </>

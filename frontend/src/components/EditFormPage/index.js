@@ -14,57 +14,77 @@ const EditFormPage = () => {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const [name, setName] = useState("Cow Farmers");
-  const [location, setLocation] = useState("Farm City, NY");
-  const [description, setDescription] = useState(
-    "In this world, there are a lot of cows, and we need those cows. This group is about farmers who do all things cows! Join and learn more."
+  const [name, setName] = useState(
+    localStorage.getItem("groupEditName") || "Cow Farmers"
   );
-  const [type, setType] = useState("In person");
-  const [privateGroup, setPrivateGroup] = useState(1);
+  const [location, setLocation] = useState(
+    localStorage.getItem("groupEditLocation") || "Farm City, NY"
+  );
+  const [description, setDescription] = useState(
+    localStorage.getItem("groupEditDescription") ||
+      "In this world, there are a lot of cows, and we need those cows. This group is about farmers who do all things cows! Join and learn more."
+  );
+  const [type, setType] = useState(
+    localStorage.getItem("groupEditType"),
+    "In person"
+  );
+  const [privateGroup, setPrivateGroup] = useState(
+    localStorage.getItem("groupEditPrivateGroup"),
+    1
+  );
   const [errorMessages, setErrorMessages] = useState([]);
 
   useEffect(() => {
     dispatch(fetchSingleGroup(groupId));
-    // dispatch(fetchGroups());
   }, [dispatch]);
 
+  useEffect(() => {
+    localStorage.setItem("groupEditName", name);
+    localStorage.setItem("groupEditLocation", location);
+    localStorage.setItem("groupEditDescription", description);
+    localStorage.setItem("groupEditType", type);
+    localStorage.setItem("groupEditPrivateGroup", privateGroup);
+  }, [name, location, description, type, privateGroup]);
+
   const validate = () => {
-    const errors = [];
+    const errorMessages = [];
 
     // name validations
     if (name.length === 0) {
-      errors.push("Please enter your group name.");
-    } else if (name.length > 50) {
-      errors.push("Group name is too long. Please use 50 characters or less");
+      errorMessages.push("Please enter your group name.");
+    } else if (name.length > 60) {
+      errorMessages.push(
+        "Group name is too long. Please use 60 characters or less"
+      );
     }
 
-    // group validations
-    const regex = /[A-Za-z]+[ ]?[A-Za-z]+,[ ]?[A-Z]{2}$/;
+    // location validations
+    const regexp = /[A-Za-z]+[ ]?[A-Za-z]+,[ ]?[A-Z]{2}$/;
 
-    if (!regex.test(location)) {
+    if (regexp.test(location) === false) {
       errorMessages.push("Please use valid City, State (e.g. New York, NY)");
     }
 
     // description validations
-    if (description.length < 30) {
-      errors.push("Please write at least 30 characters.");
+    if (description.length > 255) {
+      errorMessages.push(
+        "Keep the description short and simple. Please use less than 255 characters"
+      );
+    } else if (description.length === 0) {
+      errorMessages.push("Please enter a description");
     }
 
-    // type validations
-
-    // private validations
-
     // return errors
-    if (errors.length > 0) setErrorMessages(errors);
+    if (errorMessages.length > 0) setErrorMessages(errorMessages);
 
-    return errors;
+    return errorMessages;
   };
 
   const onSubmit = async (e) => {
+    e.preventDefault();
     const errors = validate();
 
     if (errors.length > 0) {
-      e.preventDefault();
       return setErrorMessages(errors);
     }
 
@@ -94,6 +114,11 @@ const EditFormPage = () => {
         <div className="editPageTitle">
           <h1>Edit Your Group's Details</h1>
         </div>
+        <ul className="editGroupErrors">
+          {errorMessages.map((error) => (
+            <li key={error}>{error}</li>
+          ))}
+        </ul>
         <div className="editFormContainer">
           <form>
             <div className="editGroupName">
@@ -161,16 +186,15 @@ const EditFormPage = () => {
               </select>
             </div>
             <div className="editFormSubmitButton">
-              <NavLink to={`/groups/${groupId}`}>
-                {" "}
-                <button
-                  onClick={(e) => {
-                    onSubmit(e);
-                  }}
-                >
-                  Submit
-                </button>
-              </NavLink>
+              {/* <NavLink to={`/groups/${groupId}`}> */}
+              <button
+                onClick={(e) => {
+                  onSubmit(e);
+                }}
+              >
+                Submit
+              </button>
+              {/* </NavLink> */}
             </div>
           </form>
         </div>

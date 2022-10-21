@@ -17,14 +17,12 @@ const SetPrivateInPerson = () => {
 
   const newGroupObj = location.state?.newGroupObj;
   const [privateGroup, setPrivateGroup] = useState(
-    newGroupObj.groupPrivate || 0
+    localStorage.getItem("privateGroup") || 0
   );
   const [inPerson, setInPerson] = useState(
-    newGroupObj.groupInPerson || "In person"
+    localStorage.getItem("inPersonGroup") || "In person"
   );
-  const [imgurl, setImgurl] = useState(
-    "https://img3.stockfresh.com/files/i/imagedb/m/99/5981548_stock-photo-pims20090605sa0439jpg.jpg"
-  );
+  const [imgurl, setImgurl] = useState(localStorage.getItem("imgurl"));
   const [errorMessages, setErrorMessages] = useState([]);
 
   // destructure location from newGroupObj, extract city and state
@@ -39,6 +37,12 @@ const SetPrivateInPerson = () => {
     dispatch(fetchGroups());
     setErrorMessages([]);
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem("privateGroup", privateGroup);
+    localStorage.setItem("inPersonGroup", inPerson);
+    localStorage.setItem("imgurl", imgurl);
+  }, [privateGroup, inPerson, imgurl]);
 
   const validate = () => {
     const errorMessages = [];
