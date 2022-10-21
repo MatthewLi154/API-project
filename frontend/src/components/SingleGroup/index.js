@@ -43,6 +43,11 @@ const SingleGroup = () => {
       type: groupDataObj.type,
       description: groupDataObj.about,
     };
+    localStorage.setItem("groupEditName", groupDataObj.name);
+    localStorage.setItem("groupEditLocation", currentData.location);
+    localStorage.setItem("groupEditDescription", groupDataObj.about);
+    localStorage.setItem("groupEditType", groupDataObj.type);
+    localStorage.setItem("groupEditPrivateGroup", groupDataObj.private);
   }
 
   let groupEvents = [];
@@ -116,7 +121,8 @@ const SingleGroup = () => {
 
   // validate current session user and organizer
   let isOrganizer;
-  isOrganizer = currentUser?.id === groupDataObj?.organizerId ? true : false;
+  isOrganizer = sessionUser?.id === groupDataObj?.organizerId ? true : false;
+  console.log(isOrganizer);
 
   // check if currentUser.id === membersid and if Membership status = member or co-host
   let isMember = false;
@@ -170,20 +176,21 @@ const SingleGroup = () => {
                 </div>
               </div>
             </div>
-            {(isMember || isOrganizer) && (
+            {(isOrganizer || isMember) && (
               <div className="centerButtonsContainer">
                 <div className="centerButtons">
-                  {isMember && (
-                    <div className="createEventButton">
-                      <button
-                        onClick={(e) => {
-                          onCreateEvent(e);
-                        }}
-                      >
-                        Create Event
-                      </button>
-                    </div>
-                  )}
+                  {isMember ||
+                    (isOrganizer && (
+                      <div className="createEventButton">
+                        <button
+                          onClick={(e) => {
+                            onCreateEvent(e);
+                          }}
+                        >
+                          Create Event
+                        </button>
+                      </div>
+                    ))}
                   {isOrganizer && (
                     <div className="deleteEditButtons">
                       <div>

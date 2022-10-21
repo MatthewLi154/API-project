@@ -15,7 +15,7 @@ const CreateEventForm = () => {
 
   const { groupId } = useParams();
   const [eventName, setEventName] = useState(
-    localStorage.getItem("eventName") || "Adopt-a-Street Clean Up"
+    localStorage.getItem("eventName") || ""
   );
   const [eventInPerson, setEventInPerson] = useState(
     localStorage.getItem("eventInPerson") || "In person"
@@ -24,13 +24,13 @@ const CreateEventForm = () => {
     localStorage.getItem("eventPrivate") || 1
   );
   const [eventCapacity, setEventCapacity] = useState(
-    localStorage.getItem("eventCapacity") || 10
+    localStorage.getItem("eventCapacity") || ""
   );
   const [eventPrice, setEventPrice] = useState(
-    localStorage.getItem("eventPrice") || 10
+    localStorage.getItem("eventPrice") || ""
   );
   const [eventDescription, setEventDescription] = useState(
-    localStorage.getItem("eventDescription") || "Example event description"
+    localStorage.getItem("eventDescription") || ""
   );
   const [startDate, setStartDate] = useState(
     localStorage.getItem("startDate") || "2022-10-19T19:30"
@@ -39,8 +39,7 @@ const CreateEventForm = () => {
     localStorage.getItem("endDate") || "2022-10-19T20:30"
   );
   const [eventImg, setEventImg] = useState(
-    localStorage.getItem("eventImg") ||
-      "https://wallpaperaccess.com/full/374195.jpg"
+    localStorage.getItem("eventImg") || ""
   );
   const [errorMessages, setErrorMessages] = useState([]);
 
@@ -70,9 +69,7 @@ const CreateEventForm = () => {
     // price validations
     let reg = /^\$?[0-9]+(\.[0-9][0-9])?$/;
     if (!reg.test(eventPrice)) {
-      errors.push(
-        "Price is not valid. Please use integer or float with 2 decimal places."
-      );
+      errors.push("Price is not valid. (e.g. 2.00, 2, $2.00, $2)");
     }
 
     // description validations
