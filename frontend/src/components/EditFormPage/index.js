@@ -176,7 +176,7 @@ const EditFormPage = () => {
                 <label>Is this group private or public?</label>
               </div>
               <select
-                name="type"
+                name="private"
                 value={privateGroup}
                 onChange={(e) => setPrivateGroup(e.target.value)}
               >

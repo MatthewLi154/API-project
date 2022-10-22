@@ -12,8 +12,8 @@ import {
 const CreateEventForm = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-
   const { groupId } = useParams();
+  let refreshDate = new Date();
   const [eventName, setEventName] = useState(
     localStorage.getItem("eventName") || ""
   );
@@ -33,10 +33,10 @@ const CreateEventForm = () => {
     localStorage.getItem("eventDescription") || ""
   );
   const [startDate, setStartDate] = useState(
-    localStorage.getItem("startDate") || "2022-10-19T19:30"
+    localStorage.getItem("startDate") || "2022-10-22T20:30"
   );
   const [endDate, setEndDate] = useState(
-    localStorage.getItem("endDate") || "2022-10-19T20:30"
+    localStorage.getItem("endDate") || "2022-10-22T20:30"
   );
   const [eventImg, setEventImg] = useState(
     localStorage.getItem("eventImg") || ""
@@ -125,6 +125,17 @@ const CreateEventForm = () => {
       price: eventPrice,
     };
 
+    // Reset local storage
+    localStorage.setItem("eventName", "");
+    localStorage.setItem("eventInPerson", "");
+    localStorage.setItem("eventPrivate", 0);
+    localStorage.setItem("eventCapacity", "");
+    localStorage.setItem("eventPrice", "");
+    localStorage.setItem("eventDescription", "");
+    let refreshDate = new Date().toJSON();
+    localStorage.setItem("startDate", refreshDate);
+    localStorage.setItem("endDate", refreshDate);
+    localStorage.setItem("eventImg", "");
     // use thunk to create a new venue for a group by id
 
     // use thunk to create event

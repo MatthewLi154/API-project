@@ -10,6 +10,12 @@ module.exports = {
       },
       {
         userId: 2,
+        groupId: 2,
+        status: "co-host",
+      },
+
+      {
+        userId: 2,
         groupId: 1,
         status: "pending",
       },

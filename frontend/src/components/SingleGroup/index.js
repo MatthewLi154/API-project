@@ -20,7 +20,7 @@ const SingleGroup = () => {
   const groupDataObj = useSelector((state) => state.groups.singleGroup);
   const currentUser = useSelector((state) => state.session.user);
   const groupMembersArr = useSelector((state) => state.groups?.members);
-  const allEvents = useSelector((state) => state.events.allEvents);
+  const allEvents = useSelector((state) => state.events?.allEvents);
   const sessionUser = useSelector((state) => state.session.user);
 
   let currentData;
@@ -224,7 +224,7 @@ const SingleGroup = () => {
                   <div>
                     <p>{groupDataObj.about}</p>
                   </div>
-                  {groupEvents.length > 0 && (
+                  {groupEvents && (
                     <div className="upcomingEventsContainer">
                       <div className="groupUpcomingEvents">
                         <h2>
@@ -239,6 +239,7 @@ const SingleGroup = () => {
                           <NavLink
                             to={`/events/${event.id}`}
                             style={{ textDecoration: "none", color: "none" }}
+                            key={event?.id}
                           >
                             <div key={event.id} className="upcomingEventsCard">
                               <div className="eventDateAndTime">
@@ -246,16 +247,16 @@ const SingleGroup = () => {
                                   <i class="fa-regular fa-clock"></i>
                                 </div>
                                 <div className="dateTimeText">
-                                  {parseDayTime(event.startDate)}
+                                  {parseDayTime(event?.startDate)}
                                 </div>
                               </div>
-                              <div className="eventName">{event.name}</div>
+                              <div className="eventName">{event?.name}</div>
                               <div className="groupEventLocation">
-                                {event.Venue === null ? (
+                                {event?.Venue === null ? (
                                   <div>Online</div>
                                 ) : (
                                   <div>
-                                    {event.Venue?.city}, {event.Venue?.state}
+                                    {event?.Venue?.city}, {event?.Venue?.state}
                                   </div>
                                 )}
                               </div>
