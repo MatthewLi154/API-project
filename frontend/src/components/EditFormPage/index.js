@@ -30,7 +30,7 @@ const EditFormPage = () => {
     localStorage.getItem("groupEditType") || currentData.type
   );
   const [privateGroup, setPrivateGroup] = useState(
-    localStorage.getItem("groupEditPrivateGroup") || currentData.privated
+    localStorage.getItem("groupEditPrivateGroup") || 0
   );
   const [errorMessages, setErrorMessages] = useState([]);
 

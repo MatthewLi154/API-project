@@ -16,32 +16,20 @@ const SingleGroup = () => {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  // use
   const groupDataObj = useSelector((state) => state.groups.singleGroup);
   const currentUser = useSelector((state) => state.session.user);
   const groupMembersArr = useSelector((state) => state.groups?.members);
   const allEvents = useSelector((state) => state.events?.allEvents);
   const sessionUser = useSelector((state) => state.session.user);
 
-  const [privateStatus, setPrivateStatus] = useState(
-    localStorage.getItem("groupEditPrivateGroup") || 0
-  );
-  const [type, setType] = useState(
-    localStorage.getItem("groupEditType") || "In person"
-  );
-
-  let currentData;
   useEffect(() => {
     dispatch(fetchGroups());
     dispatch(fetchSingleGroup(id));
+    dispatch(fetchAllEvents());
     dispatch(fetchMembers(id));
-    dispatch(fetchAllEvents());
-  }, [dispatch]);
+  }, [dispatch, currentUser]);
 
-  useEffect(() => {
-    dispatch(fetchAllEvents());
-  }, []);
-
+  let currentData;
   if (groupDataObj) {
     currentData = {
       name: groupDataObj.name,
@@ -69,7 +57,7 @@ const SingleGroup = () => {
     members = groupMembersArr?.Members;
   }
 
-  // console.log(members);
+  console.log(members);
 
   const parseDayTime = (dayTimeString) => {
     const [date, time] = dayTimeString.split("T");
