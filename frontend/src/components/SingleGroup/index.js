@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink, useParams, useHistory, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -23,6 +23,13 @@ const SingleGroup = () => {
   const allEvents = useSelector((state) => state.events?.allEvents);
   const sessionUser = useSelector((state) => state.session.user);
 
+  const [privateStatus, setPrivateStatus] = useState(
+    localStorage.getItem("groupEditPrivateGroup") || 0
+  );
+  const [type, setType] = useState(
+    localStorage.getItem("groupEditType") || "In person"
+  );
+
   let currentData;
   useEffect(() => {
     dispatch(fetchGroups());
@@ -39,7 +46,7 @@ const SingleGroup = () => {
     currentData = {
       name: groupDataObj.name,
       location: `${groupDataObj.city}, ${groupDataObj.state}`,
-      private: groupDataObj.private,
+      privated: groupDataObj.private,
       type: groupDataObj.type,
       description: groupDataObj.about,
     };
@@ -224,7 +231,7 @@ const SingleGroup = () => {
                   <div>
                     <p>{groupDataObj.about}</p>
                   </div>
-                  {groupEvents && (
+                  {groupEvents?.length > 0 && (
                     <div className="upcomingEventsContainer">
                       <div className="groupUpcomingEvents">
                         <h2>
