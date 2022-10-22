@@ -139,6 +139,7 @@ html,
 .deleteEditButtons button {
   width: 5rem;
   margin: 0rem 0.5rem;
+  cursor: pointer;
 }
 
 .centerButtonsContainer {
@@ -167,6 +168,8 @@ html,
 
 .createEventButton button {
   width: 8rem;
+  cursor: pointer;
+  margin-right: 0.8rem;
 }
 
 .memberList {

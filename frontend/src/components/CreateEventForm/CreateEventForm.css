@@ -16,6 +16,7 @@
 .createEventFormContainer select {
   height: 2rem;
   border-radius: 5px;
+  cursor: pointer;
 }
 
 .createEventFormContianer input[type="text"] {
@@ -37,11 +38,13 @@
 .dateTimePicker input {
   width: 12rem;
   font-family: Arial, Helvetica, sans-serif;
+  cursor: pointer;
 }
 
 .createEventButtonForm {
   width: 9rem;
   align-items: center;
+  cursor: pointer;
 }
 
 .createEventButtonContainer {

@@ -30,7 +30,7 @@ const EditFormPage = () => {
     localStorage.getItem("groupEditType") || currentData.type
   );
   const [privateGroup, setPrivateGroup] = useState(
-    localStorage.getItem("groupEditPrivateGroup") || 0
+    localStorage.getItem("groupEditPrivateGroup") || false
   );
   const [errorMessages, setErrorMessages] = useState([]);
 
@@ -102,8 +102,8 @@ const EditFormPage = () => {
     };
 
     await dispatch(fetchEditGroup(groupId, formData));
-    await dispatch(fetchSingleGroup(groupId));
-    await dispatch(fetchGroups());
+    // await dispatch(fetchSingleGroup(groupId));
+    // await dispatch(fetchGroups());
 
     history.push(`/groups/${groupId}`);
   };
@@ -180,9 +180,8 @@ const EditFormPage = () => {
                 value={privateGroup}
                 onChange={(e) => setPrivateGroup(e.target.value)}
               >
-                {/* <option value="">Please choose an option</option> */}
-                <option value={1}>Private</option>
-                <option value={0}>Public</option>
+                <option value={true}>Private</option>
+                <option value={false}>Public</option>
               </select>
             </div>
             <div className="editFormSubmitButton">

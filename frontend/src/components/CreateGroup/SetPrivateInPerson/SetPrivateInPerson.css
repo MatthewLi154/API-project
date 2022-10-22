@@ -33,6 +33,7 @@
   margin: 0.5rem 0rem;
   font-family: "Montserrat", sans-serif;
   font-size: 16px;
+  cursor: pointer;
 }
 
 .mainContainerPrivateInPerson select:focus {
