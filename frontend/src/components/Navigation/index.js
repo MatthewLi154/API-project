@@ -20,12 +20,6 @@ function Navigation({ isLoaded }) {
             <LoginFormModal className="LoginButtonText" />
           </div>
           <div className="signupButton">
-            {/* <NavLink
-              to="/signup"
-              style={{ textDecoration: "none", color: "black" }}
-            >
-              Sign Up
-            </NavLink> */}
             <SignUpFormModal className="SignUpButtonText"></SignUpFormModal>
           </div>
         </div>

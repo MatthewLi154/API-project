@@ -74,7 +74,7 @@ const SetGroupDescription = () => {
         <form>
           <div>
             <textarea
-              placeholder="Please write at least 50 characters"
+              placeholder="Please write at least 30 characters"
               value={description}
               onChange={(e) => {
                 setDescription(e.target.value);
