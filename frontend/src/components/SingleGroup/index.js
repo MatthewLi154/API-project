@@ -19,15 +19,17 @@ const SingleGroup = () => {
   const groupDataObj = useSelector((state) => state.groups.singleGroup);
   const currentUser = useSelector((state) => state.session.user);
   const groupMembersArr = useSelector((state) => state.groups?.members);
-  const allEvents = useSelector((state) => state.events?.allEvents);
+  const allEvents = useSelector((state) => state.events.allEvents);
   const sessionUser = useSelector((state) => state.session.user);
+
+  console.log(allEvents);
 
   useEffect(() => {
     dispatch(fetchGroups());
     dispatch(fetchSingleGroup(id));
     dispatch(fetchAllEvents());
     dispatch(fetchMembers(id));
-  }, [dispatch, currentUser]);
+  }, [dispatch, currentUser, allEvents]);
 
   let currentData;
   if (groupDataObj) {
@@ -52,12 +54,27 @@ const SingleGroup = () => {
     }
   }
 
+  if (allEvents) {
+    let groupArr = Object.entries(allEvents);
+    console.log(groupArr);
+  }
+
+  // let groupArrFilter;
+  // groupArr.forEach((group) => {
+  //   if (group[1]?.groupId === id) {
+  //     groupArrFilter.push(group);
+  //   }
+  // });
+  // console.log(groupArrFilter);
+
+  console.log(groupEvents);
+
   let members;
   if (groupMembersArr) {
     members = groupMembersArr?.Members;
   }
 
-  console.log(members);
+  // console.log(members);
 
   const parseDayTime = (dayTimeString) => {
     const [date, time] = dayTimeString.split("T");
@@ -219,18 +236,20 @@ const SingleGroup = () => {
                   <div>
                     <p>{groupDataObj.about}</p>
                   </div>
-                  {groupEvents?.length > 0 && (
+                  {/* <div>Yes</div> */}
+                  {groupEvents.length > 0 && (
                     <div className="upcomingEventsContainer">
                       <div className="groupUpcomingEvents">
                         <h2>
                           Upcoming Events{" "}
-                          {groupEvents?.length > 0 && (
+                          {groupEvents !== null && (
                             <span>{`(${groupEvents.length})`}</span>
                           )}
                         </h2>
                       </div>
-                      {groupEvents?.length > 0 &&
-                        groupEvents?.map((event) => (
+
+                      {groupEvents.length > 0 &&
+                        groupEvents.map((event) => (
                           <NavLink
                             to={`/events/${event.id}`}
                             style={{ textDecoration: "none", color: "none" }}

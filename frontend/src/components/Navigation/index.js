@@ -17,7 +17,7 @@ function Navigation({ isLoaded }) {
       <>
         <div className="loginSignupContainer">
           <div className="loginButton">
-            <LoginFormModal />
+            <LoginFormModal className="LoginButtonText" />
           </div>
           <div className="signupButton">
             {/* <NavLink
@@ -26,7 +26,7 @@ function Navigation({ isLoaded }) {
             >
               Sign Up
             </NavLink> */}
-            <SignUpFormModal></SignUpFormModal>
+            <SignUpFormModal className="SignUpButtonText"></SignUpFormModal>
           </div>
         </div>
       </>

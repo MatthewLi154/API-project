@@ -32,6 +32,10 @@ router.post("/", validateSignup, async (req, res) => {
 
   const findUser = await User.findOne({
     where: {
+      // [Op.or]: {
+      //   email: email,
+      //   username: username,
+      // },
       email: email,
     },
   });

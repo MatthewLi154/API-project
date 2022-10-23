@@ -50,9 +50,12 @@ export const signup = (user) => async (dispatch) => {
       password,
     }),
   });
-  const data = await response.json();
-  dispatch(setUser(data));
-  return response;
+
+  if (response.ok) {
+    const data = await response.json();
+    dispatch(setUser(data));
+    return response;
+  }
 };
 
 export const logout = () => async (dispatch) => {

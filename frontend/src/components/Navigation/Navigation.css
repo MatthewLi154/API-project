@@ -33,10 +33,20 @@
   display: flex;
   padding-right: 10px;
   border: none;
+  cursor: pointer;
 }
 
 .signupButton {
   display: flex;
   padding-left: 10px;
   text-decoration: none;
+  cursor: pointer;
+}
+
+.LoginButtonText {
+  cursor: pointer;
+}
+
+.SignUpButtonText {
+  cursor: pointer;
 }

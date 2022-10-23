@@ -1,5 +1,5 @@
 // frontend/src/components/SignupFormPage/index.js
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, NavLink } from "react-router-dom";
 import * as sessionActions from "../../store/session";
@@ -18,28 +18,41 @@ const SignupFormPage = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
 
-  if (sessionUser) return <Redirect to="/" />;
+  useEffect(() => {
+    console.log(firstName);
+    if (password === confirmPassword) {
+      console.log("true");
+    } else {
+      console.log("false");
+    }
+  }, [firstName, password, confirmPassword]);
+
+  if (sessionUser) {
+    return <Redirect to="/" />;
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (password === confirmPassword) {
-      // setErrors([]);
-      const errors = validate();
-      if (errors.length === 0) {
-        return dispatch(
-          sessionActions.signup({
-            firstName,
-            lastName,
-            email,
-            username,
-            password,
-          })
-        ).catch(async (res) => {
-          const data = await res.json();
-          if (data && data.errors) setErrors(data.errors);
-        });
-      }
+
+    const errors = validate();
+    if (errors.length === 0) {
+      return dispatch(
+        sessionActions.signup({
+          firstName,
+          lastName,
+          email,
+          username,
+          password,
+        })
+      );
+      // .catch(async (res) => {
+      //   const data = await res.json();
+      //   if (data && data.errors) setErrors(data.errors);
+      // });
+    } else {
+      return errors;
     }
+
     // return setErrors([
     //   "Confirm Password field must be the same as the Password field",
     // ]);
@@ -68,20 +81,46 @@ const SignupFormPage = () => {
       errors.push("Please enter a password");
     }
 
+    if (password !== confirmPassword) {
+      console.log("passwords dont match");
+      errors.push("Passwords don't match");
+    }
+
     if (confirmPassword.length === 0) {
       errors.push("Please confirm your password");
     }
 
-    if (password.length > 20) {
-      errors.push("Password must be less than 20 characters");
+    if (password.length > 20 || password.length < 6) {
+      errors.push("Password must be between 6 and 20 characters");
     }
 
-    if (password !== confirmPassword) {
-      errors.push("Confirm password does not match password");
+    if (username.length === 0) {
+      errors.push("Please enter a username");
+    } else if (username.length < 4 || username.length > 30) {
+      errors.push("Username must be between 4 and 30 characters");
     }
 
-    if (!email.includes("@")) {
-      errors.push("Please enter a valid email");
+    if (email.length === 0) {
+      errors.push("Please enter an email address");
+    } else if (email.length < 3 || email.length > 256) {
+      errors.push("Email must be between 3 and 255 characters");
+    } else {
+      if (!email.includes("@")) {
+        errors.push("Please enter a valid email (must have @)");
+      }
+      if (!email.includes(".")) {
+        errors.push(
+          "Must end in valid domain e.g email.com, email.net, email.org"
+        );
+      } else if (email.includes(".")) {
+        let emailArr = email.split(".");
+        if (emailArr[1].length < 3) {
+          console.log("missing.com");
+          errors.push(
+            "Must end in valid domain e.g email.com, email.net, email.org"
+          );
+        }
+      }
     }
 
     if (errors.length > 0) setErrors(errors);
