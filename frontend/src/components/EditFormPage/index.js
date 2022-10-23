@@ -36,6 +36,7 @@ const EditFormPage = () => {
 
   useEffect(() => {
     dispatch(fetchSingleGroup(groupId));
+    // console.log(currentData.type);
   }, [dispatch]);
 
   useEffect(() => {
@@ -155,17 +156,21 @@ const EditFormPage = () => {
               <div>
                 <label>Is this an in person or online group?</label>
               </div>
-              <select name="inperson">
+              <select
+                name="inperson"
+                value={type}
+                onChange={(e) => setType(e.target.value)}
+              >
                 {/* <option value="">Please choose an option</option> */}
                 <option
                   value="In person"
-                  onChange={(e) => setType(e.target.value)}
+                  // onChange={(e) => setType(e.target.value)}
                 >
                   In Person
                 </option>
                 <option
                   value="Online"
-                  onChange={(e) => setType(e.target.value)}
+                  // onChange={(e) => setType(e.target.value)}
                 >
                   Online
                 </option>

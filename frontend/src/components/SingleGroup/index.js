@@ -7,7 +7,6 @@ import {
   deleteGroup,
   fetchMembers,
 } from "../../store/groups";
-import EditFormPage from "../EditFormPage";
 import "./SingleGroup.css";
 import { deleteSingleEvent, fetchAllEvents } from "../../store/events";
 
@@ -59,22 +58,12 @@ const SingleGroup = () => {
     console.log(groupArr);
   }
 
-  // let groupArrFilter;
-  // groupArr.forEach((group) => {
-  //   if (group[1]?.groupId === id) {
-  //     groupArrFilter.push(group);
-  //   }
-  // });
-  // console.log(groupArrFilter);
-
   console.log(groupEvents);
 
   let members;
   if (groupMembersArr) {
     members = groupMembersArr?.Members;
   }
-
-  // console.log(members);
 
   const parseDayTime = (dayTimeString) => {
     const [date, time] = dayTimeString.split("T");
