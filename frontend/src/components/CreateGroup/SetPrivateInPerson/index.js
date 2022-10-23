@@ -107,6 +107,7 @@ const SetPrivateInPerson = () => {
 
     // use thunk to add img to newly created group
     await dispatch(addImageToGroup(createdGroup.id, imgurl));
+    localStorage.clear();
     history.push("/groups");
   };
 
