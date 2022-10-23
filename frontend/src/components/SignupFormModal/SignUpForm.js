@@ -44,13 +44,16 @@ const SignupFormPage = () => {
           username,
           password,
         })
-      );
-      // .catch(async (res) => {
-      //   const data = await res.json();
-      //   if (data && data.errors) setErrors(data.errors);
-      // });
-    } else {
-      return errors;
+      ).catch(async (res) => {
+        const data = await res.json();
+        // if (data && data.errors) setErrors(data.errors);
+        const errors = [];
+        if (data && data.errors) {
+          errors.push("Username or email already exists");
+          setErrors(errors);
+          return errors;
+        }
+      });
     }
 
     // return setErrors([
@@ -106,19 +109,14 @@ const SignupFormPage = () => {
       errors.push("Email must be between 3 and 255 characters");
     } else {
       if (!email.includes("@")) {
-        errors.push("Please enter a valid email (must have @)");
+        errors.push("Please enter a valid email");
       }
       if (!email.includes(".")) {
-        errors.push(
-          "Must end in valid domain e.g email.com, email.net, email.org"
-        );
+        errors.push("Please enter a valid email");
       } else if (email.includes(".")) {
         let emailArr = email.split(".");
         if (emailArr[1].length < 3) {
-          console.log("missing.com");
-          errors.push(
-            "Must end in valid domain e.g email.com, email.net, email.org"
-          );
+          errors.push("Please enter a valid email");
         }
       }
     }

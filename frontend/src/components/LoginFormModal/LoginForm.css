@@ -12,3 +12,11 @@
   list-style-type: none;
   padding: 1rem 0rem;
 }
+
+.login-demouser-buttons button {
+  cursor: pointer;
+}
+
+.demouserbutton button {
+  cursor: pointer;
+}

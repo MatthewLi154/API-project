@@ -125,6 +125,11 @@ html,
   width: 34rem;
   margin: 1rem 0rem;
   font-family: "Montserrat", sans-serif;
+  word-wrap: break-word;
+}
+
+.middleSectionLeftSide p {
+  word-wrap: break-word;
 }
 
 .middleSectionLeftSide h2 {

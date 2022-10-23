@@ -31,4 +31,5 @@
 .getStartedButton {
   margin-top: 1rem;
   width: 200px;
+  cursor: pointer;
 }

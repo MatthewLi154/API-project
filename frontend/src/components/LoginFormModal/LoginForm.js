@@ -103,7 +103,7 @@ function LoginForm() {
             </div>
           </div>
         </form>
-        <div>
+        <div className="demouserbutton">
           <button type="submit" onClick={(e) => onDemoUser(e)}>
             Demo User
           </button>
