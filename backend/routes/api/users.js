@@ -32,11 +32,7 @@ router.post("/", validateSignup, async (req, res) => {
 
   const findUser = await User.findOne({
     where: {
-      // [Op.or]: {
-      //   email: email,
-      //   username: username,
-      // },
-      email: email,
+      [Op.or]: [{ email: email }, { username: username }],
     },
   });
 
@@ -46,7 +42,7 @@ router.post("/", validateSignup, async (req, res) => {
       message: "User already exists",
       statusCode: 403,
       errors: {
-        email: "User with that email already exists",
+        email: "User with that email or username already exists",
       },
     });
   }
@@ -60,8 +56,6 @@ router.post("/", validateSignup, async (req, res) => {
   });
 
   user.token = await setTokenCookie(res, user);
-
-  // console.log(user);
 
   return res.json({
     id: user.dataValues.id,

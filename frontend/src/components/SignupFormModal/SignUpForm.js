@@ -103,22 +103,28 @@ const SignupFormPage = () => {
       errors.push("Username must be between 4 and 30 characters");
     }
 
+    // else {
+    //   if (!email.includes("@")) {
+    //     errors.push("Please enter a valid email");
+    //   }
+    //   if (!email.includes(".")) {
+    //     errors.push("Please enter a valid email");
+    //   } else if (email.includes(".")) {
+    //     let emailArr = email.split(".");
+    //     if (emailArr[1].length < 3) {
+    //       errors.push("Please enter a valid email");
+    //     }
+    //   }
+    // }
+
+    let emailReg = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.+-]+\.[a-z]{3}$/;
+
     if (email.length === 0) {
       errors.push("Please enter an email address");
     } else if (email.length < 3 || email.length > 256) {
       errors.push("Email must be between 3 and 255 characters");
-    } else {
-      if (!email.includes("@")) {
-        errors.push("Please enter a valid email");
-      }
-      if (!email.includes(".")) {
-        errors.push("Please enter a valid email");
-      } else if (email.includes(".")) {
-        let emailArr = email.split(".");
-        if (emailArr[1].length < 3) {
-          errors.push("Please enter a valid email");
-        }
-      }
+    } else if (!emailReg.test(email)) {
+      errors.push("Please enter a valid email");
     }
 
     if (errors.length > 0) setErrors(errors);
@@ -192,6 +198,7 @@ const SignupFormPage = () => {
                     type="text"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
+                    placeholder="Username must be between 4 and 30 characters"
                     required
                   />
                 </div>
@@ -205,6 +212,7 @@ const SignupFormPage = () => {
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Password must be between 6 and 20 characters"
                     required
                   />
                 </div>
@@ -218,6 +226,7 @@ const SignupFormPage = () => {
                     type="password"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
+                    placeholder="Please confirm your password"
                     required
                   />
                 </div>
