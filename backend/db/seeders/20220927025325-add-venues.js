@@ -5,7 +5,7 @@ module.exports = {
     await queryInterface.bulkInsert("Venues", [
       {
         groupId: 1,
-        address: "1615 Arland Ave",
+        address: "Crazy Man Avenue",
         city: "Rosemead",
         state: "CA",
         lat: 5.2,
