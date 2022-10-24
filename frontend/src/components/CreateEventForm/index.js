@@ -284,7 +284,7 @@ const CreateEventForm = () => {
                 <input
                   type="datetime-local"
                   name="meeting-time"
-                  min="2022-10-19T19:30"
+                  min="2022-10-24T10:30"
                   value={startDate}
                   onChange={(e) => {
                     setStartDate(e.target.value);
@@ -301,7 +301,7 @@ const CreateEventForm = () => {
                 <input
                   type="datetime-local"
                   name="meeting-time"
-                  min="2022-10-19T19:30"
+                  min="2022-10-24T10:30"
                   value={endDate}
                   onChange={(e) => {
                     setEndDate(e.target.value);
