@@ -33,10 +33,10 @@ const CreateEventForm = () => {
     localStorage.getItem("eventDescription") || ""
   );
   const [startDate, setStartDate] = useState(
-    localStorage.getItem("startDate") || "2022-10-22T20:30"
+    localStorage.getItem("startDate") || "2022-10-24T10:30"
   );
   const [endDate, setEndDate] = useState(
-    localStorage.getItem("endDate") || "2022-10-22T20:30"
+    localStorage.getItem("endDate") || "2022-10-25T10:30"
   );
   const [eventImg, setEventImg] = useState(
     localStorage.getItem("eventImg") || ""
