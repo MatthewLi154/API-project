@@ -1,8 +1,16 @@
 "use strict";
 
+// NEW: add this code to each migration file
+let options = {};
+if (process.env.NODE_ENV === "production") {
+  options.schema = process.env.SCHEMA; // define your schema in options object
+}
+// END of new code
+
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.bulkInsert("Memberships", [
+    options.tableName = "Memberships";
+    await queryInterface.bulkInsert(options, [
       {
         userId: 1,
         groupId: 1,
@@ -73,6 +81,7 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.bulkDelete("Memberships", null, {});
+    options.tableName = "Memberships";
+    await queryInterface.bulkDelete(options);
   },
 };

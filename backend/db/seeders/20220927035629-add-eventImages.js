@@ -1,8 +1,16 @@
 "use strict";
 
+// NEW: add this code to each migration file
+let options = {};
+if (process.env.NODE_ENV === "production") {
+  options.schema = process.env.SCHEMA; // define your schema in options object
+}
+// END of new code
+
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.bulkInsert("EventImages", [
+    options.tableName = "EventImages";
+    await queryInterface.bulkInsert(options, [
       {
         eventId: 1,
         url: "https://i.pinimg.com/originals/2b/d8/55/2bd855f6cd45d6f2afc755b811af2258.jpg",
@@ -32,6 +40,7 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.bulkDelete("EventImages", null, {});
+    options.tableName = "EventImages";
+    await queryInterface.bulkDelete(options, null, {});
   },
 };

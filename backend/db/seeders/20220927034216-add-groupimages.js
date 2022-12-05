@@ -1,8 +1,16 @@
 "use strict";
 
+// NEW: add this code to each migration file
+let options = {};
+if (process.env.NODE_ENV === "production") {
+  options.schema = process.env.SCHEMA; // define your schema in options object
+}
+// END of new code
+
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.bulkInsert("GroupImages", [
+    options.tableName = "GroupImages";
+    await queryInterface.bulkInsert(options, [
       {
         groupId: 1,
         url: "https://cdn.vox-cdn.com/thumbor/v6iJVAeyKD8OetowRsfNn3n58F8=/0x171:1200x771/fit-in/1200x600/cdn.vox-cdn.com/uploads/chorus_asset/file/21932734/ChainsawMan_GN01_C1_Catalog.jpg",
@@ -37,6 +45,7 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.bulkDelete("GroupImages", null, {});
+    options.tableName = "GroupImages";
+    await queryInterface.bulkDelete(options);
   },
 };
