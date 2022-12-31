@@ -157,7 +157,7 @@ export const fetchMembers = (groupId) => async (dispatch) => {
 const initialState = {};
 
 const groupReducer = (state = initialState, action) => {
-  let groupStateObj;
+  let groupStateObj = {};
   switch (action.type) {
     case LOAD:
       groupStateObj = { ...state };

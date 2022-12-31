@@ -8,6 +8,8 @@ import {
   deleteSingleEvent,
 } from "../../store/events";
 import { fetchGroups, fetchMembers } from "../../store/groups";
+import { fetchAttendees } from "../../store/attendees";
+import { csrfFetch } from "../../store/csrf";
 
 const SingleEvent = () => {
   const dispatch = useDispatch();
@@ -19,14 +21,22 @@ const SingleEvent = () => {
   const sessionUser = useSelector((state) => state.session.user);
   const groupMembersArr = useSelector((state) => state.groups.members);
   const allEvents = useSelector((state) => state.events.allEvents);
+  // const attendees = useSelector((state) => state.attendees);
 
   const [isMember, setIsMember] = useState(false);
+  const [attendees, setAttendees] = useState([]);
 
   useEffect(() => {
     dispatch(fetchAllEvents());
     dispatch(fetchSingleEvent(eventId));
     dispatch(fetchGroups());
+    // dispatch(fetchAttendees(eventId));
   }, [dispatch]);
+
+  useEffect(() => {
+    const data = fetchEventAttendees();
+    setAttendees(data);
+  }, []);
 
   // Normalize allGroupsArr to allGroupsObj
   let allGroupsObj = {};
@@ -94,6 +104,26 @@ const SingleEvent = () => {
     }
   }
 
+  const fetchEventAttendees = async () => {
+    const response = await csrfFetch(`/api/events/${eventId}/attendees`);
+
+    if (response.ok) {
+      const data = await response.json();
+
+      // normalize array
+      let attendees = {};
+      let attendeesArr = data.Attendees;
+
+      for (const attendee of attendeesArr) {
+        attendees[attendee.id] = attendee;
+      }
+
+      setAttendees(attendeesArr);
+      console.log(attendeesArr);
+      return attendees;
+    }
+  };
+
   // // validate current session user and organizer
   // let isOrganizer;
   // isOrganizer = sessionUser.id === groupDataObj?.organizerId ? true : false;
@@ -157,8 +187,27 @@ const SingleEvent = () => {
                 <div>
                   <h2>Details</h2>
                 </div>
+
                 <div>
                   <p>{singleEventObj.description}</p>
+                </div>
+                <div>
+                  <h2>Attendees</h2>
+                </div>
+                <div className="attendees-main-container">
+                  {attendees.length > 0 &&
+                    attendees.map((attendee) => (
+                      <div className="attendee-card">
+                        <div className="attendee-name">
+                          <h4>
+                            {attendee.firstName} {attendee.lastName}
+                          </h4>
+                        </div>
+                        <div className="attendee-status">
+                          <h4>{attendee.Attendance.status}</h4>
+                        </div>
+                      </div>
+                    ))}
                 </div>
               </div>
               <div className="eventDetailsRight">

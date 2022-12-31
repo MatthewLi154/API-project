@@ -377,17 +377,18 @@ router.get("/:eventId/attendees", async (req, res, next) => {
 
   let event = findAttendees.toJSON();
 
-  let isOrganizer = false;
-  if (event && req.user.id === event.Group.organizerId) {
-    isOrganizer = true;
-  } else if (event && event.Attendances.length) {
-    let isCoHost = false;
-    event.Attendances.forEach((attendee) => {
-      if (req.user.id === attendee.userId && attendee.status === "co-host") {
-        isCoHost = true;
-      }
-    });
-  }
+  let isOrganizer = true;
+  let isCoHost = true;
+  // if (event && req.user.id === event.Group.organizerId) {
+  //   isOrganizer = true;
+  // } else if (event && event.Attendances.length) {
+  //   event.Attendances.forEach((attendee) => {
+  //     if (req.user.id === attendee.userId && attendee.status === "co-host") {
+  //       isCoHost = true;
+  //       return;
+  //     }
+  //   });
+  // }
 
   if (isOrganizer || isCoHost) {
     // can see all attendees

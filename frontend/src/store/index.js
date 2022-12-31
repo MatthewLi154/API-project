@@ -5,12 +5,14 @@ import thunk from "redux-thunk";
 import sessionReducer from "./session";
 import groupReducer from "./groups";
 import eventReducer from "./events";
+import attendeeReducer from "./attendees";
 
 const rootReducer = combineReducers({
   // add reducer functions here
   session: sessionReducer,
   groups: groupReducer,
   events: eventReducer,
+  attendees: attendeeReducer,
 });
 
 // const persistConfig = {
