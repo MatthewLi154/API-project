@@ -14,46 +14,46 @@ module.exports = {
       {
         eventId: 1,
         userId: 1,
-        status: "member",
+        status: "host",
       },
       {
-        eventId: 2,
+        eventId: 1,
         userId: 2,
         status: "member",
       },
       {
-        eventId: 2,
+        eventId: 1,
         userId: 3,
         status: "member",
       },
       {
-        eventId: 3,
+        eventId: 2,
         userId: 4,
+        status: "co-host",
+      },
+      {
+        eventId: 2,
+        userId: 5,
         status: "member",
       },
       {
-        eventId: 4,
-        userId: 4,
-        status: "member",
-      },
-      {
-        eventId: 5,
-        userId: 4,
-        status: "member",
-      },
-      {
-        eventId: 5,
-        userId: 4,
-        status: "member",
-      },
-      {
-        eventId: 4,
-        userId: 4,
-        status: "member",
+        eventId: 2,
+        userId: 6,
+        status: "waitlist",
       },
       {
         eventId: 3,
-        userId: 4,
+        userId: 7,
+        status: "co-host",
+      },
+      {
+        eventId: 3,
+        userId: 8,
+        status: "member",
+      },
+      {
+        eventId: 3,
+        userId: 9,
         status: "member",
       },
     ]);
