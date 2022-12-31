@@ -10,7 +10,9 @@
     "build": "npm run build --prefix backend"
   },
   "dependencies": {
+    "@react-google-maps/api": "^2.17.1",
     "bcryptjs": "^2.4.3",
+    "google-maps-react": "^2.0.6",
     "pg": "^8.8.0"
   }
 }

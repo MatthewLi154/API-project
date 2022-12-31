@@ -10,6 +10,7 @@ import {
 import { fetchGroups, fetchMembers } from "../../store/groups";
 import { fetchAttendees } from "../../store/attendees";
 import { csrfFetch } from "../../store/csrf";
+import { useLoadScript } from "@react-google-maps/api";
 
 const SingleEvent = () => {
   const dispatch = useDispatch();
@@ -151,6 +152,8 @@ const SingleEvent = () => {
     allGroupsObj[groupId]?.organizerId === sessionUser?.id ? true : false;
 
   // isOrganizer = currentUser?.id === groupDataObj?.organizerId ? true : false;
+
+  // const { isLoaded } =
 
   return (
     <>
