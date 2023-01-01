@@ -58,7 +58,7 @@
 }
 
 .eventDetailsLeft {
-  width: 50rem;
+  width: 45rem;
 }
 
 .eventDetailsLeft div {
@@ -83,6 +83,8 @@
   font-family: "Montserrat", sans-serif;
   font-size: 16px;
   margin-bottom: 5rem;
+  flex-wrap: wrap;
+  width: 94%;
 }
 
 .eventDetailsRight {
@@ -93,7 +95,7 @@
 .eventGroupCard {
   margin-top: 3rem;
   background-color: white;
-  width: 18rem;
+  width: 24rem;
   height: 8rem;
   border-radius: 15px;
   display: flex;
@@ -136,9 +138,10 @@
 .eventLocationTime {
   margin-top: 1rem;
   background-color: white;
-  border-radius: 15px;
+  border-top-left-radius: 0.75rem;
+  border-top-right-radius: 0.75rem;
   height: auto;
-  width: 18rem;
+  width: 24rem;
   padding: 1rem 0rem;
   font-weight: bold;
 }
@@ -225,4 +228,10 @@
 
 .attendee-status h4 {
   font-weight: 200;
+}
+
+.google-maps-container {
+  width: 100%;
+  height: 100%;
+  background-color: yellow;
 }

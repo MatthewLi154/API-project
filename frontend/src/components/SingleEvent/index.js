@@ -8,9 +8,10 @@ import {
   deleteSingleEvent,
 } from "../../store/events";
 import { fetchGroups, fetchMembers } from "../../store/groups";
-import { fetchAttendees } from "../../store/attendees";
+// import { fetchAttendees } from "../../store/attendees";
 import { csrfFetch } from "../../store/csrf";
-import { useLoadScript } from "@react-google-maps/api";
+// import { useLoadScript } from "@react-google-maps/api";
+import { useJsApiLoader, GoogleMap, Marker } from "@react-google-maps/api";
 
 const SingleEvent = () => {
   const dispatch = useDispatch();
@@ -26,6 +27,8 @@ const SingleEvent = () => {
 
   const [isMember, setIsMember] = useState(false);
   const [attendees, setAttendees] = useState([]);
+  const [lat, setLat] = useState(0);
+  const [lng, setLng] = useState(0);
 
   useEffect(() => {
     dispatch(fetchAllEvents());
@@ -120,29 +123,9 @@ const SingleEvent = () => {
       }
 
       setAttendees(attendeesArr);
-      console.log(attendeesArr);
       return attendees;
     }
   };
-
-  // // validate current session user and organizer
-  // let isOrganizer;
-  // isOrganizer = sessionUser.id === groupDataObj?.organizerId ? true : false;
-
-  // check if currentUser.id === membersid and if Membership status = member or co-host
-  // let members;
-  // if (groupMembersArr) {
-  //   members = groupMembersArr?.Members;
-  // }
-  // members?.forEach((member) => {
-  //   if (
-  //     member.id === sessionUser.id &&
-  //     (member.Membership?.status === "co-host" ||
-  //       member.Memebership?.status === "member")
-  //   ) {
-  //     setIsMember(!isMember);
-  //   }
-  // });
 
   // validate current session user and organizer
 
@@ -153,7 +136,34 @@ const SingleEvent = () => {
 
   // isOrganizer = currentUser?.id === groupDataObj?.organizerId ? true : false;
 
-  // const { isLoaded } =
+  const { isLoaded } = useJsApiLoader({
+    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
+  });
+
+  console.log(process.env.REACT_APP_GOOGLE_MAPS_API_KEY);
+
+  if (!isLoaded) {
+    <div>Loading...</div>;
+  }
+
+  const address = `${singleEventObj.Venue.address}, ${singleEventObj.Venue.city}, ${singleEventObj.Venue.state}`;
+
+  fetch(
+    `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((jsonData) => {
+      // console.log(jsonData.results[0].geometry.location); // {lat: 45.425152, lng: -75.6998028}
+      setLat(jsonData.results[0].geometry.location.lat);
+      setLng(jsonData.results[0].geometry.location.lng);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+
+  const center = { lat, lng };
 
   return (
     <>
@@ -262,6 +272,22 @@ const SingleEvent = () => {
                         <div className="locationAddress">Online</div>
                       )}
                     </div>
+                  </div>
+                  <div className="google-maps-container">
+                    {isLoaded && (
+                      <GoogleMap
+                        center={center}
+                        zoom={15}
+                        mapContainerStyle={{ width: "24rem", height: "24rem" }}
+                        options={{
+                          mapTypeControl: false,
+                          streetViewControl: false,
+                          fullscreenControl: false,
+                        }}
+                      >
+                        <Marker position={center} />
+                      </GoogleMap>
+                    )}
                   </div>
                   {isOrganizer && (
                     <div className="deleteButtonContainer">

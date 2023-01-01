@@ -13,8 +13,8 @@ module.exports = {
     await queryInterface.bulkInsert(options, [
       {
         groupId: 1,
-        address: "Crazy Man Avenue",
-        city: "Rosemead",
+        address: "1390 Kirkmichael Circle",
+        city: "Riverside",
         state: "CA",
         lat: 5.2,
         lng: 5.3,
