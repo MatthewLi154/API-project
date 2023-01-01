@@ -33,7 +33,7 @@ module.exports = {
       },
       {
         groupId: 5,
-        url: "https://www.fanbolt.com/storage/2021/08/anime-iphone-wallpaper-800x500.jpg",
+        url: "https://i.pinimg.com/564x/79/08/23/7908237fd5ee30fe580216910ddb8890.jpg",
         preview: true,
       },
       {

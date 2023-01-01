@@ -146,22 +146,25 @@ const SingleEvent = () => {
     <div>Loading...</div>;
   }
 
-  const address = `${singleEventObj.Venue.address}, ${singleEventObj.Venue.city}, ${singleEventObj.Venue.state}`;
+  if (Object.values(singleEventObj).length > 0) {
+    console.log(singleEventObj);
+    const address = `${singleEventObj.Venue.address}, ${singleEventObj.Venue.city}, ${singleEventObj.Venue.state}`;
 
-  fetch(
-    `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`
-  )
-    .then((response) => {
-      return response.json();
-    })
-    .then((jsonData) => {
-      // console.log(jsonData.results[0].geometry.location); // {lat: 45.425152, lng: -75.6998028}
-      setLat(jsonData.results[0].geometry.location.lat);
-      setLng(jsonData.results[0].geometry.location.lng);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+    fetch(
+      `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`
+    )
+      .then((response) => {
+        return response.json();
+      })
+      .then((jsonData) => {
+        // console.log(jsonData.results[0].geometry.location); // {lat: 45.425152, lng: -75.6998028}
+        setLat(jsonData.results[0].geometry.location.lat);
+        setLng(jsonData.results[0].geometry.location.lng);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 
   const center = { lat, lng };
 
