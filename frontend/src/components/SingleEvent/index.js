@@ -140,8 +140,6 @@ const SingleEvent = () => {
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
   });
 
-  console.log(process.env.REACT_APP_GOOGLE_MAPS_API_KEY);
-
   if (!isLoaded) {
     <div>Loading...</div>;
   }
