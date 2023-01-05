@@ -22,7 +22,6 @@ const SingleGroup = () => {
   const allEvents = useSelector((state) => state.events.allEvents);
   const sessionUser = useSelector((state) => state.session.user);
 
-  console.log(currentUser);
   const userId = sessionUser.id;
   const membersArr = groupMembersArr?.Members;
 

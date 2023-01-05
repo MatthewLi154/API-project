@@ -108,7 +108,6 @@ router.put("/:groupId/membership", requireAuth, async (req, res, next) => {
   // console.log(findGroup.toJSON());
 
   if (findGroup) {
-    // console.log("memberId", memberId);
     let group = findGroup.toJSON();
     // first check if organizer
     if (group.organizerId === req.user.id) {
@@ -123,17 +122,12 @@ router.put("/:groupId/membership", requireAuth, async (req, res, next) => {
       }
     }
 
-    // console.log("isCoHost", isCoHost);
-    // console.log("isOrganizer", isOrganizer);
-
     const findMembership = await Membership.findOne({
       where: {
         userId: memberId,
         groupId: req.params.groupId,
       },
     });
-
-    // console.log("findMembership", findMembership);
 
     if (!isCoHost && !isOrganizer) {
       res.json({

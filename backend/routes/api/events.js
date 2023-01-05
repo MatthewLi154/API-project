@@ -213,7 +213,6 @@ router.post("/:eventId/attendance", requireAuth, async (req, res, next) => {
   });
 
   if (findEvent) {
-    console.log(findEvent.toJSON());
     let verifyMembership = false;
     findEvent.toJSON().Group.Memberships.forEach((membership) => {
       if (

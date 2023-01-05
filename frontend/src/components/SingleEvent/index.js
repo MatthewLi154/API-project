@@ -8,10 +8,11 @@ import {
   deleteSingleEvent,
 } from "../../store/events";
 import { fetchGroups, fetchMembers } from "../../store/groups";
-// import { fetchAttendees } from "../../store/attendees";
+import { fetchAttendees } from "../../store/attendees";
 import { csrfFetch } from "../../store/csrf";
 // import { useLoadScript } from "@react-google-maps/api";
 import { useJsApiLoader, GoogleMap, Marker } from "@react-google-maps/api";
+import JoinEvent from "./JoinEvent";
 
 const SingleEvent = () => {
   const dispatch = useDispatch();
@@ -23,7 +24,7 @@ const SingleEvent = () => {
   const sessionUser = useSelector((state) => state.session.user);
   const groupMembersArr = useSelector((state) => state.groups.members);
   const allEvents = useSelector((state) => state.events.allEvents);
-  // const attendees = useSelector((state) => state.attendees);
+  const attendeesArr = useSelector((state) => state.attendees);
 
   const [isMember, setIsMember] = useState(false);
   const [attendees, setAttendees] = useState([]);
@@ -34,7 +35,9 @@ const SingleEvent = () => {
     dispatch(fetchAllEvents());
     dispatch(fetchSingleEvent(eventId));
     dispatch(fetchGroups());
-    // dispatch(fetchAttendees(eventId));
+    dispatch(fetchAttendees(eventId));
+    const data = fetchEventAttendees();
+    setAttendees(data);
   }, [dispatch]);
 
   useEffect(() => {
@@ -61,6 +64,7 @@ const SingleEvent = () => {
     history.push("/events");
   };
 
+  // let eventDate;
   const parseDayTime = (dayTimeString) => {
     if (dayTimeString) {
       const [date, time] = dayTimeString.split("T");
@@ -94,6 +98,7 @@ const SingleEvent = () => {
       let newDayTimeString = `${week[dayOfWeek]}, ${
         monthStr[month - 1]
       } ${day} · ${parsedHour}:${minute} ${AMPM}`;
+      // let eventDate = `${week[dayOfWeek]}, ${monthStr[month - 1]} ${day} · ${parsedHour}:${minute} ${AMPM}`;
       return newDayTimeString;
     }
   };
@@ -145,7 +150,6 @@ const SingleEvent = () => {
   }
 
   if (Object.values(singleEventObj).length > 0) {
-    console.log(singleEventObj);
     const address = `${singleEventObj.Venue.address}, ${singleEventObj.Venue.city}, ${singleEventObj.Venue.state}`;
 
     fetch(
@@ -306,6 +310,18 @@ const SingleEvent = () => {
             </div>
           </div>
         )}
+      </div>
+      <div className="event-join-footer-container">
+        <JoinEvent
+          props={{
+            eventStartDate,
+            title: singleEventObj.name,
+            price: singleEventObj.price,
+            eventId: eventId,
+            userId: sessionUser.id,
+            attendees: attendees,
+          }}
+        />
       </div>
     </>
   );
