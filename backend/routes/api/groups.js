@@ -78,11 +78,6 @@ router.post("/:groupId/membership", requireAuth, async (req, res, next) => {
     status: "pending",
   });
 
-  // const findNewMembership = await Membership.findOne({
-  //   order: [["createdAt", "DESC"]],
-  //   attributes: ["id"],
-  // });
-
   return res.json({
     memberId: newMembership.userId,
     status: newMembership.status,
@@ -793,14 +788,14 @@ router.get("/:groupId/members", async (req, res, next) => {
       memberObj.Membership = { status: membership.status };
       Members.push(memberObj);
     } else {
-      if (membership.status !== "pending") {
-        let memberObj = {};
-        memberObj.id = membership.userId;
-        memberObj.firstName = membership.User.firstName;
-        memberObj.lastName = membership.User.lastName;
-        memberObj.Membership = { status: membership.status };
-        Members.push(memberObj);
-      }
+      // if (membership.status !== "pending") {
+      let memberObj = {};
+      memberObj.id = membership.userId;
+      memberObj.firstName = membership.User.firstName;
+      memberObj.lastName = membership.User.lastName;
+      memberObj.Membership = { status: membership.status };
+      Members.push(memberObj);
+      // }
     }
   });
 

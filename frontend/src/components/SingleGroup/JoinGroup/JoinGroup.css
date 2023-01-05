@@ -1,0 +1,14 @@
+.join-group-main-container {
+  width: 100%;
+  height: 5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-top: 1px solid lightgray;
+}
+
+.join-group-main-container button {
+  width: 8rem;
+  display: flex;
+  justify-content: center;
+}

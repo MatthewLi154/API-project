@@ -9,6 +9,7 @@ const GET_LAST_GROUP = "groups/getLastGroup";
 const EDIT_GROUP = "groups/editGroup";
 const DELETE_GROUP = "groups/deleteGroup";
 const GET_MEMBERS = "groups/getMembers";
+const ADD_MEMBERS = "groups/addMembers";
 
 //TODO: action creator
 export const loadGroups = (data) => {
@@ -57,6 +58,13 @@ export const deleteGroupCreator = (groupId) => {
 export const getMembers = (memberData) => {
   return {
     type: GET_MEMBERS,
+    members: memberData,
+  };
+};
+
+export const addMembers = (memberData) => {
+  return {
+    type: ADD_MEMBERS,
     members: memberData,
   };
 };
@@ -152,6 +160,22 @@ export const fetchMembers = (groupId) => async (dispatch) => {
   }
 };
 
+export const requestMembership = (groupId, userId) => async (dispatch) => {
+  const response = await csrfFetch(`/api/groups/${groupId}/membership`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ userId: userId, groupId: groupId }),
+  });
+
+  const responseMembers = await csrfFetch(`/api/groups/${groupId}/members`);
+
+  if (responseMembers.ok) {
+    const data = await response.json();
+    dispatch(getMembers(data));
+    return data;
+  }
+};
+
 //TODO: reducer
 
 const initialState = {};
@@ -197,6 +221,10 @@ const groupReducer = (state = initialState, action) => {
       );
       return groupStateObj;
     case GET_MEMBERS:
+      groupStateObj = { ...state };
+      groupStateObj.members = action.members;
+      return groupStateObj;
+    case ADD_MEMBERS:
       groupStateObj = { ...state };
       groupStateObj.members = action.members;
       return groupStateObj;

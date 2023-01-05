@@ -9,6 +9,7 @@ import {
 } from "../../store/groups";
 import "./SingleGroup.css";
 import { deleteSingleEvent, fetchAllEvents } from "../../store/events";
+import JoinGroup from "./JoinGroup";
 
 const SingleGroup = () => {
   const { id } = useParams();
@@ -21,7 +22,7 @@ const SingleGroup = () => {
   const allEvents = useSelector((state) => state.events.allEvents);
   const sessionUser = useSelector((state) => state.session.user);
 
-  console.log(allEvents);
+  const userId = sessionUser.id;
 
   useEffect(() => {
     dispatch(fetchGroups());
@@ -55,10 +56,7 @@ const SingleGroup = () => {
 
   if (allEvents) {
     let groupArr = Object.entries(allEvents);
-    console.log(groupArr);
   }
-
-  console.log(groupEvents);
 
   let members;
   if (groupMembersArr) {
@@ -216,6 +214,7 @@ const SingleGroup = () => {
                 </div>
               </div>
             )}
+            {!isOrganizer && <JoinGroup props={{ isOrganizer, id, userId }} />}
             <div className="middleSectionMain">
               <div className="middleSectionContainer">
                 <div className="middleSectionLeftSide">
@@ -225,7 +224,6 @@ const SingleGroup = () => {
                   <div>
                     <p>{groupDataObj.about}</p>
                   </div>
-                  {/* <div>Yes</div> */}
                   {groupEvents.length > 0 && (
                     <div className="upcomingEventsContainer">
                       <div className="groupUpcomingEvents">
