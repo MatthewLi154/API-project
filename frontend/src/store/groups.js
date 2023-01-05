@@ -176,6 +176,22 @@ export const requestMembership = (groupId, userId) => async (dispatch) => {
   }
 };
 
+export const deleteMembership = (groupId, userId) => async (dispatch) => {
+  const response = await csrfFetch(`/api/groups/${groupId}/membership`, {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ memberId: userId }),
+  });
+
+  const responseMembers = await csrfFetch(`/api/groups/${groupId}/members`);
+
+  if (responseMembers.ok) {
+    const data = await response.json();
+    dispatch(getMembers(data));
+    return data;
+  }
+};
+
 //TODO: reducer
 
 const initialState = {};

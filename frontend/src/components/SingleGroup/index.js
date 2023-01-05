@@ -22,7 +22,9 @@ const SingleGroup = () => {
   const allEvents = useSelector((state) => state.events.allEvents);
   const sessionUser = useSelector((state) => state.session.user);
 
+  console.log(currentUser);
   const userId = sessionUser.id;
+  const membersArr = groupMembersArr?.Members;
 
   useEffect(() => {
     dispatch(fetchGroups());
@@ -214,7 +216,9 @@ const SingleGroup = () => {
                 </div>
               </div>
             )}
-            {!isOrganizer && <JoinGroup props={{ isOrganizer, id, userId }} />}
+            {!isOrganizer && (
+              <JoinGroup props={{ isOrganizer, id, userId, membersArr }} />
+            )}
             <div className="middleSectionMain">
               <div className="middleSectionContainer">
                 <div className="middleSectionLeftSide">

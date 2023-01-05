@@ -188,16 +188,15 @@ router.delete("/:groupId/membership", requireAuth, async (req, res, next) => {
     },
   });
 
-  // console.log(findGroup.toJSON());
-
   let isOrganizer = false;
   let validUser = false;
   if (findGroup) {
     if (findGroup.toJSON().organizerId === req.user.id) {
       isOrganizer = true;
     }
-    for (let i = 0; i < findGroup.toJSON().Memberships.length; i++) {
-      if (findGroup.toJSON().Memberships.userId === req.user.id) {
+    let membersArr = findGroup.toJSON().Memberships;
+    for (const member of membersArr) {
+      if (member.userId === req.user.id) {
         validUser = true;
       }
     }
