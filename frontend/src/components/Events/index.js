@@ -1,7 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchAllEvents, fetchSingleEvent } from "../../store/events";
+import { useJsApiLoader, GoogleMap, Marker } from "@react-google-maps/api";
 import "./Events.css";
 
 const Events = () => {
@@ -9,6 +10,13 @@ const Events = () => {
 
   // Get from state
   const eventSelectorObj = useSelector((state) => state.events);
+  const events = useSelector((state) => state.events.allEvents);
+  const [expandMap, setExpandMap] = useState(false);
+  const [lat, setLat] = useState(0);
+  const [lng, setLng] = useState(0);
+  const [latLngArr, setLatLngArr] = [];
+  const [sanDiegoLocations, setSanDiegoLocations] = useState([]);
+
   const eventsObj = eventSelectorObj;
   let eventsArr = [];
 
@@ -55,6 +63,68 @@ const Events = () => {
     } ${day} · ${parsedhourTime}:${minute} ${AMPM}`;
     return newDayTimeString;
   };
+
+  const { isLoaded } = useJsApiLoader({
+    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
+  });
+
+  let addressArr = [];
+  for (const event in events) {
+    if (events[event].Venue.city === "San Diego") {
+      let address = `${events[event].Venue.address}, San Diego, CA`;
+      addressArr.push(address);
+    }
+  }
+
+  console.log(addressArr);
+
+  const getMarkerLocations = () => {
+    let addressLatLng = [];
+    for (const address of addressArr) {
+      fetch(
+        `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`
+      )
+        .then((response) => {
+          return response.json();
+        })
+        .then((jsonData) => {
+          let lat = jsonData.results[0].geometry.location.lat;
+          let lng = jsonData.results[0].geometry.location.lng;
+          addressLatLng.push({ lat, lng });
+          setLatLngArr(addressLatLng);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+    return addressLatLng;
+  };
+
+  const markerArr = getMarkerLocations();
+
+  console.log(latLngArr);
+
+  for (const marker in markerArr) {
+    console.log(markerArr);
+  }
+
+  const addressEx = `1640 Camino Del Rio N, San Diego, CA 92108`;
+
+  fetch(
+    `https://maps.googleapis.com/maps/api/geocode/json?address=${addressEx}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((jsonData) => {
+      setLat(jsonData.results[0].geometry.location.lat);
+      setLng(jsonData.results[0].geometry.location.lng);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+
+  const center = { lat, lng };
 
   return (
     <>
@@ -119,6 +189,63 @@ const Events = () => {
                 </div>
               </NavLink>
             ))}
+        </div>
+        <div className="relevant-map-container">
+          <div>Find events near</div>
+          <div
+            style={{
+              fontSize: "24px",
+              color: "black",
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            <div>San Diego, CA</div>
+            <div
+              style={{
+                fontSize: "16px",
+                color: "#008294",
+                display: "flex",
+                alignItems: "flex-end",
+                cursor: "pointer",
+              }}
+              onClick={(e) => {
+                setExpandMap(!expandMap);
+              }}
+            >
+              {!expandMap ? <div>Expand Map</div> : <div>Reset</div>}
+            </div>
+          </div>
+          <div className="google-maps-container">
+            {isLoaded &&
+              (expandMap ? (
+                <GoogleMap
+                  center={center}
+                  zoom={9}
+                  mapContainerStyle={{ width: "24rem", height: "36rem" }}
+                  options={{
+                    mapTypeControl: false,
+                    streetViewControl: false,
+                    fullscreenControl: false,
+                  }}
+                >
+                  <Marker position={center} />
+                </GoogleMap>
+              ) : (
+                <GoogleMap
+                  center={center}
+                  zoom={9}
+                  mapContainerStyle={{ width: "24rem", height: "10rem" }}
+                  options={{
+                    mapTypeControl: false,
+                    streetViewControl: false,
+                    fullscreenControl: false,
+                  }}
+                >
+                  <Marker position={center} />
+                </GoogleMap>
+              ))}
+          </div>
         </div>
       </div>
     </>

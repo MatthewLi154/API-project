@@ -677,7 +677,7 @@ router.get("/", async (req, res, next) => {
       },
       { model: EventImage, attributes: ["url"] },
       { model: Group, attributes: ["id", "name", "city", "state"] },
-      { model: Venue, attributes: ["id", "city", "state"] },
+      { model: Venue, attributes: ["id", "city", "state", "address"] },
     ],
   });
 

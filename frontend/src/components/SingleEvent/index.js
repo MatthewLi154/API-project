@@ -10,7 +10,6 @@ import {
 import { fetchGroups, fetchMembers } from "../../store/groups";
 import { fetchAttendees } from "../../store/attendees";
 import { csrfFetch } from "../../store/csrf";
-// import { useLoadScript } from "@react-google-maps/api";
 import { useJsApiLoader, GoogleMap, Marker } from "@react-google-maps/api";
 import JoinEvent from "./JoinEvent";
 
@@ -145,10 +144,6 @@ const SingleEvent = () => {
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
   });
 
-  if (!isLoaded) {
-    <div>Loading...</div>;
-  }
-
   if (Object.values(singleEventObj).length > 0) {
     const address = `${singleEventObj.Venue.address}, ${singleEventObj.Venue.city}, ${singleEventObj.Venue.state}`;
 
@@ -159,7 +154,6 @@ const SingleEvent = () => {
         return response.json();
       })
       .then((jsonData) => {
-        // console.log(jsonData.results[0].geometry.location); // {lat: 45.425152, lng: -75.6998028}
         setLat(jsonData.results[0].geometry.location.lat);
         setLng(jsonData.results[0].geometry.location.lng);
       })
