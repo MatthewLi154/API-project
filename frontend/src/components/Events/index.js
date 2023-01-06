@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchAllEvents, fetchSingleEvent } from "../../store/events";
 import { useJsApiLoader, GoogleMap, Marker } from "@react-google-maps/api";
@@ -7,6 +7,7 @@ import "./Events.css";
 
 const Events = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
 
   // Get from state
   const eventSelectorObj = useSelector((state) => state.events);
@@ -14,8 +15,6 @@ const Events = () => {
   const [expandMap, setExpandMap] = useState(false);
   const [lat, setLat] = useState(0);
   const [lng, setLng] = useState(0);
-  const [latLngArr, setLatLngArr] = [];
-  const [sanDiegoLocations, setSanDiegoLocations] = useState([]);
 
   const eventsObj = eventSelectorObj;
   let eventsArr = [];
@@ -76,37 +75,29 @@ const Events = () => {
     }
   }
 
-  console.log(addressArr);
+  // const getMarkerLocations = () => {
+  //   let addressLatLng = [];
+  //   for (const address of addressArr) {
+  //     fetch(
+  //       `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`
+  //     )
+  //       .then((response) => {
+  //         return response.json();
+  //       })
+  //       .then((jsonData) => {
+  //         let lat = jsonData.results[0].geometry.location.lat;
+  //         let lng = jsonData.results[0].geometry.location.lng;
+  //         addressLatLng.push({ lat, lng });
+  //       })
+  //       .catch((error) => {
+  //         console.log(error);
+  //       });
+  //   }
+  //   // console.log(addressLatLng);
+  //   // return addressLatLng;
+  // };
 
-  const getMarkerLocations = () => {
-    let addressLatLng = [];
-    for (const address of addressArr) {
-      fetch(
-        `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`
-      )
-        .then((response) => {
-          return response.json();
-        })
-        .then((jsonData) => {
-          let lat = jsonData.results[0].geometry.location.lat;
-          let lng = jsonData.results[0].geometry.location.lng;
-          addressLatLng.push({ lat, lng });
-          setLatLngArr(addressLatLng);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-    return addressLatLng;
-  };
-
-  const markerArr = getMarkerLocations();
-
-  console.log(latLngArr);
-
-  for (const marker in markerArr) {
-    console.log(markerArr);
-  }
+  // const markerArr = getMarkerLocations();
 
   const addressEx = `1640 Camino Del Rio N, San Diego, CA 92108`;
 
@@ -125,6 +116,10 @@ const Events = () => {
     });
 
   const center = { lat, lng };
+
+  const onMarkerClick = (key) => {
+    console.log(key);
+  };
 
   return (
     <>
@@ -221,20 +216,23 @@ const Events = () => {
               (expandMap ? (
                 <GoogleMap
                   center={center}
-                  zoom={9}
+                  zoom={12}
                   mapContainerStyle={{ width: "24rem", height: "36rem" }}
                   options={{
                     mapTypeControl: false,
                     streetViewControl: false,
                     fullscreenControl: false,
                   }}
+                  onClick={(key) => onMarkerClick(key)}
                 >
-                  <Marker position={center} />
+                  <Marker position={center} key="hello" />
+                  <Marker position={{ lat: 32.707, lng: -117.163 }} />
+                  <Marker position={{ lat: 32.734, lng: -117.15 }} />
                 </GoogleMap>
               ) : (
                 <GoogleMap
                   center={center}
-                  zoom={9}
+                  zoom={12}
                   mapContainerStyle={{ width: "24rem", height: "10rem" }}
                   options={{
                     mapTypeControl: false,
@@ -242,7 +240,9 @@ const Events = () => {
                     fullscreenControl: false,
                   }}
                 >
-                  <Marker position={center} />
+                  <Marker position={center} onClick={onMarkerClick} />
+                  <Marker position={{ lat: 32.707, lng: -117.163 }} />
+                  <Marker position={{ lat: 32.734, lng: -117.15 }} />
                 </GoogleMap>
               ))}
           </div>

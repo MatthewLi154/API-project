@@ -45,23 +45,22 @@ export const addNewAttendees = (eventId, userId) => async (dispatch) => {
     headers: { "Content-Type": "application/json" },
   });
 
-  if (response.ok) {
-    const res = await csrfFetch(`/api/events/${eventId}/attendees`);
+  // if (response.ok) {
+  //   const res = await csrfFetch(`/api/events/${eventId}/attendees`);
 
-    const data = await res.json();
+  //   const data = await res.json();
 
-    let attendees = {};
-    let attendeesArr = data.Attendees;
+  //   let attendees = {};
+  //   let attendeesArr = data.Attendees;
 
-    for (const attendee of attendeesArr) {
-      attendees[attendee.id] = attendee;
-    }
+  //   for (const attendee of attendeesArr) {
+  //     attendees[attendee.id] = attendee;
+  //   }
 
-    dispatch(loadAttendees(attendees));
-    return data;
-  } else {
-    return;
-  }
+  //   dispatch(loadAttendees(attendees));
+  //   return data;
+  // }
+  dispatch(fetchAttendees(eventId));
 };
 
 // TODO: reducer

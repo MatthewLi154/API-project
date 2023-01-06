@@ -7,7 +7,7 @@ import {
   fetchSingleEvent,
   deleteSingleEvent,
 } from "../../store/events";
-import { fetchGroups, fetchMembers } from "../../store/groups";
+import { fetchGroups } from "../../store/groups";
 import { fetchAttendees } from "../../store/attendees";
 import { csrfFetch } from "../../store/csrf";
 import { useJsApiLoader, GoogleMap, Marker } from "@react-google-maps/api";
@@ -314,6 +314,7 @@ const SingleEvent = () => {
             eventId: eventId,
             userId: sessionUser.id,
             attendees: attendees,
+            groupId: groupId,
           }}
         />
       </div>
