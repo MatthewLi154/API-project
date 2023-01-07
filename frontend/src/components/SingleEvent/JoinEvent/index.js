@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { addNewAttendees, fetchAttendees } from "../../../store/attendees";
+import { addNewAttendees } from "../../../store/attendees";
 import "./JoinEvent.css";
 
 const JoinEvent = ({ props }) => {
@@ -14,11 +14,9 @@ const JoinEvent = ({ props }) => {
   const eventId = props.eventId;
   const userId = props.userId;
   const attendees = props.attendees;
+  const setAttendees = props.setAttendees;
   const groupId = props.groupId;
-
-  useEffect(() => {
-    fetchAttendees(eventId);
-  }, [dispatch]);
+  const fetchEventAttendees = props.fetchEventAttendees;
 
   let isAttending = false;
   for (const attendee in attendees) {
@@ -30,7 +28,6 @@ const JoinEvent = ({ props }) => {
   const onAttend = async (e) => {
     e.preventDefault();
     await dispatch(addNewAttendees(eventId, userId));
-    await dispatch(fetchAttendees(eventId));
   };
 
   const [members, setMembers] = useState({});

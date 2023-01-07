@@ -34,6 +34,7 @@ export const fetchAttendees = (eventId) => async (dispatch) => {
       attendees[attendee.id] = attendee;
     }
 
+    console.log(attendees);
     dispatch(loadAttendees(attendees));
     return data;
   }
@@ -65,14 +66,14 @@ export const addNewAttendees = (eventId, userId) => async (dispatch) => {
 
 // TODO: reducer
 
-const initialState = {};
+const initialState = { eventAttendees: {} };
 
 const attendeeReducer = (state = initialState, action) => {
-  let attendeeStateObj = {};
+  let attendeeStateObj = { ...state };
   switch (action.type) {
     case LOAD_ATTENDEES:
       attendeeStateObj = { ...state };
-      attendeeStateObj = action.attendees;
+      attendeeStateObj.eventAttendees = action.attendees;
       return attendeeStateObj;
     default:
       return attendeeStateObj;

@@ -197,7 +197,7 @@ export const deleteMembership = (groupId, userId) => async (dispatch) => {
 const initialState = {};
 
 const groupReducer = (state = initialState, action) => {
-  let groupStateObj = {};
+  let groupStateObj = { ...state };
   switch (action.type) {
     case LOAD:
       groupStateObj = { ...state };

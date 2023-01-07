@@ -23,10 +23,11 @@ const SingleEvent = () => {
   const sessionUser = useSelector((state) => state.session.user);
   const groupMembersArr = useSelector((state) => state.groups.members);
   const allEvents = useSelector((state) => state.events.allEvents);
-  const attendeesArr = useSelector((state) => state.attendees);
+  const attendees = useSelector((state) =>
+    Object.values(state.attendees.eventAttendees)
+  );
 
   const [isMember, setIsMember] = useState(false);
-  const [attendees, setAttendees] = useState([]);
   const [lat, setLat] = useState(0);
   const [lng, setLng] = useState(0);
 
@@ -35,13 +36,8 @@ const SingleEvent = () => {
     dispatch(fetchSingleEvent(eventId));
     dispatch(fetchGroups());
     dispatch(fetchAttendees(eventId));
-    const data = fetchEventAttendees();
-    setAttendees(data);
-  }, [dispatch]);
-
-  useEffect(() => {
-    const data = fetchEventAttendees();
-    setAttendees(data);
+    // const data = fetchEventAttendees();
+    // setAttendees(data);
   }, []);
 
   // Normalize allGroupsArr to allGroupsObj
@@ -111,25 +107,6 @@ const SingleEvent = () => {
       groupEvents.push(allEvents[key]);
     }
   }
-
-  const fetchEventAttendees = async () => {
-    const response = await csrfFetch(`/api/events/${eventId}/attendees`);
-
-    if (response.ok) {
-      const data = await response.json();
-
-      // normalize array
-      let attendees = {};
-      let attendeesArr = data.Attendees;
-
-      for (const attendee of attendeesArr) {
-        attendees[attendee.id] = attendee;
-      }
-
-      setAttendees(attendeesArr);
-      return attendees;
-    }
-  };
 
   // validate current session user and organizer
 

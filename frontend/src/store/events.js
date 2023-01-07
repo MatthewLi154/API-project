@@ -111,7 +111,7 @@ export const addImageToEvent = (eventId, imgData) => async (dispatch) => {
 const initialState = { allEvents: {}, singleEvent: {} };
 
 const eventReducer = (state = initialState, action) => {
-  let eventStateObj = {};
+  let eventStateObj = { ...state };
   switch (action.type) {
     case LOAD_ALL_EVENTS:
       eventStateObj = { ...state };
