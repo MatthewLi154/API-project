@@ -9,7 +9,6 @@ import {
 } from "../../store/events";
 import { fetchGroups } from "../../store/groups";
 import { fetchAttendees } from "../../store/attendees";
-import { csrfFetch } from "../../store/csrf";
 import { useJsApiLoader, GoogleMap, Marker } from "@react-google-maps/api";
 import JoinEvent from "./JoinEvent";
 
@@ -37,8 +36,6 @@ const SingleEvent = () => {
     dispatch(fetchSingleEvent(eventId));
     dispatch(fetchGroups());
     dispatch(fetchAttendees(eventId));
-    // const data = fetchEventAttendees();
-    // setAttendees(data);
   }, []);
 
   // Normalize allGroupsArr to allGroupsObj
@@ -142,24 +139,6 @@ const SingleEvent = () => {
 
   const center = { lat, lng };
 
-  // fetch group members
-  // useEffect(() => {
-  //   fetch(`/api/groups/${groupId}/members`)
-  //     .then((res) => {
-  //       const data = res.json();
-  //       return data;
-  //     })
-  //     .then((members) => setMembers(members.Members));
-  // }, []);
-
-  // // check if user is a member
-  // for (const member in members) {
-  //   console.log(members[member]);
-  //   if (members[member].id === sessionUser.id) {
-  //     setIsMember(true);
-  //   }
-  // }
-
   return (
     <>
       <div className="singleEventContainerPage">
@@ -200,10 +179,10 @@ const SingleEvent = () => {
                   <p>{singleEventObj.description}</p>
                 </div>
                 <div>
-                  <h2>Attendees</h2>
+                  <h2>Attendees {`(${attendees.length})`}</h2>
                 </div>
                 <div className="attendees-main-container">
-                  {attendees.length > 0 &&
+                  {attendees.length > 0 ? (
                     attendees.map((attendee) => (
                       <div className="attendee-card">
                         <div className="attendee-name">
@@ -215,7 +194,12 @@ const SingleEvent = () => {
                           <h4>{attendee.Attendance.status}</h4>
                         </div>
                       </div>
-                    ))}
+                    ))
+                  ) : (
+                    <div style={{ fontFamily: "arial", fontWeight: "600" }}>
+                      Be the first to join!
+                    </div>
+                  )}
                 </div>
               </div>
               <div className="eventDetailsRight">

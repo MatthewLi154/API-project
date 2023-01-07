@@ -61,9 +61,6 @@ const JoinEvent = ({ props }) => {
     }
   }
 
-  //   const isMember = true;
-  console.log(isMember);
-
   const attending = (
     <div className="footer-main-container">
       <div className="footer-inner-container">
