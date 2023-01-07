@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { addNewAttendees } from "../../../store/attendees";
+import {
+  addNewAttendees,
+  deleteAttendee,
+  fetchAttendees,
+} from "../../../store/attendees";
 import "./JoinEvent.css";
 
 const JoinEvent = ({ props }) => {
@@ -28,11 +32,18 @@ const JoinEvent = ({ props }) => {
   const onAttend = async (e) => {
     e.preventDefault();
     await dispatch(addNewAttendees(eventId, userId));
+    await dispatch(fetchAttendees(eventId));
+  };
+
+  const onUnattend = async (e) => {
+    e.preventDefault();
+    await dispatch(deleteAttendee(eventId, userId));
+    await dispatch(fetchAttendees(eventId));
   };
 
   const [members, setMembers] = useState({});
 
-  // fetch group members
+  //   fetch group members
   useEffect(() => {
     fetch(`/api/groups/${groupId}/members`)
       .then((res) => {
@@ -42,13 +53,16 @@ const JoinEvent = ({ props }) => {
       .then((members) => setMembers(members.Members));
   }, []);
 
-  // check if user is member of group
+  //   check if user is member of group
   let isMember = false;
   for (const member in members) {
     if (members[member].id === userId) {
       isMember = true;
     }
   }
+
+  //   const isMember = true;
+  console.log(isMember);
 
   const attending = (
     <div className="footer-main-container">
@@ -66,14 +80,18 @@ const JoinEvent = ({ props }) => {
         >
           <div
             style={{
-              margin: "0rem 1rem",
-              fontSize: "16px",
-              border: "1px solid black",
-              padding: "1rem 2rem",
-              borderRadius: "0.5rem",
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
             }}
           >
-            Attending
+            <button
+              onClick={(e) => {
+                onUnattend(e);
+              }}
+            >
+              Unattend
+            </button>
           </div>
         </div>
       </div>

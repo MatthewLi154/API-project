@@ -27,6 +27,7 @@ const SingleEvent = () => {
     Object.values(state.attendees.eventAttendees)
   );
 
+  const [members, setMembers] = useState({});
   const [isMember, setIsMember] = useState(false);
   const [lat, setLat] = useState(0);
   const [lng, setLng] = useState(0);
@@ -140,6 +141,24 @@ const SingleEvent = () => {
   }
 
   const center = { lat, lng };
+
+  // fetch group members
+  // useEffect(() => {
+  //   fetch(`/api/groups/${groupId}/members`)
+  //     .then((res) => {
+  //       const data = res.json();
+  //       return data;
+  //     })
+  //     .then((members) => setMembers(members.Members));
+  // }, []);
+
+  // // check if user is a member
+  // for (const member in members) {
+  //   console.log(members[member]);
+  //   if (members[member].id === sessionUser.id) {
+  //     setIsMember(true);
+  //   }
+  // }
 
   return (
     <>

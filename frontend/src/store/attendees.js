@@ -46,22 +46,20 @@ export const addNewAttendees = (eventId, userId) => async (dispatch) => {
     headers: { "Content-Type": "application/json" },
   });
 
-  // if (response.ok) {
-  //   const res = await csrfFetch(`/api/events/${eventId}/attendees`);
-
-  //   const data = await res.json();
-
-  //   let attendees = {};
-  //   let attendeesArr = data.Attendees;
-
-  //   for (const attendee of attendeesArr) {
-  //     attendees[attendee.id] = attendee;
-  //   }
-
-  //   dispatch(loadAttendees(attendees));
-  //   return data;
-  // }
   dispatch(fetchAttendees(eventId));
+};
+
+export const deleteAttendee = (eventId, userId) => async (dispatch) => {
+  const response = await csrfFetch(`/api/events/${eventId}/attendance`, {
+    method: "DELETE",
+    body: JSON.stringify({ memberId: userId }),
+  });
+
+  if (response.ok) {
+    const data = await response.json();
+    dispatch(fetchAttendees(eventId));
+    return data;
+  }
 };
 
 // TODO: reducer

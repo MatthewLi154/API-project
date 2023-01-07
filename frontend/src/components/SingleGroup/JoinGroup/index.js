@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteAttendee } from "../../../store/attendees";
 import { csrfFetch } from "../../../store/csrf";
 import {
   requestMembership,
@@ -16,6 +17,9 @@ const JoinGroup = ({ props }) => {
   const reqMembershipObj = { userId: props.userId, groupId: props.id };
   const dispatch = useDispatch();
 
+  const events = useSelector((state) => state.events.allEvents);
+  // console.log(events);
+
   useEffect(() => {
     dispatch(fetchMembers(groupId));
   }, [dispatch]);
@@ -29,6 +33,14 @@ const JoinGroup = ({ props }) => {
   const onLeave = async (e) => {
     e.preventDefault();
     await dispatch(deleteMembership(groupId, userId));
+
+    for (const event in events) {
+      // console.log(events[event].groupId);
+      if (events[event].groupId == groupId) {
+        await dispatch(deleteAttendee(event, userId));
+        // console.log(events[event].groupId);
+      }
+    }
     await dispatch(fetchMembers(groupId));
   };
 

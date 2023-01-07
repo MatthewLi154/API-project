@@ -85,7 +85,6 @@ export const fetchSingleGroup = (id) => async (dispatch) => {
 
   if (response.ok) {
     const data = await response.json();
-    console.log(data);
     dispatch(loadSingleGroup(data));
   }
   return response;
@@ -130,7 +129,6 @@ export const fetchEditGroup = (groupId, formData) => async (dispatch) => {
 
   if (response.ok) {
     const data = await response.json();
-    console.log(data);
     dispatch(editGroup(data));
     return data;
   }
