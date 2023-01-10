@@ -23,6 +23,8 @@ const SingleGroup = () => {
   const sessionUser = useSelector((state) => state.session.user);
 
   const userId = sessionUser.id;
+  const userFirstName = sessionUser.firstName;
+  const userLastName = sessionUser.lastName;
   const membersArr = groupMembersArr?.Members;
 
   useEffect(() => {
@@ -63,6 +65,7 @@ const SingleGroup = () => {
   if (groupMembersArr) {
     members = groupMembersArr?.Members;
   }
+  console.log(members);
 
   const parseDayTime = (dayTimeString) => {
     const [date, time] = dayTimeString.split("T");
@@ -122,7 +125,7 @@ const SingleGroup = () => {
   // validate current session user and organizer
   let isOrganizer;
   isOrganizer = sessionUser?.id === groupDataObj?.organizerId ? true : false;
-  console.log(isOrganizer);
+  // console.log(isOrganizer);
 
   // check if currentUser.id === membersid and if Membership status = member or co-host
   let isMember = false;
@@ -216,7 +219,16 @@ const SingleGroup = () => {
               </div>
             )}
             {!isOrganizer && (
-              <JoinGroup props={{ isOrganizer, id, userId, membersArr }} />
+              <JoinGroup
+                props={{
+                  isOrganizer,
+                  id,
+                  userId,
+                  membersArr,
+                  userFirstName,
+                  userLastName,
+                }}
+              />
             )}
             <div className="middleSectionMain">
               <div className="middleSectionContainer">

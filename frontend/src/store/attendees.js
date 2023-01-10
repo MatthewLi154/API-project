@@ -34,7 +34,7 @@ export const fetchAttendees = (eventId) => async (dispatch) => {
       attendees[attendee.id] = attendee;
     }
 
-    console.log(attendees);
+    // console.log(attendees);
     dispatch(loadAttendees(attendees));
     return data;
   }

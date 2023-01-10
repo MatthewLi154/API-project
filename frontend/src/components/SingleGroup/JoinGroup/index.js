@@ -14,15 +14,16 @@ const JoinGroup = ({ props }) => {
   const groupId = props.id;
   const userId = props.userId;
   const members = props.membersArr;
-  const reqMembershipObj = { userId: props.userId, groupId: props.id };
+  // const reqMembershipObj = { userId: props.userId, groupId: props.id };
+  const firstName = props.userFirstName;
+  const lastName = props.userLastName;
   const dispatch = useDispatch();
 
   const events = useSelector((state) => state.events.allEvents);
-  // console.log(events);
 
-  useEffect(() => {
-    dispatch(fetchMembers(groupId));
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(fetchMembers(groupId));
+  // }, [dispatch]);
 
   const onRequest = async (e) => {
     e.preventDefault();
@@ -35,9 +36,20 @@ const JoinGroup = ({ props }) => {
     await dispatch(deleteMembership(groupId, userId));
 
     for (const event in events) {
-      // console.log(events[event].groupId);
       if (events[event].groupId == groupId) {
-        await dispatch(deleteAttendee(event, userId));
+        // Check if attendance exists
+        const data = await fetch(`/api/events/${event}/attendees`);
+        const attendees = await data.json();
+
+        const attendeesArr = attendees.Attendees;
+        for (const attendee of attendeesArr) {
+          if (
+            attendee.firstName === firstName &&
+            attendee.lastName === lastName
+          ) {
+            await dispatch(deleteAttendee(event, userId));
+          }
+        }
         // console.log(events[event].groupId);
       }
     }

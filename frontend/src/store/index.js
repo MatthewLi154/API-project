@@ -6,6 +6,7 @@ import sessionReducer from "./session";
 import groupReducer from "./groups";
 import eventReducer from "./events";
 import attendeeReducer from "./attendees";
+import membersReducer from "./members";
 
 const rootReducer = combineReducers({
   // add reducer functions here
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
   groups: groupReducer,
   events: eventReducer,
   attendees: attendeeReducer,
+  members: membersReducer,
 });
 
 // const persistConfig = {

@@ -21,6 +21,7 @@ const JoinEvent = ({ props }) => {
   const setAttendees = props.setAttendees;
   const groupId = props.groupId;
   const fetchEventAttendees = props.fetchEventAttendees;
+  const isMember = props.isMember;
 
   let isAttending = false;
   for (const attendee in attendees) {
@@ -40,26 +41,6 @@ const JoinEvent = ({ props }) => {
     await dispatch(deleteAttendee(eventId, userId));
     await dispatch(fetchAttendees(eventId));
   };
-
-  const [members, setMembers] = useState({});
-
-  //   fetch group members
-  useEffect(() => {
-    fetch(`/api/groups/${groupId}/members`)
-      .then((res) => {
-        const data = res.json();
-        return data;
-      })
-      .then((members) => setMembers(members.Members));
-  }, []);
-
-  //   check if user is member of group
-  let isMember = false;
-  for (const member in members) {
-    if (members[member].id === userId) {
-      isMember = true;
-    }
-  }
 
   const attending = (
     <div className="footer-main-container">

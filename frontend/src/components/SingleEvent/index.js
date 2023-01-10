@@ -7,6 +7,7 @@ import {
   fetchSingleEvent,
   deleteSingleEvent,
 } from "../../store/events";
+import { fetchMembers } from "../../store/groups";
 import { fetchGroups } from "../../store/groups";
 import { fetchAttendees } from "../../store/attendees";
 import { useJsApiLoader, GoogleMap, Marker } from "@react-google-maps/api";
@@ -20,32 +21,50 @@ const SingleEvent = () => {
   const singleEventObj = useSelector((state) => state.events.singleEvent);
   const allGroupsArr = useSelector((state) => state.groups.allGroups);
   const sessionUser = useSelector((state) => state.session.user);
-  const groupMembersArr = useSelector((state) => state.groups.members);
   const allEvents = useSelector((state) => state.events.allEvents);
   const attendees = useSelector((state) =>
     Object.values(state.attendees.eventAttendees)
   );
 
   const [members, setMembers] = useState({});
-  const [isMember, setIsMember] = useState(false);
+  // const [isMember, setIsMember] = useState(false);
   const [lat, setLat] = useState(0);
   const [lng, setLng] = useState(0);
 
+  const userId = sessionUser.id;
+  const userFirstName = sessionUser.firstName;
+  const userLastName = sessionUser.lastName;
+
   useEffect(() => {
-    dispatch(fetchAllEvents());
-    dispatch(fetchSingleEvent(eventId));
-    dispatch(fetchGroups());
-    dispatch(fetchAttendees(eventId));
+    const dispatchAll = async () => {
+      await dispatch(fetchAllEvents());
+      const singleEvent = await dispatch(fetchSingleEvent(eventId));
+      await dispatch(fetchGroups());
+      await dispatch(fetchAttendees(eventId));
+
+      const fetchMembers = async () => {
+        const response = await fetch(
+          `/api/groups/${singleEvent.groupId}/members`
+        );
+        const data = await response.json();
+        setMembers(data.Members);
+        return data;
+      };
+
+      fetchMembers().catch(console.error);
+    };
+
+    dispatchAll();
   }, []);
+
+  // Get group id from event
+  let groupId = singleEventObj.groupId;
 
   // Normalize allGroupsArr to allGroupsObj
   let allGroupsObj = {};
   allGroupsArr?.forEach((group) => {
     allGroupsObj[group.id] = group;
   });
-
-  // Get group id from event
-  let groupId = singleEventObj.groupId;
 
   // Get group preview Image
   let groupPreviewImage = allGroupsObj[groupId]?.previewImage;
@@ -119,25 +138,18 @@ const SingleEvent = () => {
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
   });
 
-  // if (Object.values(singleEventObj).length > 0) {
-  //   const address = `${singleEventObj.Venue.address}, ${singleEventObj.Venue.city}, ${singleEventObj.Venue.state}`;
-
-  //   fetch(
-  //     `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`
-  //   )
-  //     .then((response) => {
-  //       return response.json();
-  //     })
-  //     .then((jsonData) => {
-  //       setLat(jsonData.results[0].geometry.location.lat);
-  //       setLng(jsonData.results[0].geometry.location.lng);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // }
-
   const center = { lat, lng };
+
+  // confirm if user is member of group by interating through members arr
+  let isMember = false;
+  for (const member in members) {
+    if (
+      members[member].firstName === userFirstName &&
+      members[member].lastName === userLastName
+    ) {
+      isMember = true;
+    }
+  }
 
   return (
     <>
@@ -295,6 +307,7 @@ const SingleEvent = () => {
             userId: sessionUser.id,
             attendees: attendees,
             groupId: groupId,
+            isMember: isMember,
           }}
         />
       </div>
