@@ -101,19 +101,20 @@ const Events = () => {
 
   const addressEx = `1640 Camino Del Rio N, San Diego, CA 92108`;
 
-  fetch(
-    `https://maps.googleapis.com/maps/api/geocode/json?address=${addressEx}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`
-  )
-    .then((response) => {
-      return response.json();
-    })
-    .then((jsonData) => {
-      setLat(jsonData.results[0].geometry.location.lat);
-      setLng(jsonData.results[0].geometry.location.lng);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+  //DO NOT USE, MANY GEOCODE API REQUESTS
+  // fetch(
+  //   `https://maps.googleapis.com/maps/api/geocode/json?address=${addressEx}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`
+  // )
+  //   .then((response) => {
+  //     return response.json();
+  //   })
+  //   .then((jsonData) => {
+  //     setLat(jsonData.results[0].geometry.location.lat);
+  //     setLng(jsonData.results[0].geometry.location.lng);
+  //   })
+  //   .catch((error) => {
+  //     console.log(error);
+  //   });
 
   const center = { lat, lng };
 
