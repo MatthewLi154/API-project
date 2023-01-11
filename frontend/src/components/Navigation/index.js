@@ -10,14 +10,6 @@ function Navigation({ isLoaded }) {
   const sessionUser = useSelector((state) => state.session.user);
   const history = useHistory();
 
-  const loggedIn = () => {
-    if (sessionUser === null) {
-      return false;
-    } else {
-      return true;
-    }
-  };
-
   let sessionLinks;
   if (sessionUser) {
     sessionLinks = (
@@ -59,7 +51,7 @@ function Navigation({ isLoaded }) {
     <div className="navDivContainer">
       <NavLink
         exact
-        to={loggedIn ? `/events` : `/`}
+        to={sessionUser !== null ? `/events` : `/`}
         style={{ textDecoration: "none", color: "red" }}
       >
         Weeb Up
