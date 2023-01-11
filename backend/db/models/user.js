@@ -6,8 +6,8 @@ module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     // returns reference id, username, email for user instance
     toSafeObject() {
-      const { id, firstName, lastName, username, email } = this; // Context will be the user instance
-      return { id, firstName, lastName, username, email };
+      const { id, firstName, lastName, username, profileImg, email } = this; // Context will be the user instance
+      return { id, firstName, lastName, username, profileImg, email };
     }
 
     // Validates password by matching hashed password in bcrypt
@@ -103,6 +103,10 @@ module.exports = (sequelize, DataTypes) => {
       lastName: {
         type: DataTypes.STRING,
         allowNull: false,
+      },
+      profileImg: {
+        type: DataTypes.STRING,
+        allowNull: true,
       },
     },
     {

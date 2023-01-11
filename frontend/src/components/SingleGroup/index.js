@@ -65,7 +65,6 @@ const SingleGroup = () => {
   if (groupMembersArr) {
     members = groupMembersArr?.Members;
   }
-  console.log(members);
 
   const parseDayTime = (dayTimeString) => {
     const [date, time] = dayTimeString.split("T");
@@ -125,7 +124,6 @@ const SingleGroup = () => {
   // validate current session user and organizer
   let isOrganizer;
   isOrganizer = sessionUser?.id === groupDataObj?.organizerId ? true : false;
-  // console.log(isOrganizer);
 
   // check if currentUser.id === membersid and if Membership status = member or co-host
   let isMember = false;
@@ -169,10 +167,12 @@ const SingleGroup = () => {
                   </div>
                   <div className="groupOrganizer">
                     {groupDataObj.Organizer && (
-                      <h3>
-                        Organized by {groupDataObj.Organizer.firstName}{" "}
-                        {groupDataObj.Organizer.lastName}
-                      </h3>
+                      <div>
+                        <h3>
+                          Organized by {groupDataObj.Organizer.firstName}{" "}
+                          {groupDataObj.Organizer.lastName}
+                        </h3>
+                      </div>
                     )}
                   </div>
                   <div className="groupShare"></div>
@@ -289,10 +289,29 @@ const SingleGroup = () => {
                   <div>
                     <h2>Organizers</h2>
                     {groupDataObj.Organizer && (
-                      <h3>
-                        {groupDataObj.Organizer.firstName}{" "}
-                        {groupDataObj.Organizer.lastName}
-                      </h3>
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          alignItems: "center",
+                          margin: "1rem 2rem",
+                        }}
+                      >
+                        <div>
+                          <img
+                            src={groupDataObj.Organizer.profileImg}
+                            style={{
+                              width: "3rem",
+                              height: "3rem",
+                              borderRadius: "50%",
+                            }}
+                          />
+                        </div>
+                        <h3>
+                          {groupDataObj.Organizer.firstName}{" "}
+                          {groupDataObj.Organizer.lastName}
+                        </h3>
+                      </div>
                     )}
                   </div>
                   <div className="membersContainer">
@@ -303,10 +322,18 @@ const SingleGroup = () => {
                           {members?.length > 0 &&
                             members?.map((member) => (
                               <li key={member.id}>
-                                {member.firstName} {member.lastName} ·{" "}
-                                <span className="memberLi">
+                                {/* {member.firstName} {member.lastName} ·{" "} */}
+                                <img
+                                  src={member.profileImg}
+                                  style={{
+                                    width: "3rem",
+                                    height: "3rem",
+                                    borderRadius: "50%",
+                                  }}
+                                ></img>
+                                {/* <span className="memberLi">
                                   {member.Membership?.status}
-                                </span>
+                                </span> */}
                               </li>
                             ))}
                         </ul>

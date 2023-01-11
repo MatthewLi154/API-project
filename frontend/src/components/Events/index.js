@@ -75,30 +75,6 @@ const Events = () => {
     }
   }
 
-  // const getMarkerLocations = () => {
-  //   let addressLatLng = [];
-  //   for (const address of addressArr) {
-  //     fetch(
-  //       `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`
-  //     )
-  //       .then((response) => {
-  //         return response.json();
-  //       })
-  //       .then((jsonData) => {
-  //         let lat = jsonData.results[0].geometry.location.lat;
-  //         let lng = jsonData.results[0].geometry.location.lng;
-  //         addressLatLng.push({ lat, lng });
-  //       })
-  //       .catch((error) => {
-  //         console.log(error);
-  //       });
-  //   }
-  //   // console.log(addressLatLng);
-  //   // return addressLatLng;
-  // };
-
-  // const markerArr = getMarkerLocations();
-
   const addressEx = `1640 Camino Del Rio N, San Diego, CA 92108`;
 
   //DO NOT USE, MANY GEOCODE API REQUESTS
@@ -116,7 +92,7 @@ const Events = () => {
   //     console.log(error);
   //   });
 
-  const center = { lat, lng };
+  const center = { lat: 32.7157, lng: -117.1611 };
 
   const onMarkerClick = (key) => {
     console.log(key);

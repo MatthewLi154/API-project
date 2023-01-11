@@ -752,6 +752,8 @@ router.get("/:groupId/members", async (req, res, next) => {
     ],
   });
 
+  console.log(membersGroup);
+
   if (!membersGroup.length) {
     res.status(404);
     return res.json({
@@ -778,6 +780,7 @@ router.get("/:groupId/members", async (req, res, next) => {
       memberObj.id = membership.userId;
       memberObj.firstName = membership.User.firstName;
       memberObj.lastName = membership.User.lastName;
+      memberObj.profileImg = membership.User.profileImg;
       memberObj.Membership = { status: membership.status };
       Members.push(memberObj);
     } else {
@@ -786,6 +789,7 @@ router.get("/:groupId/members", async (req, res, next) => {
       memberObj.id = membership.userId;
       memberObj.firstName = membership.User.firstName;
       memberObj.lastName = membership.User.lastName;
+      memberObj.profileImg = membership.User.profileImg;
       memberObj.Membership = { status: membership.status };
       Members.push(memberObj);
       // }
@@ -830,7 +834,7 @@ router.get("/:id", async (req, res, next) => {
       },
       {
         model: User,
-        attributes: ["id", "firstName", "lastName"],
+        attributes: ["id", "firstName", "lastName", "profileImg"],
       },
       {
         model: Venue,

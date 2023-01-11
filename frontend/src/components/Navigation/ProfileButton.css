@@ -45,7 +45,7 @@
 }
 
 .profile-user-image button {
-  background-color: red;
+  background-color: white;
   position: absolute;
   right: 2.5rem;
   top: 0.35rem;
@@ -90,5 +90,3 @@
   margin: 1rem 0rem;
   padding: 0;
 }
-
-

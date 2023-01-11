@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import * as sessionActions from "../../store/session";
 import "./ProfileButton.css";
@@ -8,6 +8,8 @@ function ProfileButton({ user }) {
   const dispatch = useDispatch();
   const history = useHistory();
   const [showMenu, setShowMenu] = useState(false);
+
+  const sessionUser = useSelector((state) => state.session.user);
 
   const openMenu = () => {
     if (showMenu) return;
@@ -36,7 +38,15 @@ function ProfileButton({ user }) {
       <div className="profileButtonContainer">
         <div className="profile-user-image" onClick={openMenu}>
           <button>
-            <i className="fa-solid fa-user"></i>
+            {/* <i className="fa-solid fa-user"></i> */}
+            <img
+              src={sessionUser.profileImg}
+              style={{
+                width: "2.5rem",
+                height: "2.5rem",
+                borderRadius: "50%",
+              }}
+            ></img>
           </button>
           <div>
             {showMenu ? (

@@ -27,7 +27,6 @@ const SingleEvent = () => {
   );
 
   const [members, setMembers] = useState({});
-  // const [isMember, setIsMember] = useState(false);
   const [lat, setLat] = useState(0);
   const [lng, setLng] = useState(0);
 
@@ -138,7 +137,7 @@ const SingleEvent = () => {
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
   });
 
-  const center = { lat, lng };
+  // const center = { lat, lng };
 
   // confirm if user is member of group by interating through members arr
   let isMember = false;
@@ -149,6 +148,30 @@ const SingleEvent = () => {
     ) {
       isMember = true;
     }
+  }
+
+  // Define set of google map markers since geocoding is expensive
+  // if (singleEventObj.Venue.city === )
+
+  let center;
+  switch (singleEventObj.Venue?.city) {
+    case "Riverside":
+      center = { lat: 33.95, lng: -117.396 };
+      break;
+    case "Chino":
+      center = { lat: 33.989, lng: -117.732582 };
+      break;
+    case "San Diego":
+      center = { lat: 32.7157, lng: -117.161 };
+      break;
+    case "San Francisco":
+      center = { lat: 37.733, lng: -122.4467 };
+      break;
+    case "Los Angeles":
+      center = { lat: 34.052235, lng: -118.243683 };
+      break;
+    default:
+      center = { lat: 40.75929, lng: -73.985573 };
   }
 
   return (
@@ -197,6 +220,14 @@ const SingleEvent = () => {
                   {attendees.length > 0 ? (
                     attendees.map((attendee) => (
                       <div className="attendee-card">
+                        <img
+                          src={attendee.profileImg}
+                          style={{
+                            width: "4rem",
+                            height: "4rem",
+                            borderRadius: "50%",
+                          }}
+                        ></img>
                         <div className="attendee-name">
                           <h4>
                             {attendee.firstName} {attendee.lastName}

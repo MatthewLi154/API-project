@@ -356,7 +356,7 @@ router.get("/:eventId/attendees", async (req, res, next) => {
         include: [
           {
             model: User,
-            attributes: ["id", "firstName", "lastName"],
+            attributes: ["id", "firstName", "lastName", "profileImg"],
           },
         ],
       },
@@ -397,6 +397,7 @@ router.get("/:eventId/attendees", async (req, res, next) => {
       obj.id = attendee.User.id;
       obj.firstName = attendee.User.firstName;
       obj.lastName = attendee.User.lastName;
+      obj.profileImg = attendee.User.profileImg;
       obj.Attendance = { status: `${attendee.status}` };
       Attendees.push(obj);
     });
