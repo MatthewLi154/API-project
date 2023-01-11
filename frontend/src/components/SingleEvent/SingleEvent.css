@@ -18,7 +18,13 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 1rem 4rem;
+  justify-content: center;
+  /* margin-left: 10rem; */
+  /* position: relative;
+  left: 15%; */
+  /* padding: 1rem 14rem; */
+  margin-top: 1rem;
+  width: 100%;
 }
 
 .eventHeader h1 {
@@ -49,7 +55,8 @@
 }
 
 .middleSectionEventDetails {
-  background-color: rgb(243, 239, 239);
+  /* background-color: rgb(243, 239, 239); */
+  background-color: rgba(80, 182, 255, 0.154);
   width: 100%;
   height: 90vh;
   display: flex;
@@ -91,6 +98,7 @@
 
 .eventDetailsRight {
   position: relative;
+  width: 24rem;
   left: -1rem;
 }
 

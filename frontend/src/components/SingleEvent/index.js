@@ -180,20 +180,21 @@ const SingleEvent = () => {
         {singleEventObj && (
           <div className="eventDetailsPageContainer">
             <div className="eventHeader">
-              {/* <i class="fa-solid fa-arrow-left-long"></i> */}
-              <div className="singleEventTitle">
-                <h1>{singleEventObj.name}</h1>
-              </div>
-              <div className="hostSection">
-                <div className="hostPicture">
-                  <img src="https://st3.depositphotos.com/6672868/13701/v/600/depositphotos_137014128-stock-illustration-user-profile-icon.jpg"></img>
+              <div>
+                <div className="singleEventTitle">
+                  <h1>{singleEventObj.name}</h1>
                 </div>
-                <div className="hostedByOrganizerSection">
-                  <div className="hostedBy">
-                    <h3>Hosted by</h3>
+                <div className="hostSection">
+                  <div className="hostPicture">
+                    <img src={groupPreviewImage}></img>
                   </div>
-                  <div className="hostName">
-                    <h3>{singleEventObj.Group?.name}</h3>
+                  <div className="hostedByOrganizerSection">
+                    <div className="hostedBy">
+                      <h3>Hosted by</h3>
+                    </div>
+                    <div className="hostName">
+                      <h3>{singleEventObj.Group?.name}</h3>
+                    </div>
                   </div>
                 </div>
               </div>

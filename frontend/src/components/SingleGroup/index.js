@@ -10,6 +10,7 @@ import {
 import "./SingleGroup.css";
 import { deleteSingleEvent, fetchAllEvents } from "../../store/events";
 import JoinGroup from "./JoinGroup";
+import GroupImages from "./GroupImages";
 
 const SingleGroup = () => {
   const { id } = useParams();
@@ -21,6 +22,9 @@ const SingleGroup = () => {
   const groupMembersArr = useSelector((state) => state.groups?.members);
   const allEvents = useSelector((state) => state.events.allEvents);
   const sessionUser = useSelector((state) => state.session.user);
+  const groupImages = useSelector(
+    (state) => state.groups.singleGroup?.GroupImages
+  );
 
   const userId = sessionUser.id;
   const userFirstName = sessionUser.firstName;
@@ -282,6 +286,10 @@ const SingleGroup = () => {
                             </div>
                           </NavLink>
                         ))}
+                      <div>
+                        <h2>Photos</h2>
+                        <GroupImages props={{ groupImages }} />
+                      </div>
                     </div>
                   )}
                 </div>

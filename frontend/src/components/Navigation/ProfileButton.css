@@ -3,6 +3,7 @@
   align-items: flex-start;
   font-family: "Roboto", sans-serif;
   font-size: 20px;
+  z-index: 15;
 }
 
 .profileButtonContainer button {
