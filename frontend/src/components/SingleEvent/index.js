@@ -180,6 +180,7 @@ const SingleEvent = () => {
         {singleEventObj && (
           <div className="eventDetailsPageContainer">
             <div className="eventHeader">
+              {/* <i class="fa-solid fa-arrow-left-long"></i> */}
               <div className="singleEventTitle">
                 <h1>{singleEventObj.name}</h1>
               </div>
