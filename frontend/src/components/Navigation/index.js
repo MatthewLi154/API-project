@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 import ProfileButton from "./ProfileButton";
 import LoginFormModal from "../LoginFormModal";
@@ -8,10 +8,38 @@ import "./Navigation.css";
 
 function Navigation({ isLoaded }) {
   const sessionUser = useSelector((state) => state.session.user);
+  const history = useHistory();
+
+  const loggedIn = () => {
+    if (sessionUser === null) {
+      return false;
+    } else {
+      return true;
+    }
+  };
 
   let sessionLinks;
   if (sessionUser) {
-    sessionLinks = <ProfileButton user={sessionUser} />;
+    sessionLinks = (
+      <div>
+        <div
+          style={{
+            position: "absolute",
+            right: "8rem",
+            fontFamily: "arial",
+            top: "1.7rem",
+            fontSize: "16px",
+            cursor: "pointer",
+          }}
+          onClick={() => {
+            return history.push("/groups/create");
+          }}
+        >
+          Start a group
+        </div>
+        <ProfileButton user={sessionUser} />
+      </div>
+    );
   } else {
     sessionLinks = (
       <>
@@ -29,7 +57,11 @@ function Navigation({ isLoaded }) {
 
   return (
     <div className="navDivContainer">
-      <NavLink exact to="/" style={{ textDecoration: "none", color: "red" }}>
+      <NavLink
+        exact
+        to={loggedIn ? `/events` : `/`}
+        style={{ textDecoration: "none", color: "red" }}
+      >
         Weeb Up
       </NavLink>
       {isLoaded && sessionLinks}

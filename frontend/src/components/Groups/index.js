@@ -30,7 +30,7 @@ const Groups = () => {
   return (
     <>
       <div className="groupsBody">
-        {showLoginModal && <LoginForm />}
+        {showLoginModal && sessionUser === null && <LoginForm />}
         <div className="groupsContainer">
           <div className="eventsGroupsContainer">
             <div className="eventsToggleContainer">

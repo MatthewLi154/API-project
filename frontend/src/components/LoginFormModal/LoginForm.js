@@ -44,12 +44,13 @@ function LoginForm() {
     const errors = validate();
     if (errors.length === 0) {
       setErrors([]);
-      return dispatch(sessionActions.login({ credential, password })).catch(
+      dispatch(sessionActions.login({ credential, password })).catch(
         async (res) => {
           const data = await res.json();
           if (data && data.errors) setErrors(data.errors);
         }
       );
+      return history.push("/events");
     }
   };
 
@@ -61,7 +62,7 @@ function LoginForm() {
       const data = await res.json();
       if (data && data.errors) setErrors(data.errors);
     });
-    return history.push("/");
+    return history.push("/events");
   };
 
   return (

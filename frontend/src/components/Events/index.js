@@ -3,6 +3,7 @@ import { NavLink, useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchAllEvents, fetchSingleEvent } from "../../store/events";
 import { useJsApiLoader, GoogleMap, Marker } from "@react-google-maps/api";
+import LoginForm from "../LoginFormModal/LoginForm";
 import "./Events.css";
 
 const Events = () => {
@@ -12,6 +13,7 @@ const Events = () => {
   // Get from state
   const eventSelectorObj = useSelector((state) => state.events);
   const events = useSelector((state) => state.events.allEvents);
+  const sessionUser = useSelector((state) => state.session.user);
   const [expandMap, setExpandMap] = useState(false);
   const [lat, setLat] = useState(0);
   const [lng, setLng] = useState(0);
@@ -98,9 +100,20 @@ const Events = () => {
     console.log(key);
   };
 
+  const [showLoginModal, setShowModal] = useState(false);
+
+  const onEventClick = (event) => {
+    if (sessionUser !== null) {
+      history.push(`/events/${event.id}`);
+    } else {
+      setShowModal(true);
+    }
+  };
+
   return (
     <>
       <div className="eventBody">
+        {showLoginModal && sessionUser === null && <LoginForm />}
         <div className="allEventsContainer">
           <div className="eventsGroupsContainer">
             <div className="eventsToggleContainer">
@@ -122,44 +135,49 @@ const Events = () => {
           </div>
           {eventsArr.length > 0 &&
             eventsArr.map((event) => (
-              <NavLink
-                to={`/events/${event.id}`}
-                style={{ textDecoration: "none" }}
-                key={event.id}
-              >
-                <div className="SingleEventContainer" key={event.id}>
-                  <div className="eventCard">
-                    <div className="EventLeftImg">
-                      {event.previewImage !== "no image" ? (
-                        <img src={event.previewImage}></img>
+              // <NavLink
+              //   to={`/events/${event.id}`}
+              //   style={{ textDecoration: "none" }}
+              //   key={event.id}
+              // >
+              <div className="SingleEventContainer" key={event.id}>
+                <div
+                  className="eventCard"
+                  onClick={() => {
+                    onEventClick(event);
+                  }}
+                >
+                  <div className="EventLeftImg">
+                    {event.previewImage !== "no image" ? (
+                      <img src={event.previewImage}></img>
+                    ) : (
+                      <img src="https://img3.stockfresh.com/files/i/imagedb/m/79/6143587_stock-photo-pims20100729as0027jpg.jpg"></img>
+                    )}
+                  </div>
+                  <div className="EventRightText">
+                    <div className="startDate">
+                      {parseDayTime(event.startDate)}
+                    </div>
+                    <div className="eventTitle">
+                      <h2>{event.name}</h2>
+                    </div>
+                    <div className="eventLocation">
+                      {event.Venue ? (
+                        <h3>
+                          {event.Group?.name} · {event.Venue.city},{" "}
+                          {event.Venue?.state}
+                        </h3>
                       ) : (
-                        <img src="https://img3.stockfresh.com/files/i/imagedb/m/79/6143587_stock-photo-pims20100729as0027jpg.jpg"></img>
+                        <h3>Online</h3>
                       )}
                     </div>
-                    <div className="EventRightText">
-                      <div className="startDate">
-                        {parseDayTime(event.startDate)}
-                      </div>
-                      <div className="eventTitle">
-                        <h2>{event.name}</h2>
-                      </div>
-                      <div className="eventLocation">
-                        {event.Venue ? (
-                          <h3>
-                            {event.Group?.name} · {event.Venue.city},{" "}
-                            {event.Venue?.state}
-                          </h3>
-                        ) : (
-                          <h3>Online</h3>
-                        )}
-                      </div>
-                      <div className="numAttendees">
-                        <h4>{event.numAttending} attendees</h4>
-                      </div>
+                    <div className="numAttendees">
+                      <h4>{event.numAttending} attendees</h4>
                     </div>
                   </div>
                 </div>
-              </NavLink>
+              </div>
+              // </NavLink>
             ))}
         </div>
         <div className="relevant-map-container">
